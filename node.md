@@ -29,4 +29,20 @@
 Как создать часы https://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock
 Скрипты async/defer https://learn.javascript.ru/script-async-defer
 
+Создаем файл package.json
+npm init -y
+
+Устанавливаем Parcel
+npm install parcel-bundler --save-dev
+
+Создаем папку src
+
+Создаем скрипт для запуска
+"dev": "parcel ./src/index.html"
+
+Запускаем проект!
 npm run dev
+
+Собираем финальный проект
+"build": "parcel build ./src/index.html --no-source-maps"
+npm run build
