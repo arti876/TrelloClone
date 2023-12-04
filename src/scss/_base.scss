@@ -1,0 +1,179 @@
+#root {
+  padding: 70px 10px;
+  font-size: 100px;
+  color: aqua;
+}
+
+// .wrapper {
+//   display: grid;
+//   max-width: 1000px;
+//   background-color: #c4c4c4;
+//   padding: 10px 40px 50px 40px;
+//   margin: 0 auto;
+// }
+
+// button:not(.card__left button) {
+//   background-color: #00d6af;
+// }
+
+// button:not(.card__left button):not(.card__right button) {
+//   padding: 0px 5px;
+// }
+
+// .wrapper,
+// button,
+// .header__input-text,
+// .header__input-search,
+// .card__item {
+//   border-radius: 5px;
+//   border: 3px solid #000;
+// }
+
+// .wrapper,
+// button,
+// .header__input-text,
+// .header__input-search,
+// .card__item,
+// .card__todo-text,
+// .card__date {
+//   border-radius: 5px;
+// }
+
+// input::placeholder {
+//   color: #b0b0b0;
+// }
+
+// .header {
+//   display: grid;
+//   grid-template-columns: repeat(10, 1fr);
+//   grid-template-rows: repeat(2, 1fr);
+//   align-items: stretch;
+//   gap: 15px;
+//   margin-bottom: 30px;
+// }
+
+// .header__btn--del-all{
+//   grid-column: 1/2;
+//   grid-row: 1/2;
+// }
+// .header__btn--del-last{
+//   grid-column: 2/3;
+//   grid-row: 1/2;
+// }
+// .header__label-input-text{
+//   grid-column: 3/10;
+//   grid-row: 1/2;
+// }
+// .header__btn--add{
+//   grid-column: 10/11;
+//   grid-row: 1/2;
+// }
+
+// .header__show-all{
+//   grid-column: 1/2;
+//   grid-row: 2/3;
+// }
+// .header__show-completed{
+//   grid-column: 2/4;
+//   grid-row: 2/3;
+// }
+// .header__btn--show-all{
+//   grid-column: 4/5;
+//   grid-row: 2/3;
+// }
+// .header__btn--show-completed{
+//   grid-column: 5/6;
+//   grid-row: 2/3;
+// }
+// .header__label-input-search{
+//   grid-column: 6/11;
+//   grid-row: 2/3;
+// }
+
+// .header__input-text,
+// .header__input-search,
+// .card__todo-text,
+// .card__date {
+//   background-color: #ffffff;
+//   text-align: center;
+//   width: 100%;
+//   padding: 12px 5px;
+// }
+
+// .header__show-all,
+// .header__show-completed{
+//   align-self: center;
+// }
+
+// .card__list {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 15px;
+// }
+
+// .card__date {
+//   padding: 4px 10px;
+// }
+
+// .card__item {
+//   display: flex;
+//   gap: 0px 10px;
+//   padding: 10px;
+//   min-height: 100px;
+// }
+
+// .card__left {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   width: 100%;
+// }
+
+// .card__right {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: end;
+//   justify-content: space-between;
+// }
+
+// .card__btn {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   min-width: 35px;
+//   height: 23px;
+// }
+
+// .card__btn--cancel {
+//   justify-self: end;
+// }
+
+// .header__input-text--error {
+//   border: 3px solid #ff7a7a;
+// }
+
+// .header__input-text--error::placeholder {
+//   color: #ff000089;
+// }
+
+// .card__btn--confirm-checked {
+//   background-image: url("img/icons.svg");
+//   background-repeat: no-repeat;
+//   background-size: contain;
+//   background-position: center;
+//   background-color: #00d6af;
+// }
+
+// .card__item--checked {
+//   background-color: #969696;
+//   border-color: #00a788;
+// }
+
+// .card__todo-text--del {
+//   text-decoration: line-through;
+//   color: #00a788;
+// }
+
+// .hidden {
+//   display: none;
+// }

@@ -1,0 +1,32 @@
+Альбина Борикова - Trello
+Павел Бритько - Pinterest
+Никита Вагин - Pinterest
+Александра Городницкая - Wildberries
+Артем Данько - Pinterest
+Артур Дроздов - Wildberries
+Артём Ерёменко - Trello
+Роман Качанов - Pinterest
+Анастасия Колмычевская - Wildberries
+Надежда Концева - Pinterest
+Елизавета Котова - Trello
+Анастасия Сергиеня - Trello
+Игорь Сечинов - Wildberries
+Кирилл Смирнов - Wildberries
+Владислав Терешонок - Trello
+Инна Хилько - Wildberries
+Евгений Шейко - Pinterest
+Ирина Юганова - Trello
+Шаги для начала выполнения задания
+
+Заходим в папку template, открываем файл нужного вам проекта
+Создаём в своей ветке index.js
+Копируем содержимое нужного файла из template в ваш index.js
+Выполняем подготовительный этап с настройкой и установкой parcel
+Выполняем задание
+Полезные ссылки:
+
+Как сделать Drag'n'drop https://learn.javascript.ru/mouse-drag-and-drop
+Как создать часы https://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock
+Скрипты async/defer https://learn.javascript.ru/script-async-defer
+
+npm run dev
