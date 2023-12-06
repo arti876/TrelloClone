@@ -104,7 +104,7 @@ input::-ms-clear {
 }
 .header__logo {
   font-size: 24px;
-  color: #fff;
+  color: #ffffff;
   font-weight: 600;
 }
 .header__time {
@@ -114,7 +114,7 @@ input::-ms-clear {
   text-align: center;
   justify-self: end;
   border: 1px solid rgba(0, 0, 0, 0.862745098);
-  background-color: rgba(212, 212, 212, 0.862745098);
+  background-color: #fff;
   border-radius: 4px;
   padding: 5px 15px 5px;
   font-size: 16px;
@@ -134,70 +134,76 @@ input::-ms-clear {
   border-radius: 15px;
   overflow: hidden;
 }
-.task-list__title {
+.task-list__header {
   display: flex;
   justify-content: space-between;
-  color: #fff;
-  font-weight: 600;
   padding: 10px 15px;
   align-self: flex-start;
 }
-.task-list__title span {
+.task-list__title, .task-list__counters {
   color: #fff;
   font-weight: 600;
 }
-.task-list__title--todo, .task-list__btn--add-todo {
+.task-list__header--todo, .task-list__footer-btn--add-todo {
   background-color: #c19000;
 }
-.task-list__title--in-progress {
+.task-list__header--in-progress {
   background-color: #006d9b;
 }
-.task-list__title--done, .task-list__btn--del-all {
+.task-list__header--done, .task-list__footer-btn--del-all {
   background-color: #009b68;
 }
-.task-list__task {
-  background-color: antiquewhite;
+.task-list__body {
+  display: grid;
+  gap: 15px;
+}
+.task-list__footer {
+  align-self: end;
+}
+.task-list__footer-btn {
+  width: 100%;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px;
+  transition: 0.3s;
+}
+.task-list__footer-btn:hover {
+  background-color: #bc69d0;
+}
+
+.task {
+  background-color: #faebd7;
   border-radius: 15px;
   padding: 10px 15px;
   margin: 0px 10px;
   align-self: start;
 }
-.task-list__task button {
-  color: #fff;
-  background-color: #008000;
-  padding: 3px 10px;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-.task-list__task button:hover {
-  background-color: #bc69d0;
-}
-.task-list__task-header {
+.task__header {
   display: grid;
   margin-bottom: 10px;
 }
-.task-list__task-header-btn-container {
+.task__header-btn-container {
   justify-self: end;
+  margin-bottom: 10px;
 }
-.task-list__task-body {
+.task__body {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
-.task-list__task-footer {
+.task__footer {
   display: flex;
   justify-content: space-between;
 }
-.task-list__btn {
-  width: 100%;
+.task button {
   color: #fff;
-  font-weight: 600;
-  padding: 10px;
-  align-self: end;
+  background-color: #919191;
+  padding: 3px 10px;
+  border-radius: 5px;
   transition: 0.3s;
 }
-.task-list__btn:hover {
+.task button:hover {
   background-color: #bc69d0;
 }
 
