@@ -9,73 +9,77 @@
 </head>
 
 <body>
-  <div class="header">
-    <div class="wrapper header__wrapper">
-      <div class="header__logo">Trello</div>
-      <div class="header__time">12:00</div>
+  <div class="main-container">
+    <div class="header">
+      <div class="wrapper header__wrapper">
+        <div class="header__logo">Trello</div>
+        <div class="header__time">12:00</div>
+      </div>
     </div>
+    <section class="board">
+      <div class="wrapper board__wrapper">
+        <div class="task-list task-list--todo">
+          <h1 class="task-list__title">TODO <span class="task-list__counters-todo">0</span></h1>
+          <div class="task-list__task task">
+            <div class="task__header">
+              <div class="task__header-btn-container">
+                <button class="task__header-btn task__header-btn--edit" type="button">EDIT</button>
+                <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
+              </div>
+              <p class="task__header-title">Title</p>
+            </div>
+            <div class="task__body">
+              <p class="task__body-description">Despription</p>
+              <button class="task__body-btn task__body-btn--relocate" type="button">></button>
+            </div>
+            <div class="task__footer">
+              <p class="task__footer-user">User</p>
+              <p class="task__footer-time">Time</p>
+            </div>
+          </div>
+          <button class="task-list__btn task-list__btn--add-todo" type="button">Add todo</button>
+        </div>
+        <div class="task-list task-list--in-progress">
+          <h1 class="task-list__title">IN PROGRESS <span class="task-list__counters-in-progress">0</span></h1>
+          <div class="task-list__task task">
+            <div class="task__header">
+              <div class="task__header-btn-container">
+                <button class="task__header-btn task__header-btn--back" type="button">BACK</button>
+                <button class="task__header-btn task__header-btn--complete" type="button">COMPLETE</button>
+              </div>
+              <p class="task__header-title">Title</p>
+            </div>
+            <div class="task__body">
+              <p class="task__body-description">Despription</p>
+            </div>
+            <div class="task__footer">
+              <p class="task__footer-user">User</p>
+              <p class="task__footer-time">Time</p>
+            </div>
+          </div>
+        </div>
+        <div class="task-list task-list--done">
+          <h1 class="task-list__title">DONE <span class="task-list__counters-done">0</span></h1>
+          <div class="task-list__task task">
+            <div class="task__header">
+              <div class="task__header-btn-container">
+                <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
+              </div>
+              <p class="task__header-title">Title</p>
+            </div>
+            <div class="task__body">
+              <p class="task__body-description">Despription</p>
+            </div>
+            <div class="task__footer">
+              <p class="task__footer-user">User</p>
+              <p class="task__footer-time">Time</p>
+            </div>
+          </div>
+          <button class="task-list__btn task-list__btn--del-all" type="button">Delete all</button>
+        </div>
+      </div>
+    </section>
   </div>
-  <section class="board">
-    <div class="wrapper board__wrapper">
-      <div class="board__task-list task-list task-list--todo">
-        <h1 class="task-list__title">TODO <span class="task-list__counters-todo">2</span></h1>
-        <div class="task-list__task task">
-          <div class="task__header">
-            <p class="task__header-title">Title</p>
-            <button class="task__header-btn task__header-btn--edit" type="button">EDIT</button>
-            <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
-          </div>
-          <div class="task__body">
-            <p class="task__body-description">Despription</p>
-            <button class="task__body-btn task__body-btn--relocate" type="button">></button>
-          </div>
-          <div class="task__footer">
-            <p class="task__footer-user">User</p>
-            <p class="task__footer-time">Time</p>
-          </div>
-        </div>
-        <button class="task-list__btn task-list__btn--add-todo" type="button">Add todo</button>
-      </div>
-      <div class="board__task-list task-list task-list--todo">
-        <h1 class="task-list__title">TODO <span class="task-list__counters-todo">2</span></h1>
-        <div class="task-list__task task">
-          <div class="task__header">
-            <p class="task__header-title">Title</p>
-            <button class="task__header-btn task__header-btn--edit" type="button">EDIT</button>
-            <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
-          </div>
-          <div class="task__body">
-            <p class="task__body-description">Despription</p>
-            <button class="task__body-btn task__body-btn--relocate" type="button">></button>
-          </div>
-          <div class="task__footer">
-            <p class="task__footer-user">User</p>
-            <p class="task__footer-time">Time</p>
-          </div>
-        </div>
-        <button class="task-list__btn task-list__btn--add-todo" type="button">Add todo</button>
-      </div>
-      <div class="board__task-list task-list task-list--todo">
-        <h1 class="task-list__title">TODO <span class="task-list__counters-todo">2</span></h1>
-        <div class="task-list__task task">
-          <div class="task__header">
-            <p class="task__header-title">Title</p>
-            <button class="task__header-btn task__header-btn--edit" type="button">EDIT</button>
-            <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
-          </div>
-          <div class="task__body">
-            <p class="task__body-description">Despription</p>
-            <button class="task__body-btn task__body-btn--relocate" type="button">></button>
-          </div>
-          <div class="task__footer">
-            <p class="task__footer-user">User</p>
-            <p class="task__footer-time">Time</p>
-          </div>
-        </div>
-        <button class="task-list__btn task-list__btn--add-todo" type="button">Add todo</button>
-      </div>
-    </div>
-  </section>
   <script type="module" src="./js/index.js"></script>
 </body>
 

@@ -34,15 +34,18 @@
 
 .header {
   &__wrapper {
-    background-color: #eb9cff;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
-    padding: 30px 50px;
+    background-color: #bc69d0;
     border-radius: 10px;
+    padding: 30px 50px;
+    margin-bottom: 25px;
   }
   &__logo {
     font-size: 24px;
+    color: #fff;
+    font-weight: 600;
   }
   &__time {
     justify-self: end;

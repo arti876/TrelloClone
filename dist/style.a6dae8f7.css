@@ -83,8 +83,8 @@ input::-ms-clear {
   display: none;
 }
 
-body {
-  padding: 25px 0px;
+.main-container {
+  padding: 25px;
 }
 
 .wrapper {
@@ -94,15 +94,18 @@ body {
 }
 
 .header__wrapper {
-  background-color: #eb9cff;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
-  padding: 30px 50px;
+  background-color: #bc69d0;
   border-radius: 10px;
+  padding: 30px 50px;
+  margin-bottom: 25px;
 }
 .header__logo {
   font-size: 24px;
+  color: #fff;
+  font-weight: 600;
 }
 .header__time {
   justify-self: end;
@@ -117,6 +120,74 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+}
+
+.task-list {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 15px;
+  border: 2px solid #828282;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.task-list__title {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-weight: 600;
+  background-color: #009b68;
+  padding: 10px 15px;
+  align-self: flex-start;
+}
+.task-list__title span {
+  color: #fff;
+  font-weight: 600;
+}
+.task-list .task {
+  background-color: antiquewhite;
+  border-radius: 15px;
+  padding: 10px 15px;
+  margin: 0px 10px;
+  align-self: start;
+}
+.task-list .task button {
+  color: #fff;
+  background-color: #008000;
+  padding: 3px 10px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.task-list .task button:hover {
+  background-color: #004100;
+}
+.task-list .task__header {
+  display: grid;
+  margin-bottom: 10px;
+}
+.task-list .task__header-btn-container {
+  justify-self: end;
+}
+.task-list .task__body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.task-list .task__footer {
+  display: flex;
+  justify-content: space-between;
+}
+.task-list__btn {
+  width: 100%;
+  color: #fff;
+  font-weight: 600;
+  background-color: #009b68;
+  padding: 10px;
+  align-self: end;
+  transition: 0.3s;
+}
+.task-list__btn:hover {
+  background-color: rgb(0, 91, 0);
 }
 
 /*# sourceMappingURL=/style.a6dae8f7.css.map */
