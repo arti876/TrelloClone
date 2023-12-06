@@ -83,7 +83,7 @@ input::-ms-clear {
   display: none;
 }
 
-.main-container {
+.trello {
   padding: 25px;
 }
 
@@ -108,11 +108,15 @@ input::-ms-clear {
   font-weight: 600;
 }
 .header__time {
+  display: flex;
+  justify-content: start;
+  width: 90px;
+  text-align: center;
   justify-self: end;
   border: 1px solid rgba(0, 0, 0, 0.862745098);
   background-color: rgba(212, 212, 212, 0.862745098);
   border-radius: 4px;
-  padding: 5px 15px;
+  padding: 5px 15px 5px;
   font-size: 16px;
 }
 

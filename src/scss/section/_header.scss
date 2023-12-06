@@ -48,11 +48,15 @@
     font-weight: 600;
   }
   &__time {
+    display: flex;
+    justify-content: start;
+    width: 90px;
+    text-align: center;
     justify-self: end;
     border: 1px solid #000000dc;
     background-color: #d4d4d4dc;
     border-radius: 4px;
-    padding: 5px 15px;
+    padding: 5px 15px 5px;
     font-size: 16px;
   }
 }
