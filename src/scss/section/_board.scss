@@ -18,7 +18,6 @@
     justify-content: space-between;
     color: #fff;
     font-weight: 600;
-    background-color: #009b68;
     padding: 10px 15px;
     align-self: flex-start;
     span {
@@ -26,7 +25,20 @@
       font-weight: 600;
     }
   }
-  .task {
+  &__title--todo,
+  &__btn--add-todo {
+    background-color: #c19000;
+  }
+
+  &__title--in-progress {
+    background-color: #006d9b;
+  }
+
+  &__title--done,
+  &__btn--del-all {
+    background-color: #009b68;
+  }
+  &__task {
     background-color: antiquewhite;
     border-radius: 15px;
     padding: 10px 15px;
@@ -39,37 +51,36 @@
       border-radius: 5px;
       transition: 0.3s;
       &:hover {
-        background-color: #004100;
+        background-color: #bc69d0;
       }
     }
-    &__header {
-      display: grid;
-      margin-bottom: 10px;
-    }
-    &__header-btn-container {
-      justify-self: end;
-    }
-    &__body {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    &__footer {
-      display: flex;
-      justify-content: space-between;
-    }
+  }
+  &__task-header {
+    display: grid;
+    margin-bottom: 10px;
+  }
+  &__task-header-btn-container {
+    justify-self: end;
+  }
+  &__task-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  &__task-footer {
+    display: flex;
+    justify-content: space-between;
   }
   &__btn {
     width: 100%;
     color: #fff;
     font-weight: 600;
-    background-color: #009b68;
     padding: 10px;
     align-self: end;
     transition: 0.3s;
     &:hover {
-      background-color: rgb(0, 91, 0);
+      background-color: #bc69d0;
     }
   }
 }

@@ -139,7 +139,6 @@ input::-ms-clear {
   justify-content: space-between;
   color: #fff;
   font-weight: 600;
-  background-color: #009b68;
   padding: 10px 15px;
   align-self: flex-start;
 }
@@ -147,37 +146,46 @@ input::-ms-clear {
   color: #fff;
   font-weight: 600;
 }
-.task-list .task {
+.task-list__title--todo, .task-list__btn--add-todo {
+  background-color: #c19000;
+}
+.task-list__title--in-progress {
+  background-color: #006d9b;
+}
+.task-list__title--done, .task-list__btn--del-all {
+  background-color: #009b68;
+}
+.task-list__task {
   background-color: antiquewhite;
   border-radius: 15px;
   padding: 10px 15px;
   margin: 0px 10px;
   align-self: start;
 }
-.task-list .task button {
+.task-list__task button {
   color: #fff;
   background-color: #008000;
   padding: 3px 10px;
   border-radius: 5px;
   transition: 0.3s;
 }
-.task-list .task button:hover {
-  background-color: #004100;
+.task-list__task button:hover {
+  background-color: #bc69d0;
 }
-.task-list .task__header {
+.task-list__task-header {
   display: grid;
   margin-bottom: 10px;
 }
-.task-list .task__header-btn-container {
+.task-list__task-header-btn-container {
   justify-self: end;
 }
-.task-list .task__body {
+.task-list__task-body {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
-.task-list .task__footer {
+.task-list__task-footer {
   display: flex;
   justify-content: space-between;
 }
@@ -185,13 +193,12 @@ input::-ms-clear {
   width: 100%;
   color: #fff;
   font-weight: 600;
-  background-color: #009b68;
   padding: 10px;
   align-self: end;
   transition: 0.3s;
 }
 .task-list__btn:hover {
-  background-color: rgb(0, 91, 0);
+  background-color: #bc69d0;
 }
 
 /*# sourceMappingURL=/style.a6dae8f7.css.map */

@@ -23,7 +23,7 @@ const runTrelloApplication = async () => {
 
 }
 
-runTrelloApplication()
+// runTrelloApplication()
 
 // ------------------------------------------------------------------------------
 // часы
