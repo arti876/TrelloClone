@@ -28,25 +28,25 @@
           <div class="task-list__body">
             <div class="task task--todo">
               <div class="task__header">
-                <div class="task__header-btn-container">
-                  <button class="task__header-btn task__header-btn--edit" type="button">EDIT</button>
-                  <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
+                <div class="task__btn-container">
+                  <button class="task__btn task__btn--edit" type="button">EDIT</button>
+                  <button class="task__btn task__btn--del" type="button">DELETE</button>
                 </div>
-                <div class="task__header-title">Title</div>
+                <div class="task__title">Title</div>
               </div>
               <div class="task__body">
-                <div class="task__body-description">Despription</div>
-                <button class="task__body-btn task__body-btn--relocate" type="button">></button>
+                <div class="task__description">Despription</div>
+                <button class="task__btn task__btn--relocate" type="button">></button>
               </div>
               <div class="task__footer">
-                <div class="task__footer-user">User</div>
-                <div class="task__footer-time">Time
+                <div class="task__user"></div>
+                <div class="task__time">Time
                 </div>
               </div>
             </div>
           </div>
           <div class="task-list__footer">
-            <button class="task-list__footer-btn task-list__footer-btn--add-todo" type="button">Add todo</button>
+            <button class="task-list__btn task-list__btn--add-todo" type="button">Add todo</button>
           </div>
         </div>
 
@@ -58,18 +58,18 @@
           <div class="task-list__body">
             <div class="task task--in-progress">
               <div class="task__header">
-                <div class="task__header-btn-container">
-                  <button class="task__header-btn task__header-btn--back" type="button">BACK</button>
-                  <button class="task__header-btn task__header-btn--complete" type="button">COMPLETE</button>
+                <div class="task__btn-container">
+                  <button class="task__btn task__btn--back" type="button">BACK</button>
+                  <button class="task__btn task__btn--complete" type="button">COMPLETE</button>
                 </div>
-                <div class="task__header-title">Title</div>
+                <div class="task__title">Title</div>
               </div>
               <div class="task__body">
-                <div class="task__body-description">Despription</div>
+                <div class="task__description">Despription</div>
               </div>
               <div class="task__footer">
-                <div class="task__footer-user">User</div>
-                <div class="task__footer-time">Time
+                <div class="task__user">User</div>
+                <div class="task__time">Time
                 </div>
               </div>
             </div>
@@ -84,36 +84,23 @@
           <div class="task-list__body">
             <div class="task task--done">
               <div class="task__header">
-                <div class="task__header-btn-container">
-                  <button class="task__header-btn task__header-btn--del" type="button">DELETE</button>
+                <div class="task__btn-container">
+                  <button class="task__btn task__btn--del" type="button">DELETE</button>
                 </div>
-                <div class="task__header-title">Title</div>
+                <div class="task__title">Title</div>
               </div>
               <div class="task__body">
-                <div class="task__body-description">Despription</div>
+                <div class="task__description">Despription</div>
               </div>
               <div class="task__footer">
-                <div class="task__footer-user">User</div>
-                <div class="task__footer-time">Time
+                <div class="task__user">User</div>
+                <div class="task__time">Time
                 </div>
               </div>
             </div>
           </div>
           <div class="task-list__footer">
-            <button class="task-list__footer-btn task-list__footer-btn--del-all" type="button">Delete all</button>
-          </div>
-        </div>
-
-        <!-- <a class="open-modal" href="#open">Открыть окно</a> -->
-        <div id="modal">
-          <div class="container-modal">
-            <div class="modal-title">Title</div>
-            <!-- <div id="close_modal">+</div> -->
-            <div class="modal-text">Текст в модальном окне</div>
-            <div class="modal-footer">
-              <button class="modal-cancel" id="modal-cancel" type="button">Cancel</button>
-              <button class="modal-confirm" id="modal-confirm" type="button">Confirm</button>
-            </div>
+            <button class="task-list__btn task-list__btn--del-all" type="button">Delete all</button>
           </div>
         </div>
 

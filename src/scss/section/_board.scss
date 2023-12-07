@@ -25,14 +25,14 @@
     font-weight: 600;
   }
   &__header--todo,
-  &__footer-btn--add-todo {
+  &__btn--add-todo {
     background-color: #009b68;
   }
   &__header--in-progress {
     background-color: #828282;
   }
   &__header--done,
-  &__footer-btn--del-all {
+  &__btn--del-all {
     background-color: #006d9b;
   }
   &__body {
@@ -42,7 +42,7 @@
   &__footer {
     align-self: end;
   }
-  &__footer-btn {
+  &__btn {
     width: 100%;
     color: #fff;
     font-weight: 600;
@@ -64,7 +64,7 @@
     display: grid;
     margin-bottom: 10px;
   }
-  &__header-btn-container {
+  &__btn-container {
     justify-self: end;
     margin-bottom: 10px;
   }
@@ -79,13 +79,13 @@
     justify-content: space-between;
   }
   button {
-    color: #7c7c7c;
+    color: #000000;
     background-color: #ffffff;
     padding: 3px 10px;
     border-radius: 5px;
     transition: 0.3s;
     &:hover {
-      background-color: #bc69d0;
+      background-color: #f3c1ff;
     }
   }
 }
