@@ -219,4 +219,110 @@ input::-ms-clear {
   background-color: rgba(0, 107, 153, 0.3);
 }
 
+.form-add-todo {
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99999;
+}
+
+.form-add-todo__container-main {
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  gap: 15px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  background-color: #009b68;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 16px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.form-add-todo__input-title,
+.form-add-todo__input-description {
+  background-color: #FFF;
+  padding: 5px;
+}
+
+.form-add-todo__input-title {
+  width: 50%;
+}
+
+.form-add-todo__input-description {
+  width: 100%;
+  min-height: 200px;
+}
+
+.form-add-todo__footer,
+.form-add-todo__btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-add-todo__user {
+  background-color: #FFF;
+  padding: 3px;
+}
+
+.form-add-todo__btn-container {
+  gap: 10px;
+}
+.form-add-todo__btn-container button {
+  background-color: #FFF;
+  padding: 3px;
+}
+
+.body-block {
+  overflow: hidden;
+  margin-right: 17px;
+}
+
+.modal-text {
+  padding: 30px;
+  max-width: 800px;
+}
+
+.open-modal {
+  background-color: #BFE2FF;
+}
+
+.container-modal {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  background-color: #FFF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 16px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.modal-title {
+  background-color: #bc69d0;
+  padding: 5px;
+}
+
+#modal-cancel,
+#modal-confirm {
+  color: #FFF;
+  background-color: #7c7c7c;
+  padding: 5px;
+}
+
+#modal-cancel:hover,
+#modal-confirm:hover {
+  background-color: #bc69d0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+}
+
 /*# sourceMappingURL=/style.a6dae8f7.css.map */

@@ -16,14 +16,14 @@ const getTrelloData = async () => {
 
 const runTrelloApplication = async () => {
   const { users, todos } = await getTrelloData();
-  console.log(users,todos)
+  // console.log(users,todos)
 
 
   // Write your code
 
 }
 
-// runTrelloApplication()
+runTrelloApplication()
 
 // ------------------------------------------------------------------------------
 // часы
@@ -48,16 +48,39 @@ function checkTime(i) {
 startTime();
 
 // ------------------------------------------------------------------------------
-// ивенты
+// модальное окно
 
-// const trello = document.querySelector('.trello');
+const btnAddTodo = document.querySelector('.task-list__footer-btn--add-todo');
+const btnCancel = document.getElementById('modal-cancel');
+const btnConfirm = document.getElementById('modal-confirm');
+const formAddTodo = document.querySelector('.form-add-todo');
+const body = document.getElementsByTagName('body')[0];
+const modalText = document.querySelector('.modal-text');
 
-// trello.addEventListener('click', function (event) {
 
-//   if (event.target.classList.contains('header__time')) {
-//     // event.target.closest().querySelector().classList.toggle();
-//     event.target.closest()
-//   };
-// });
 
-// ------------------------------------------------------------------------------
+const user = document.querySelector('.task__footer-user');
+const selectElement = document.getElementById('fruits');
+const selectedFruit = selectElement.value;
+
+function addTodo () {
+  formAddTodo.classList.add('modal-vis'); // добавляем видимость окна
+  formAddTodo.classList.remove('bounceOutDown'); // удаляем эффект закрытия
+  body.classList.add('body-block'); // убираем прокрутку
+}
+
+function pressCancel() { // клик на закрытие
+    formAddTodo.classList.add('bounceOutDown'); // добавляем эффект закрытия
+    formAddTodo.classList.remove('modal-vis'); 
+    body.classList.remove('body-block'); // возвращаем прокрутку
+};
+function pressConfirm() { // клик на закрытие
+  formAddTodo.classList.add('bounceOutDown'); // добавляем эффект закрытия
+  formAddTodo.classList.remove('modal-vis'); 
+  body.classList.remove('body-block'); // возвращаем прокрутку
+  user.textContent = selectElement.value;
+};
+
+btnAddTodo.addEventListener("click", addTodo);
+btnCancel.addEventListener("click", pressCancel);
+btnConfirm.addEventListener("click", pressConfirm);

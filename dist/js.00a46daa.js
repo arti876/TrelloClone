@@ -172,10 +172,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
           _yield$getTrelloData = _context2.sent;
           users = _yield$getTrelloData.users;
           todos = _yield$getTrelloData.todos;
-          console.log(users, todos);
-
-          // Write your code
-        case 6:
+        case 5:
         case "end":
           return _context2.stop();
       }
@@ -185,8 +182,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
-
-// runTrelloApplication()
+runTrelloApplication();
 
 // ------------------------------------------------------------------------------
 // часы
@@ -213,19 +209,40 @@ function checkTime(i) {
 startTime();
 
 // ------------------------------------------------------------------------------
-// ивенты
+// модальное окно
 
-// const trello = document.querySelector('.trello');
-
-// trello.addEventListener('click', function (event) {
-
-//   if (event.target.classList.contains('header__time')) {
-//     // event.target.closest().querySelector().classList.toggle();
-//     event.target.closest()
-//   };
-// });
-
-// ------------------------------------------------------------------------------
+var btnAddTodo = document.querySelector('.task-list__footer-btn--add-todo');
+var btnCancel = document.getElementById('modal-cancel');
+var btnConfirm = document.getElementById('modal-confirm');
+var formAddTodo = document.querySelector('.form-add-todo');
+var body = document.getElementsByTagName('body')[0];
+var modalText = document.querySelector('.modal-text');
+var user = document.querySelector('.task__footer-user');
+var selectElement = document.getElementById('fruits');
+var selectedFruit = selectElement.value;
+function addTodo() {
+  formAddTodo.classList.add('modal-vis'); // добавляем видимость окна
+  formAddTodo.classList.remove('bounceOutDown'); // удаляем эффект закрытия
+  body.classList.add('body-block'); // убираем прокрутку
+}
+function pressCancel() {
+  // клик на закрытие
+  formAddTodo.classList.add('bounceOutDown'); // добавляем эффект закрытия
+  formAddTodo.classList.remove('modal-vis');
+  body.classList.remove('body-block'); // возвращаем прокрутку
+}
+;
+function pressConfirm() {
+  // клик на закрытие
+  formAddTodo.classList.add('bounceOutDown'); // добавляем эффект закрытия
+  formAddTodo.classList.remove('modal-vis');
+  body.classList.remove('body-block'); // возвращаем прокрутку
+  user.textContent = selectElement.value;
+}
+;
+btnAddTodo.addEventListener("click", addTodo);
+btnCancel.addEventListener("click", pressCancel);
+btnConfirm.addEventListener("click", pressConfirm);
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
