@@ -154,12 +154,12 @@ function startTime() {
   var s = today.getSeconds();
   m = checkTime(m);
   s = checkTime(s);
-  document.querySelector('.header__time').innerHTML = h + ":" + m + ":" + s;
+  document.querySelector('.header__time').innerHTML = h + ':' + m + ':' + s;
   setTimeout(startTime, 1000);
 }
 function checkTime(i) {
   if (i < 10) {
-    i = "0" + i;
+    i = '0' + i;
   }
   ;
   return i;
@@ -186,11 +186,10 @@ function createLabel(classList) {
 }
 
 // создание элемента - button
-function createButton(classList, name, textContent) {
+function createButton(classList, textContent) {
   var element = document.createElement('button');
   element.classList = classList;
   element.type = 'button';
-  element.name = name;
   element.textContent = textContent;
   return element;
 }
@@ -208,6 +207,8 @@ function createInput(classList, name, placeholder) {
 // ------------------------------------------------------------------------------
 // модальное окно формы Todo
 
+var headerTime = document.querySelector('.header__time');
+var taskListBody = document.querySelector('.task-list__body--todo');
 var taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
 var formAddTodo = document.querySelector('.form-add-todo');
 var formInputTitle = document.querySelector('.form-add-todo__input-title');
@@ -215,29 +216,71 @@ var formInputDescription = document.querySelector('.form-add-todo__input-descrip
 var formВtnCancel = document.querySelector('.form-add-todo__btn-cancel');
 var formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
 var formSelectUser = document.querySelector('.form-add-todo__user');
-
-// const body = document.getElementsByTagName('body')[0];
-var user = document.querySelector('.task__user');
 function addTodo() {
   formAddTodo.classList.toggle('form-add-todo--vis');
-  // body.classList.toggle('body-block'); // убираем прокрутку
+  formInputTitle.value = '';
+  formInputDescription.value = '';
+  formSelectUser.value = '';
 }
+;
 function pressCancel() {
   formAddTodo.classList.toggle('form-add-todo--vis');
-  // body.classList.toggle('body-block'); // возвращаем прокрутку
+  formInputDescription.classList.remove('animated', 'shake');
+  formInputTitle.classList.remove('animated', 'shake');
 }
 ;
 function pressConfirm() {
-  if (formInputTitle.value && formInputDescription.value) {
-    user.textContent = formSelectUser.value;
+  if (formInputTitle.value && formInputDescription.value && formSelectUser.value) {
     formAddTodo.classList.toggle('form-add-todo--vis');
+    var elTask = createDiv('task task--todo');
+    taskListBody.append(elTask);
+    var elTaskHeaer = createDiv('task__header');
+    var elTaskBody = createDiv('task__body');
+    var elTaskFooter = createDiv('task__footer');
+    elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
+    var elTaskBtnContainer = createDiv('task__btn-container');
+    var elTaskTitle = createDiv('task__title');
+    elTaskTitle.textContent = formInputTitle.value;
+    elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
+    var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+    var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+    elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
+    var elTaskDescription = createDiv('task__description');
+    elTaskDescription.textContent = formInputDescription.value;
+    var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+    elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
+    var elTaskUser = createDiv('task__user');
+    elTaskUser.textContent = formSelectUser.value;
+    var elTaskTime = createDiv('task__time');
+    elTaskTime.textContent = headerTime.textContent;
+    elTaskFooter.append(elTaskUser, elTaskTime);
+  } else if (formInputTitle) {
+    formInputTitle.classList.add('animated', 'shake');
+  } else if (formInputDescription) {
+    formInputDescription.classList.add('animated', 'shake');
   }
-  // body.classList.toggle('body-block'); // возвращаем прокрутку
 }
 ;
-taskListBtnAddTodo.addEventListener("click", addTodo);
-formВtnCancel.addEventListener("click", pressCancel);
-formВtnConfirm.addEventListener("click", pressConfirm);
+taskListBtnAddTodo.addEventListener('click', addTodo);
+formВtnCancel.addEventListener('click', pressCancel);
+formВtnConfirm.addEventListener('click', pressConfirm);
+
+// const trello = document.querySelector('.trello');
+
+// trello.addEventListener('click', function (event) {
+
+//   if (event.target.classList.contains('task-list__btn--add-todo')) {
+//     addTodo();
+//   }
+
+//   if (event.target.classList.contains('form-add-todo__btn-confirm')) {
+//     pressConfirm();
+//   }
+
+//   if (event.target.classList.contains('form-add-todo__btn-cancel')) {
+//     pressCancel();
+//   }
+// });
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -263,7 +306,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50254" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58116" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
