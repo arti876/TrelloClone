@@ -48,29 +48,71 @@ function checkTime(i) {
 startTime();
 
 // ------------------------------------------------------------------------------
+// создание элементов
+
+// создание элемента - div
+function createDiv(classList) {
+  const element = document.createElement('div');
+  element.classList = classList;
+  return element;
+}
+
+// создание элемента - label
+function createLabel(classList) {
+  const element = document.createElement('label');
+  element.classList = classList;
+  return element;
+}
+
+// создание элемента - button
+function createButton(classList, name, textContent) {
+  const element = document.createElement('button');
+  element.classList = classList;
+  element.type = 'button';
+  element.name = name;
+  element.textContent = textContent;
+  return element;
+}
+
+// создание элемента - input
+function createInput(classList, name, placeholder) {
+  const element = document.createElement('input');
+  element.classList = classList;
+  element.type = 'text';
+  element.name = name;
+  element.placeholder = placeholder;
+  return element;
+}
+
+// ------------------------------------------------------------------------------
 // модальное окно формы Todo
 
-const taskListBtnAddTodo = document.querySelector('.task-list__footer-btn--add-todo');
+const taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
 const formAddTodo = document.querySelector('.form-add-todo');
+const formInputTitle = document.querySelector('.form-add-todo__input-title');
+const formInputDescription = document.querySelector('.form-add-todo__input-description');
 const formВtnCancel = document.querySelector('.form-add-todo__btn-cancel');
 const formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
 const formSelectUser = document.querySelector('.form-add-todo__user');
+
 // const body = document.getElementsByTagName('body')[0];
 const user = document.querySelector('.task__user');
 
 function addTodo() {
-  formAddTodo.classList.add('form-add-todo--vis');
-  // body.classList.toog('body-block'); // убираем прокрутку
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  // body.classList.toggle('body-block'); // убираем прокрутку
 }
 
 function pressCancel() {
-  formAddTodo.classList.remove('form-add-todo--vis');
-    // body.classList.remove('body-block'); // возвращаем прокрутку
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  // body.classList.toggle('body-block'); // возвращаем прокрутку
 };
 function pressConfirm() {
-  user.textContent = formSelectUser.value;
-  formAddTodo.classList.remove('form-add-todo--vis');
-    // body.classList.remove('body-block'); // возвращаем прокрутку
+  if (formInputTitle.value && formInputDescription.value) {
+    user.textContent = formSelectUser.value;
+    formAddTodo.classList.toggle('form-add-todo--vis');
+  }
+  // body.classList.toggle('body-block'); // возвращаем прокрутку
 };
 
 taskListBtnAddTodo.addEventListener("click", addTodo);
