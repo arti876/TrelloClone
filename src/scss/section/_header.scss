@@ -3,14 +3,14 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
-    background-color: #bc69d0;
+    background-color: #f3c1ff;
     border-radius: 10px;
     padding: 30px 50px;
     margin-bottom: 25px;
   }
   &__logo {
     font-size: 24px;
-    color: #ffffff;
+    color: #000000;
     font-weight: 600;
   }
   &__time {

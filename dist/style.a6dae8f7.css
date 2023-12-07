@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +6,7 @@
   text-decoration: none;
   list-style-type: none;
   color: #4d4d4d;
-  font-family: "Raleway", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 12px;
   font-weight: 600;
 }
@@ -97,14 +97,14 @@ input::-ms-clear {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
-  background-color: #bc69d0;
+  background-color: #f3c1ff;
   border-radius: 10px;
   padding: 30px 50px;
   margin-bottom: 25px;
 }
 .header__logo {
   font-size: 24px;
-  color: #ffffff;
+  color: #000000;
   font-weight: 600;
 }
 .header__time {
@@ -145,13 +145,13 @@ input::-ms-clear {
   font-weight: 600;
 }
 .task-list__header--todo, .task-list__footer-btn--add-todo {
-  background-color: #c19000;
+  background-color: #009b68;
 }
 .task-list__header--in-progress {
-  background-color: #006d9b;
+  background-color: #828282;
 }
 .task-list__header--done, .task-list__footer-btn--del-all {
-  background-color: #009b68;
+  background-color: #006d9b;
 }
 .task-list__body {
   display: grid;
@@ -197,14 +197,26 @@ input::-ms-clear {
   justify-content: space-between;
 }
 .task button {
-  color: #fff;
-  background-color: #919191;
+  color: #7c7c7c;
+  background-color: #ffffff;
   padding: 3px 10px;
   border-radius: 5px;
   transition: 0.3s;
 }
 .task button:hover {
   background-color: #bc69d0;
+}
+
+.task--todo {
+  background-color: rgba(1, 152, 102, 0.3);
+}
+
+.task--in-progress {
+  background-color: rgba(130, 130, 130, 0.3);
+}
+
+.task--done {
+  background-color: rgba(0, 107, 153, 0.3);
 }
 
 /*# sourceMappingURL=/style.a6dae8f7.css.map */

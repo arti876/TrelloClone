@@ -26,20 +26,20 @@
   }
   &__header--todo,
   &__footer-btn--add-todo {
-    background-color: #c19000;
+    background-color: #009b68;
   }
   &__header--in-progress {
-    background-color: #006d9b;
+    background-color: #828282;
   }
   &__header--done,
   &__footer-btn--del-all {
-    background-color: #009b68;
+    background-color: #006d9b;
   }
-  &__body{
+  &__body {
     display: grid;
     gap: 15px;
   }
-  &__footer{
+  &__footer {
     align-self: end;
   }
   &__footer-btn {
@@ -79,8 +79,8 @@
     justify-content: space-between;
   }
   button {
-    color: #fff;
-    background-color: #919191;
+    color: #7c7c7c;
+    background-color: #ffffff;
     padding: 3px 10px;
     border-radius: 5px;
     transition: 0.3s;
@@ -88,4 +88,16 @@
       background-color: #bc69d0;
     }
   }
+}
+
+.task--todo {
+  background-color: rgba(1, 152, 102, 0.3);
+}
+
+.task--in-progress {
+  background-color: rgba(130, 130, 130, 0.3);
+}
+
+.task--done {
+  background-color: rgba(0, 107, 153, 0.3);
 }
