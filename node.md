@@ -46,3 +46,30 @@ npm run dev
 Собираем финальный проект
 "build": "parcel build ./src/index.html --no-source-maps"
 npm run build
+
+
+// formAddTodo.addEventListener('click', function (event) {
+//   const controls = this.querySelectorAll('.form-control');
+//   let isValid = true;
+
+//   controls.forEach(control => {
+//     if (control.classList.contains('required') && control.value) {
+//       control.classList.remove('invalid-control');
+//       isValid = true;
+//     }
+//   });
+
+//   if (event.target.classList.contains('form-add-todo__btn-confirm')) {
+//     controls.forEach(control => {
+//       // control.classList.remove('invalid-control');
+//       if (control.classList.contains('required') && !control.value) {
+//         control.classList.add('invalid-control');
+//         isValid = false;
+//       }
+//     });
+
+//     if (isValid) {
+//       pressConfirm()
+//     }
+//   }
+// });

@@ -98,6 +98,8 @@ const formВtnCancel = document.querySelector('.form-add-todo__btn-cancel');
 const formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
 const formSelectUser = document.querySelector('.form-add-todo__user');
 
+const controls = document.querySelectorAll('.form-control');
+
 function addTodo() {
   formAddTodo.classList.toggle('form-add-todo--vis');
   formInputTitle.value = '';
@@ -113,9 +115,7 @@ function pressCancel() {
 };
 
 function pressConfirm() {
-  const controls = document.querySelectorAll('.form-control');
   controls.forEach(control => {
-    // control.classList.remove('invalid-control');
     if (control.classList.contains('required') && !control.value) {
       control.classList.add('invalid-control');
     }
@@ -195,49 +195,3 @@ formAddTodo.addEventListener('click', function (event) {
       event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
     }
 })
-
-// formAddTodo.addEventListener('click', function (event) {
-//   const controls = this.querySelectorAll('.form-control');
-//   let isValid = true;
-
-//   controls.forEach(control => {
-//     if (control.classList.contains('required') && control.value) {
-//       control.classList.remove('invalid-control');
-//       isValid = true;
-//     }
-//   });
-
-//   if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-//     controls.forEach(control => {
-//       // control.classList.remove('invalid-control');
-//       if (control.classList.contains('required') && !control.value) {
-//         control.classList.add('invalid-control');
-//         isValid = false;
-//       }
-//     });
-
-//     if (isValid) {
-//       pressConfirm()
-//     }
-//   }
-// });
-
-// const trello = document.querySelector('.trello');
-
-// trello.addEventListener('click', function (event) {
-
-//   if (event.target.classList.contains('task-list__btn--add-todo')) {
-//     addTodo();
-//   }
-
-//   if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-//     pressConfirm();
-//   }
-
-//   if (event.target.classList.contains('form-add-todo__btn-cancel')) {
-//     pressCancel();
-//   }
-// });
-
-
-
