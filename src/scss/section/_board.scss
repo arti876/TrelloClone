@@ -1,9 +1,7 @@
 .board {
-  &__wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .task-list {
@@ -103,4 +101,12 @@
 
 .task--done {
   background-color: rgba(0, 107, 153, 0.3);
+}
+
+.selected-drag {
+  opacity: .3;
+}
+
+.selected-drop{
+  background-color: #ffafaf;
 }

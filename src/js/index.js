@@ -126,6 +126,7 @@ function pressConfirm() {
 
     const elTask = createDiv('task task--todo');
     elTask.draggable = true; // Drag'n'drop
+    elTask.id = Math.random().toString(36).slice(2);
 
     taskListBodyTodo.append(
       elTask
@@ -202,97 +203,48 @@ formAddTodo.addEventListener('click', function (event) {
 
 const board = document.querySelector('.board');
 const taskListBody = document.querySelector('.task-list__body');
-const taskListBody2 = document.querySelector('.task-list__body-1');
-const taskListBody3 = document.querySelector('.task-list__body-2');
-// const taskListBody = document.querySelector('.task-list__body');
-// const trello = document.querySelector('.trello');
+// const taskListBodyTodo = document.querySelector('.task-list__body--todo');
+const taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
+const taskListBodyDone = document.querySelector('.task-list__body--done');
 
+// срабатывает в начале операции перетаскивания элемента
 board.addEventListener('dragstart', (event) => {
-  event.target.classList.add('selected');
+  event.target.classList.add('selected-drag');
+  event.dataTransfer.setData('id-drag', event.target.id);
 })
 
+// срабатывает, когда пользователь закончил перетаскивание элемента
 board.addEventListener('dragend', (event) => {
-  event.target.classList.remove('selected');
+  event.target.classList.remove('selected-drag');
+  // event.target.classList.remove('selected-drop');
 });
 
-
-
-board.addEventListener(`dragover`, (event) => {
-  // Разрешаем сбрасывать элементы в эту область
+board.addEventListener('dragover', (event) => {
   event.preventDefault();
+  // event.target.classList.add('selected-drop');
 
-  // Находим перемещаемый элемент
-  const activeElement = board.querySelector(`.selected`);
-  // Находим элемент, над которым в данный момент находится курсор
-  const currentElement = event.target;
-  // Проверяем, что событие сработало:
-  // 1. не на том элементе, который мы перемещаем,
-  // 2. именно на элементе списка
-  const isMoveable = activeElement !== currentElement &&
-    currentElement.classList.contains(`task`);
-
-  // Если нет, прерываем выполнение функции
-  if (!isMoveable) {
-    return;
-  }
-
-  // Находим элемент, перед которым будем вставлять
-  const nextElement = (currentElement === activeElement.nextElementSibling) ?
-    currentElement.nextElementSibling :
-    currentElement;
-
-  // Вставляем activeElement перед nextElement
-  taskListBody.insertBefore(activeElement, nextElement);
-  taskListBody2.insertBefore(activeElement, nextElement);
-  taskListBody3.insertBefore(activeElement, nextElement);
+    // Находим перемещаемый элемент
+    const activeElement = board.querySelector(`.selected-drag`);
+    // Находим элемент, над которым в данный момент находится курсор
+    const currentElement = event.target;
+    // Проверяем, что событие сработало:
+    // 1. не на том элементе, который мы перемещаем,
+    // 2. именно на элементе списка
+    const isMoveable = activeElement !== currentElement &&
+      currentElement.classList.contains(`task`);
+  
+    // Если нет, прерываем выполнение функции
+    if (!isMoveable) {
+      return;
+    }
+  
+    // Находим элемент, перед которым будем вставлять
+    const nextElement = (currentElement === activeElement.nextElementSibling) ?
+      currentElement.nextElementSibling :
+      currentElement;
+  
+    // Вставляем activeElement перед nextElement
+      // event.target.closest('.task-list__body').insertBefore(activeElement, nextElement);
+      // event.target.closest('.task-list__body').append(activeElement);
+    console.log(event.target.closest('.task-list'))
 });
-
-
-
-
-// const getNextElement = (cursorPosition, currentElement) => {
-//   // Получаем объект с размерами и координатами
-//   const currentElementCoord = currentElement.getBoundingClientRect();
-//   // Находим вертикальную координату центра текущего элемента
-//   const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
-
-//   // Если курсор выше центра элемента, возвращаем текущий элемент
-//   // В ином случае — следующий DOM-элемент
-//   const nextElement = (cursorPosition < currentElementCenter) ? currentElement : currentElement.nextElementSibling;
-
-//   return nextElement;
-// };
-
-// taskListBody.addEventListener(`dragover`, (event) => {
-//     // Разрешаем сбрасывать элементы в эту область
-//   event.preventDefault();
-
-//     // Находим перемещаемый элемент
-//   const activeElement = taskListBody.querySelector(`.selected`);
-//     // Находим элемент, над которым в данный момент находится курсор
-//   const currentElement = event.target;
-//     // Проверяем, что событие сработало:
-//   // 1. не на том элементе, который мы перемещаем,
-//   // 2. именно на элементе списка
-//   const isMoveable = activeElement !== currentElement && currentElement.classList.contains(`task`);
-//   // Если нет, прерываем выполнение функции
-//   if (!isMoveable) {
-//     return;
-//   }
-
-//   // event.clientY — вертикальная координата курсора в момент,
-//   // когда сработало событие
-//   const nextElement = getNextElement(event.clientY, currentElement);
-
-//   // Проверяем, нужно ли менять элементы местами
-//   if (
-//     nextElement &&
-//     activeElement === nextElement.previousElementSibling ||
-//     activeElement === nextElement
-//   ) {
-//     // Если нет, выходим из функции, чтобы избежать лишних изменений в DOM
-//     return;
-//   }
-
-//   taskListBody.insertBefore(activeElement, nextElement);
-// });

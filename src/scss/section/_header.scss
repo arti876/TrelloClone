@@ -1,13 +1,11 @@
 .header {
-  &__wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: center;
-    background-color: #f3c1ff;
-    border-radius: 10px;
-    padding: 30px 50px;
-    margin-bottom: 25px;
-  }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  background-color: #f3c1ff;
+  border-radius: 10px;
+  padding: 30px 50px;
+  margin-bottom: 25px;
   &__logo {
     font-size: 24px;
     color: #000000;

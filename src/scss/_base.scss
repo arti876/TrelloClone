@@ -1,18 +1,15 @@
 .trello {
   padding: 25px;
-  &__container{
-    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 25px;
-    padding: 25px;
-  }
 }
 
 .wrapper {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 50px;
+  // padding: 0 50px;
 }
 
-.selected {
-  opacity: .3;
+.trello__wrapper{
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  padding: 25px;
 }
