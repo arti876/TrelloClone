@@ -70,7 +70,6 @@
   }
 }
 
-// .form-add-todo__input-title--error,
-// .form-add-todo__input-description--error{
-//   outline: 2px solid #ff0000;
-// }
+.invalid-control {
+  outline: 3px solid #ff4949;
+}

@@ -5,7 +5,7 @@
   text-decoration: none;
   list-style-type: none;
   color: #000000;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 12px;
   font-weight: 600;
 }
@@ -42,8 +42,12 @@ h6 {
 :active,
 a:focus,
 a:active,
-input:focus,
-input:active,
+// input:focus,
+// input:active,
+// textarea:focus,
+// textarea:active,
+// select:focus,
+// select:active,
 button:focus,
 button:active {
   outline: none;
@@ -64,7 +68,7 @@ select {
 }
 
 button,
-input[type=submit] {
+input[type="submit"] {
   background-color: inherit;
   cursor: pointer;
 }

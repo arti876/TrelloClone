@@ -225,11 +225,19 @@ function addTodo() {
 ;
 function pressCancel() {
   formAddTodo.classList.toggle('form-add-todo--vis');
-  formInputDescription.classList.remove('animated', 'shake');
-  formInputTitle.classList.remove('animated', 'shake');
+  formInputDescription.classList.remove('invalid-control');
+  formInputTitle.classList.remove('invalid-control');
+  formSelectUser.classList.remove('invalid-control');
 }
 ;
 function pressConfirm() {
+  var controls = document.querySelectorAll('.form-control');
+  controls.forEach(function (control) {
+    // control.classList.remove('invalid-control');
+    if (control.classList.contains('required') && !control.value) {
+      control.classList.add('invalid-control');
+    }
+  });
   if (formInputTitle.value && formInputDescription.value && formSelectUser.value) {
     formAddTodo.classList.toggle('form-add-todo--vis');
     var elTask = createDiv('task task--todo');
@@ -254,16 +262,49 @@ function pressConfirm() {
     var elTaskTime = createDiv('task__time');
     elTaskTime.textContent = headerTime.textContent;
     elTaskFooter.append(elTaskUser, elTaskTime);
-  } else if (formInputTitle) {
-    formInputTitle.classList.add('animated', 'shake');
-  } else if (formInputDescription) {
-    formInputDescription.classList.add('animated', 'shake');
   }
 }
 ;
 taskListBtnAddTodo.addEventListener('click', addTodo);
 formВtnCancel.addEventListener('click', pressCancel);
 formВtnConfirm.addEventListener('click', pressConfirm);
+formAddTodo.addEventListener('click', function (event) {
+  if (event.target.classList.contains('form-add-todo__input-title')) {
+    event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
+  }
+  if (event.target.classList.contains('form-add-todo__input-description')) {
+    event.target.closest('.form-add-todo__input-description').classList.remove('invalid-control');
+  }
+  if (event.target.classList.contains('form-add-todo__user')) {
+    event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
+  }
+});
+
+// formAddTodo.addEventListener('click', function (event) {
+//   const controls = this.querySelectorAll('.form-control');
+//   let isValid = true;
+
+//   controls.forEach(control => {
+//     if (control.classList.contains('required') && control.value) {
+//       control.classList.remove('invalid-control');
+//       isValid = true;
+//     }
+//   });
+
+//   if (event.target.classList.contains('form-add-todo__btn-confirm')) {
+//     controls.forEach(control => {
+//       // control.classList.remove('invalid-control');
+//       if (control.classList.contains('required') && !control.value) {
+//         control.classList.add('invalid-control');
+//         isValid = false;
+//       }
+//     });
+
+//     if (isValid) {
+//       pressConfirm()
+//     }
+//   }
+// });
 
 // const trello = document.querySelector('.trello');
 
@@ -306,7 +347,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58116" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56784" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
