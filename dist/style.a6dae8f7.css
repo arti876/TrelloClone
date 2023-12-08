@@ -96,6 +96,10 @@ input::-ms-clear {
   padding: 0 50px;
 }
 
+.selected {
+  opacity: 0.3;
+}
+
 .header__wrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

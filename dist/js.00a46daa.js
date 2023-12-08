@@ -208,7 +208,7 @@ function createInput(classList, name, placeholder) {
 // модальное окно формы Todo
 
 var headerTime = document.querySelector('.header__time');
-var taskListBody = document.querySelector('.task-list__body--todo');
+var taskListBodyTodo = document.querySelector('.task-list__body--todo');
 var taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
 var formAddTodo = document.querySelector('.form-add-todo');
 var formInputTitle = document.querySelector('.form-add-todo__input-title');
@@ -240,7 +240,9 @@ function pressConfirm() {
   if (formInputTitle.value && formInputDescription.value && formSelectUser.value) {
     formAddTodo.classList.toggle('form-add-todo--vis');
     var elTask = createDiv('task task--todo');
-    taskListBody.append(elTask);
+    elTask.draggable = true; // Drag'n'drop
+
+    taskListBodyTodo.append(elTask);
     var elTaskHeaer = createDiv('task__header');
     var elTaskBody = createDiv('task__body');
     var elTaskFooter = createDiv('task__footer');
@@ -278,6 +280,96 @@ formAddTodo.addEventListener('click', function (event) {
     event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
   }
 });
+
+// ------------------------------------------------------------------------------
+// Drag'n'drop
+
+var board = document.querySelector('.board');
+var taskListBody = document.querySelector('.task-list__body');
+var taskListBody2 = document.querySelector('.task-list__body-1');
+var taskListBody3 = document.querySelector('.task-list__body-2');
+// const taskListBody = document.querySelector('.task-list__body');
+// const trello = document.querySelector('.trello');
+
+board.addEventListener('dragstart', function (event) {
+  event.target.classList.add('selected');
+});
+board.addEventListener('dragend', function (event) {
+  event.target.classList.remove('selected');
+});
+board.addEventListener("dragover", function (event) {
+  // Разрешаем сбрасывать элементы в эту область
+  event.preventDefault();
+
+  // Находим перемещаемый элемент
+  var activeElement = board.querySelector(".selected");
+  // Находим элемент, над которым в данный момент находится курсор
+  var currentElement = event.target;
+  // Проверяем, что событие сработало:
+  // 1. не на том элементе, который мы перемещаем,
+  // 2. именно на элементе списка
+  var isMoveable = activeElement !== currentElement && currentElement.classList.contains("task");
+
+  // Если нет, прерываем выполнение функции
+  if (!isMoveable) {
+    return;
+  }
+
+  // Находим элемент, перед которым будем вставлять
+  var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
+
+  // Вставляем activeElement перед nextElement
+  taskListBody.insertBefore(activeElement, nextElement);
+  taskListBody2.insertBefore(activeElement, nextElement);
+  taskListBody3.insertBefore(activeElement, nextElement);
+});
+
+// const getNextElement = (cursorPosition, currentElement) => {
+//   // Получаем объект с размерами и координатами
+//   const currentElementCoord = currentElement.getBoundingClientRect();
+//   // Находим вертикальную координату центра текущего элемента
+//   const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+
+//   // Если курсор выше центра элемента, возвращаем текущий элемент
+//   // В ином случае — следующий DOM-элемент
+//   const nextElement = (cursorPosition < currentElementCenter) ? currentElement : currentElement.nextElementSibling;
+
+//   return nextElement;
+// };
+
+// taskListBody.addEventListener(`dragover`, (event) => {
+//     // Разрешаем сбрасывать элементы в эту область
+//   event.preventDefault();
+
+//     // Находим перемещаемый элемент
+//   const activeElement = taskListBody.querySelector(`.selected`);
+//     // Находим элемент, над которым в данный момент находится курсор
+//   const currentElement = event.target;
+//     // Проверяем, что событие сработало:
+//   // 1. не на том элементе, который мы перемещаем,
+//   // 2. именно на элементе списка
+//   const isMoveable = activeElement !== currentElement && currentElement.classList.contains(`task`);
+//   // Если нет, прерываем выполнение функции
+//   if (!isMoveable) {
+//     return;
+//   }
+
+//   // event.clientY — вертикальная координата курсора в момент,
+//   // когда сработало событие
+//   const nextElement = getNextElement(event.clientY, currentElement);
+
+//   // Проверяем, нужно ли менять элементы местами
+//   if (
+//     nextElement &&
+//     activeElement === nextElement.previousElementSibling ||
+//     activeElement === nextElement
+//   ) {
+//     // Если нет, выходим из функции, чтобы избежать лишних изменений в DOM
+//     return;
+//   }
+
+//   taskListBody.insertBefore(activeElement, nextElement);
+// });
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

@@ -88,7 +88,7 @@ function createInput(classList, name, placeholder) {
 
 const headerTime = document.querySelector('.header__time');
 
-const taskListBody = document.querySelector('.task-list__body--todo');
+const taskListBodyTodo = document.querySelector('.task-list__body--todo');
 const taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
 
 const formAddTodo = document.querySelector('.form-add-todo');
@@ -125,8 +125,9 @@ function pressConfirm() {
     formAddTodo.classList.toggle('form-add-todo--vis');
 
     const elTask = createDiv('task task--todo');
+    elTask.draggable = true; // Drag'n'drop
 
-    taskListBody.append(
+    taskListBodyTodo.append(
       elTask
     );
 
@@ -183,15 +184,115 @@ formВtnCancel.addEventListener('click', pressCancel);
 formВtnConfirm.addEventListener('click', pressConfirm);
 
 formAddTodo.addEventListener('click', function (event) {
-    if (event.target.classList.contains('form-add-todo__input-title')) {
-      event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
-    }
+  if (event.target.classList.contains('form-add-todo__input-title')) {
+    event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
+  }
 
-    if (event.target.classList.contains('form-add-todo__input-description')) {
-      event.target.closest('.form-add-todo__input-description').classList.remove('invalid-control');
-    }
+  if (event.target.classList.contains('form-add-todo__input-description')) {
+    event.target.closest('.form-add-todo__input-description').classList.remove('invalid-control');
+  }
 
-    if (event.target.classList.contains('form-add-todo__user')) {
-      event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
-    }
+  if (event.target.classList.contains('form-add-todo__user')) {
+    event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
+  }
 })
+
+// ------------------------------------------------------------------------------
+// Drag'n'drop
+
+const board = document.querySelector('.board');
+const taskListBody = document.querySelector('.task-list__body');
+const taskListBody2 = document.querySelector('.task-list__body-1');
+const taskListBody3 = document.querySelector('.task-list__body-2');
+// const taskListBody = document.querySelector('.task-list__body');
+// const trello = document.querySelector('.trello');
+
+board.addEventListener('dragstart', (event) => {
+  event.target.classList.add('selected');
+})
+
+board.addEventListener('dragend', (event) => {
+  event.target.classList.remove('selected');
+});
+
+
+
+board.addEventListener(`dragover`, (event) => {
+  // Разрешаем сбрасывать элементы в эту область
+  event.preventDefault();
+
+  // Находим перемещаемый элемент
+  const activeElement = board.querySelector(`.selected`);
+  // Находим элемент, над которым в данный момент находится курсор
+  const currentElement = event.target;
+  // Проверяем, что событие сработало:
+  // 1. не на том элементе, который мы перемещаем,
+  // 2. именно на элементе списка
+  const isMoveable = activeElement !== currentElement &&
+    currentElement.classList.contains(`task`);
+
+  // Если нет, прерываем выполнение функции
+  if (!isMoveable) {
+    return;
+  }
+
+  // Находим элемент, перед которым будем вставлять
+  const nextElement = (currentElement === activeElement.nextElementSibling) ?
+    currentElement.nextElementSibling :
+    currentElement;
+
+  // Вставляем activeElement перед nextElement
+  taskListBody.insertBefore(activeElement, nextElement);
+  taskListBody2.insertBefore(activeElement, nextElement);
+  taskListBody3.insertBefore(activeElement, nextElement);
+});
+
+
+
+
+// const getNextElement = (cursorPosition, currentElement) => {
+//   // Получаем объект с размерами и координатами
+//   const currentElementCoord = currentElement.getBoundingClientRect();
+//   // Находим вертикальную координату центра текущего элемента
+//   const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+
+//   // Если курсор выше центра элемента, возвращаем текущий элемент
+//   // В ином случае — следующий DOM-элемент
+//   const nextElement = (cursorPosition < currentElementCenter) ? currentElement : currentElement.nextElementSibling;
+
+//   return nextElement;
+// };
+
+// taskListBody.addEventListener(`dragover`, (event) => {
+//     // Разрешаем сбрасывать элементы в эту область
+//   event.preventDefault();
+
+//     // Находим перемещаемый элемент
+//   const activeElement = taskListBody.querySelector(`.selected`);
+//     // Находим элемент, над которым в данный момент находится курсор
+//   const currentElement = event.target;
+//     // Проверяем, что событие сработало:
+//   // 1. не на том элементе, который мы перемещаем,
+//   // 2. именно на элементе списка
+//   const isMoveable = activeElement !== currentElement && currentElement.classList.contains(`task`);
+//   // Если нет, прерываем выполнение функции
+//   if (!isMoveable) {
+//     return;
+//   }
+
+//   // event.clientY — вертикальная координата курсора в момент,
+//   // когда сработало событие
+//   const nextElement = getNextElement(event.clientY, currentElement);
+
+//   // Проверяем, нужно ли менять элементы местами
+//   if (
+//     nextElement &&
+//     activeElement === nextElement.previousElementSibling ||
+//     activeElement === nextElement
+//   ) {
+//     // Если нет, выходим из функции, чтобы избежать лишних изменений в DOM
+//     return;
+//   }
+
+//   taskListBody.insertBefore(activeElement, nextElement);
+// });
