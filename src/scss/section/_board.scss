@@ -6,8 +6,8 @@
 
 .task-list {
   display: grid;
-  grid-template-rows: auto auto 1fr;
-  gap: 15px;
+  grid-template-rows: auto 1fr auto;
+  // gap: 15px;
   border: 2px solid #828282;
   border-radius: 15px;
   overflow: hidden;
@@ -36,6 +36,7 @@
   &__body {
     display: grid;
     gap: 15px;
+    padding: 15px;
   }
   &__footer {
     align-self: end;
@@ -59,7 +60,7 @@
   background-color: #faebd7;
   border-radius: 15px;
   padding: 10px 15px;
-  margin: 0px 10px;
+  // margin: 0px 10px;
   align-self: start;
   &__header {
     display: grid;
@@ -103,10 +104,17 @@
   background-color: rgba(0, 107, 153, 0.3);
 }
 
-.selected-drag {
+.selected {
   opacity: .3;
+  background-color: #f3c1ff;
 }
 
-.selected-drop{
-  background-color: #ffafaf;
+.task-list--todo{
+  border: 2px solid #009b68;
+}
+.task-list--in-progress{
+  border: 2px solid #828282;
+}
+.task-list--done{
+  border: 2px solid #006d9b;
 }

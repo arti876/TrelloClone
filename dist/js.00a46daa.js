@@ -240,7 +240,7 @@ function pressConfirm() {
   if (formInputTitle.value && formInputDescription.value && formSelectUser.value) {
     formAddTodo.classList.toggle('form-add-todo--vis');
     var elTask = createDiv('task task--todo');
-    elTask.draggable = true; // Drag'n'drop
+    elTask.draggable = true; // Drag'n'drop ***
     elTask.id = Math.random().toString(36).slice(2);
     taskListBodyTodo.append(elTask);
     var elTaskHeaer = createDiv('task__header');
@@ -284,48 +284,79 @@ formAddTodo.addEventListener('click', function (event) {
 // ------------------------------------------------------------------------------
 // Drag'n'drop
 
+// События, происходящие с объектом перетаскивания:
+// dragstart   (срабатывает в начале операции перетаскивания элемента)
+// drag  (срабатывает, когда элемент перетаскивается)
+// dragend   (срабатывает, когда пользователь закончил перетаскивание элемента)
+
+// События, происходящие с объектом на который перетаскивают:
+// dragenter   (когда элемент будет перенесен на заданную зону (цель для переноса)) event.preventDefault();
+// dragover  (срабатывает, когда элемент перемещают над допустимой зоной для переноса) event.preventDefault();
+// dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
+// drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
+
+// элемент который перетаскиваем
+var activeElement = null;
+// элемент над которым перетаскиваемый элемент
+// let currentElement = null;
+// элемент куда перетаскиваем
+// let droppeZone = null;
+
 var board = document.querySelector('.board');
 var taskListBody = document.querySelector('.task-list__body');
-// const taskListBodyTodo = document.querySelector('.task-list__body--todo');
 var taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
 var taskListBodyDone = document.querySelector('.task-list__body--done');
 
 // срабатывает в начале операции перетаскивания элемента
 board.addEventListener('dragstart', function (event) {
-  event.target.classList.add('selected-drag');
-  event.dataTransfer.setData('id-drag', event.target.id);
+  event.target.classList.add('selected');
+  activeElement = event.target;
 });
 
-// срабатывает, когда пользователь закончил перетаскивание элемента
-board.addEventListener('dragend', function (event) {
-  event.target.classList.remove('selected-drag');
-  // event.target.classList.remove('selected-drop');
-});
+// срабатывает, когда элемент перемещают над допустимой зоной для переноса
 board.addEventListener('dragover', function (event) {
   event.preventDefault();
   // event.target.classList.add('selected-drop');
-
-  // Находим перемещаемый элемент
-  var activeElement = board.querySelector(".selected-drag");
-  // Находим элемент, над которым в данный момент находится курсор
+  // if (activeElement !== currentElement) {
+  //   currentElement = event.target;
+  // }
   var currentElement = event.target;
-  // Проверяем, что событие сработало:
-  // 1. не на том элементе, который мы перемещаем,
-  // 2. именно на элементе списка
-  var isMoveable = activeElement !== currentElement && currentElement.classList.contains("task");
-
-  // Если нет, прерываем выполнение функции
-  if (!isMoveable) {
-    return;
-  }
 
   // Находим элемент, перед которым будем вставлять
   var nextElement = currentElement === activeElement.nextElementSibling ? currentElement.nextElementSibling : currentElement;
 
-  // Вставляем activeElement перед nextElement
-  // event.target.closest('.task-list__body').insertBefore(activeElement, nextElement);
-  // event.target.closest('.task-list__body').append(activeElement);
-  console.log(event.target.closest('.task-list'));
+  // Вставяем activeElement
+  setTimeout(function () {
+    if (currentElement.classList.contains("task")) {
+      currentElement.closest('.task-list__body').insertBefore(activeElement, nextElement);
+    } else if (currentElement.classList.contains("task-list__body")) {
+      currentElement.prepend(activeElement);
+    }
+  }, 150);
+});
+
+// срабатывает, когда элемент выходит из допустимой зоны для переноса
+board.addEventListener('dragleave', function (event) {
+  // event.target.classList.remove('selected-drop');
+  // currentElement = null;
+});
+
+// срабатывает, когда пользователь закончил перетаскивание элемента
+board.addEventListener('dragend', function (event) {
+  // activeElement = null;
+  event.target.classList.remove('selected');
+});
+var TaskList = document.querySelector('.task-list');
+// с помощью этого можно получить данные зоны куда перетаскиваем "event.target",
+// значит сравнить ее с классом таск листа и в зависимости от совпадения
+// задавать стили и удалять\добавлять элементы тому объекту
+// который перетаскиваем
+board.addEventListener('drop', function (event) {
+  // применяем новые стили
+  // if (event.target.classList.contains('.task-list__body--todo')) {
+  //   activeElement.classList.remove('task--done')
+  //   activeElement.classList.add('task--todo')
+  // }
 });
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -352,7 +383,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52178" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51509" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
