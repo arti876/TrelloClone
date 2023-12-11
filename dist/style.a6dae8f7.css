@@ -157,6 +157,8 @@ input::-ms-clear {
 }
 .task-list__body {
   display: grid;
+  align-content: flex-start;
+  min-height: 300px;
   gap: 15px;
   padding: 15px;
 }
@@ -185,6 +187,7 @@ input::-ms-clear {
 }
 .task__header {
   display: grid;
+  gap: 15px;
 }
 .task__btn-container {
   display: flex;

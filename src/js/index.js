@@ -48,6 +48,26 @@ function checkTime(i) {
 startTime();
 
 // ------------------------------------------------------------------------------
+// счетчик Todos
+
+function updateCounter() {
+// счетчик Todo
+    (function getTodoCounter() {
+      return document.querySelector('.task-list__counters--todo').textContent = document.getElementsByClassName('task--todo').length;
+    })();
+// счетчик InProgress
+    (function getInProgressCounter() {
+      return document.querySelector('.task-list__counters--in-progress').textContent = document.getElementsByClassName('task--in-progress').length;
+    })();
+// счетчик Done
+    (function getDoneCounter() {
+      return document.querySelector('.task-list__counters--done').textContent = document.getElementsByClassName('task--done').length;
+    })();
+};
+
+updateCounter();
+
+// ------------------------------------------------------------------------------
 // создание элементов
 
 // создание элемента - div
@@ -217,58 +237,59 @@ const taskListBodyDone = document.querySelector('.task-list__body--done');
 // элемент который перетаскиваем
 let activeElement = null;
 
-function relocateProgressInTodoDragAndDrop() {
-  event.target.classList.add('task--todo');
-  event.target.classList.remove('task--in-progress');
-  event.target.querySelector('.task__btn--back').textContent = 'EDIT';
-  event.target.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
-  event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
-  event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+function relocateProgressInTodo(elem) {
+  elem.classList = 'task task--todo';
+  elem.querySelector('.task__btn--back').textContent = 'EDIT';
+  elem.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
+  elem.querySelector('.task__btn--complete').textContent = 'DELETE';
+  elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-  event.target.querySelector('.task__body').append(elTaskBtnRelocate);
+  elem.querySelector('.task__body').append(elTaskBtnRelocate);
+  updateCounter();
 }
 
-function relocateTodoInProgressDragAndDrop() {
-  event.target.classList.add('task--in-progress');
-  event.target.classList.remove('task--todo');
-  event.target.querySelector('.task__btn--relocate').remove()
-  event.target.querySelector('.task__btn--edit').textContent = 'BACK';
-  event.target.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
-  event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
-  event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+function relocateTodoInProgress(elem) {
+  elem.classList = 'task task--in-progress';
+  elem.querySelector('.task__btn--relocate').remove()
+  elem.querySelector('.task__btn--edit').textContent = 'BACK';
+  elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
+  elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
+  elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  updateCounter();
 }
 
-function relocateProgressInDoneDragAndDrop() {
-  event.target.classList.add('task--done');
-  event.target.classList.remove('task--in-progress');
-  event.target.querySelector('.task__btn--back').remove();
-  event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
-  event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+function relocateProgressInDone(elem) {
+  elem.classList = 'task task--done';
+  // elem.classList.remove('task--in-progress');
+  elem.querySelector('.task__btn--back').remove();
+  elem.querySelector('.task__btn--complete').textContent = 'DELETE';
+  elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  updateCounter();
 }
 
-function relocateDoneInTodoDragAndDrop() {
-  event.target.classList.add('task--todo');
-  event.target.classList.remove('task--done');
+function relocateDoneInTodo(elem) {
+  elem.classList = 'task task--todo';
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-  event.target.querySelector('.task__body').append(elTaskBtnRelocate)
+  elem.querySelector('.task__body').append(elTaskBtnRelocate)
   const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-  event.target.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
+  elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
+  updateCounter();
 }
 
-function relocateDoneInProgressDragAndDrop() {
-  event.target.classList.add('task--in-progress');
-  event.target.classList.remove('task--done');
+function relocateDoneInProgress(elem) {
+  elem.classList = 'task task--in-progress';
   const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
-  event.target.querySelector('.task__btn-container').prepend(elTaskBtnBack)
-  event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
-  event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  elem.querySelector('.task__btn-container').prepend(elTaskBtnBack)
+  elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
+  elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  updateCounter();
 }
 
-function relocateTodoInDoneDragAndDrop() {
-  event.target.classList.add('task--done');
-  event.target.classList.remove('task--todo');
-  event.target.querySelector('.task__btn--relocate').remove();
-  event.target.querySelector('.task__btn--edit').remove();
+function relocateTodoInDone(elem) {
+  elem.classList = 'task task--done';
+  elem.querySelector('.task__btn--relocate').remove();
+  elem.querySelector('.task__btn--edit').remove();
+  updateCounter();
 }
 
 // срабатывает в начале операции перетаскивания элемента
@@ -302,78 +323,65 @@ board.addEventListener('dragend', (event) => {
   // перемещение в TodoList
   if (event.target.closest('.task-list__body--todo')) {
     if (event.target.classList.contains('task--in-progress')) {
-      relocateProgressInTodoDragAndDrop();
+      relocateProgressInTodo(event.target);
     } else if (event.target.classList.contains('task--done')) {
-      relocateDoneInTodoDragAndDrop();
+      relocateDoneInTodo(event.target);
     }
     // перемещение в InProgress
   } else if (event.target.closest('.task-list__body--in-progress')) {
     if (event.target.classList.contains('task--todo')) {
-      relocateTodoInProgressDragAndDrop();
+      relocateTodoInProgress(event.target);
     } else if (event.target.classList.contains('task--done')) {
-      relocateDoneInProgressDragAndDrop();
+      relocateDoneInProgress(event.target);
     }
     // перемещение в Done
   } else if (event.target.closest('.task-list__body--done')) {
     if (event.target.classList.contains('task--todo')) {
-      relocateTodoInDoneDragAndDrop();
+      relocateTodoInDone(event.target);
     } else if (event.target.classList.contains('task--in-progress')) {
-      relocateProgressInDoneDragAndDrop();
+      relocateProgressInDone(event.target);
     }
   }
 });
 
 // ------------------------------------------------------------------------------
-// Ивенты кнопок в тасках
-
-function relocateTodoInProgressBtn() {
-  const task = event.target.closest('.task');
-  const cloneTask = task.cloneNode(true);
-  task.remove();
-  cloneTask.classList = ('task task--in-progress');
-  cloneTask.querySelector('.task__btn--relocate').remove()
-  cloneTask.querySelector('.task__btn--edit').textContent = 'BACK';
-  cloneTask.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
-  cloneTask.querySelector('.task__btn--del').textContent = 'COMPLETE';
-  cloneTask.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-  document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
-}
-
-function relocateProgressInTodoBtn() {
-  const task = event.target.closest('.task');
-  const cloneTask = task.cloneNode(true);
-  task.remove();
-  cloneTask.classList = 'task task--todo ';
-  cloneTask.querySelector('.task__btn--back').textContent = 'EDIT';
-  cloneTask.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
-  cloneTask.querySelector('.task__btn--complete').textContent = 'DELETE';
-  cloneTask.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-  const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-  cloneTask.querySelector('.task__body').append(elTaskBtnRelocate);
-  document.querySelector('.task-list__body--todo').prepend(cloneTask)
-}
-
-function relocateProgressInDoneBtn() {
-  const task = event.target.closest('.task');
-  const cloneTask = task.cloneNode(true);
-  task.remove();
-  cloneTask.classList = 'task task--done';
-  cloneTask.querySelector('.task__btn--back').remove();
-  cloneTask.querySelector('.task__btn--complete').textContent = 'DELETE';
-  cloneTask.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-  document.querySelector('.task-list__body--done').prepend(cloneTask)
-}
+// Ивенты в board
 
 board.addEventListener('click', function (event) {
+  // удаление карточки кнопкой DELETE
+  if (event.target.classList.contains('task__btn--del')) {
+    const task = event.target.closest('.task');
+    task.remove();
+    updateCounter();
+  }
+// перемещение из Todo в InProgress
   if (event.target.classList.contains('task__btn--relocate')) {
-    relocateTodoInProgressBtn();
+    const task = event.target.closest('.task');
+    const cloneTask = task.cloneNode(true);
+    task.remove();
+    relocateTodoInProgress(cloneTask)
+    document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
   }
-
+// перемещение из InProgress в Todo
   if (event.target.classList.contains('task__btn--back')) {
-    relocateProgressInTodoBtn();
+    const task = event.target.closest('.task');
+    const cloneTask = task.cloneNode(true);
+    task.remove();
+    relocateProgressInTodo(cloneTask);
+    document.querySelector('.task-list__body--todo').prepend(cloneTask);
   }
-
+// перемещение из InProgress в Done
   if (event.target.classList.contains('task__btn--complete')) {
-    relocateProgressInDoneBtn();
+    const task = event.target.closest('.task');
+    const cloneTask = task.cloneNode(true);
+    task.remove();
+    relocateProgressInDone(cloneTask)
+    document.querySelector('.task-list__body--done').prepend(cloneTask);
   }
-})
+// удаление всех карточек
+  if (event.target.classList.contains('task-list__btn--del-all')) {
+    document.querySelectorAll('.task-list__body--done').
+    forEach(elem => elem.remove());
+    updateCounter();
+  }
+});

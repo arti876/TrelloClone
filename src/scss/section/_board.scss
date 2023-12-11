@@ -1,13 +1,13 @@
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  // grid-template-columns: repeat(auto-fit, minmax(280px, auto));
   gap: 20px;
 }
 
 .task-list {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  // gap: 15px;
   border: 2px solid #828282;
   border-radius: 15px;
   overflow: hidden;
@@ -35,6 +35,8 @@
   }
   &__body {
     display: grid;
+    align-content: flex-start;
+    min-height: 300px;
     gap: 15px;
     padding: 15px;
   }
@@ -60,10 +62,10 @@
   background-color: #faebd7;
   border-radius: 15px;
   padding: 10px 15px;
-  // margin: 0px 10px;
   align-self: start;
   &__header {
     display: grid;
+    gap: 15px;
   }
   &__btn-container {
     display: flex;
