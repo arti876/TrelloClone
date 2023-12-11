@@ -295,17 +295,44 @@ formAddTodo.addEventListener('click', function (event) {
 // dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
 // drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
 
-// элемент который перетаскиваем
-var activeElement = null;
-// элемент над которым перетаскиваемый элемент
-// let currentElement = null;
-// элемент куда перетаскиваем
-// let droppeZone = null;
-
 var board = document.querySelector('.board');
 var taskListBody = document.querySelector('.task-list__body');
 var taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
 var taskListBodyDone = document.querySelector('.task-list__body--done');
+// элемент который перетаскиваем
+var activeElement = null;
+
+// relocateProgressInTodo
+function relocateProgressInTodo() {
+  event.target.classList.add('task--todo');
+  event.target.classList.remove('task--in-progress');
+  event.target.querySelector('.task__btn--back').textContent = 'EDIT';
+  event.target.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
+  event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
+  event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+  event.target.querySelector('.task__body').append(elTaskBtnRelocate);
+}
+
+// relocateTodoInProgress
+function relocateTodoInProgress() {
+  event.target.classList.add('task--in-progress');
+  event.target.classList.remove('task--todo');
+  event.target.querySelector('.task__btn--relocate').remove();
+  event.target.querySelector('.task__btn--edit').textContent = 'BACK';
+  event.target.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
+  event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
+  event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+}
+
+// relocateProgressInDone
+function relocateProgressInDone() {
+  event.target.classList.add('task--done');
+  event.target.classList.remove('task--in-progress');
+  event.target.querySelector('.task__btn--back').remove();
+  event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
+  event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+}
 
 // срабатывает в начале операции перетаскивания элемента
 board.addEventListener('dragstart', function (event) {
@@ -336,32 +363,35 @@ board.addEventListener('dragend', function (event) {
   // task-list__body--todo
   if (event.target.closest('.task-list__body--todo')) {
     if (event.target.classList.contains('task--in-progress')) {
-      event.target.classList.add('task--todo');
-      event.target.classList.remove('task--in-progress');
-      event.target.querySelector('.task__btn--back').textContent = 'EDIT';
-      event.target.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
-      event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
-      event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-      var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-      event.target.querySelector('.task__body').append(elTaskBtnRelocate);
+      relocateProgressInTodo();
+      // event.target.classList.add('task--todo');
+      // event.target.classList.remove('task--in-progress');
+      // event.target.querySelector('.task__btn--back').textContent = 'EDIT';
+      // event.target.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
+      // event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
+      // event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+      // const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+      // event.target.querySelector('.task__body').append(elTaskBtnRelocate);
     } else if (event.target.classList.contains('task--done')) {
       event.target.classList.add('task--todo');
       event.target.classList.remove('task--done');
-      var _elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-      event.target.querySelector('.task__body').append(_elTaskBtnRelocate);
+      var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+      event.target.querySelector('.task__body').append(elTaskBtnRelocate);
       var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
       event.target.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
     }
     // task-list__body--in-progress
   } else if (event.target.closest('.task-list__body--in-progress')) {
     if (event.target.classList.contains('task--todo')) {
-      event.target.classList.add('task--in-progress');
-      event.target.classList.remove('task--todo');
-      event.target.querySelector('.task__btn--relocate').remove();
-      event.target.querySelector('.task__btn--edit').textContent = 'BACK';
-      event.target.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
-      event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
-      event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+      relocateTodoInProgress();
+      ;
+      // event.target.classList.add('task--in-progress');
+      // event.target.classList.remove('task--todo');
+      // event.target.querySelector('.task__btn--relocate').remove()
+      // event.target.querySelector('.task__btn--edit').textContent = 'BACK';
+      // event.target.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
+      // event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
+      // event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
     } else if (event.target.classList.contains('task--done')) {
       event.target.classList.add('task--in-progress');
       event.target.classList.remove('task--done');
@@ -378,14 +408,17 @@ board.addEventListener('dragend', function (event) {
       event.target.querySelector('.task__btn--relocate').remove();
       event.target.querySelector('.task__btn--edit').remove();
     } else if (event.target.classList.contains('task--in-progress')) {
-      event.target.classList.add('task--done');
-      event.target.classList.remove('task--in-progress');
-      event.target.querySelector('.task__btn--back').remove();
-      event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
-      event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+      relocateProgressInDone();
+      // event.target.classList.add('task--done');
+      // event.target.classList.remove('task--in-progress');
+      // event.target.querySelector('.task__btn--back').remove();
+      // event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
+      // event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
     }
   }
 });
+
+// ------------------------------------------------------------------------------
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
