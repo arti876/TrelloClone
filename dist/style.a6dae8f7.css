@@ -224,11 +224,6 @@ input::-ms-clear {
   background-color: rgba(0, 107, 153, 0.3);
 }
 
-.selected {
-  opacity: 0.3;
-  background-color: #f3c1ff;
-}
-
 .task-list--todo {
   border: 2px solid #009b68;
 }
@@ -239,6 +234,11 @@ input::-ms-clear {
 
 .task-list--done {
   border: 2px solid #006d9b;
+}
+
+.active-element {
+  opacity: 0.3;
+  background-color: #f3c1ff;
 }
 
 .form-add-todo {

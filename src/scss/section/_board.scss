@@ -104,17 +104,17 @@
   background-color: rgba(0, 107, 153, 0.3);
 }
 
-.selected {
-  opacity: .3;
-  background-color: #f3c1ff;
-}
-
-.task-list--todo{
+.task-list--todo {
   border: 2px solid #009b68;
 }
-.task-list--in-progress{
+.task-list--in-progress {
   border: 2px solid #828282;
 }
-.task-list--done{
+.task-list--done {
   border: 2px solid #006d9b;
+}
+
+.active-element {
+  opacity: 0.3;
+  background-color: #f3c1ff;
 }

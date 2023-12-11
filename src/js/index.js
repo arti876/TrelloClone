@@ -226,30 +226,21 @@ const taskListBody = document.querySelector('.task-list__body');
 const taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
 const taskListBodyDone = document.querySelector('.task-list__body--done');
 
-
-
 // срабатывает в начале операции перетаскивания элемента
 board.addEventListener('dragstart', (event) => {
-  event.target.classList.add('selected');
+  event.target.classList.add('active-element');
   activeElement = event.target;
 })
-
-
 
 // срабатывает, когда элемент перемещают над допустимой зоной для переноса
 board.addEventListener('dragover', (event) => {
   event.preventDefault();
-  // event.target.classList.add('selected-drop');
-  // if (activeElement !== currentElement) {
-  //   currentElement = event.target;
-  // }
+  // Элемент перед которым нужно разместить activeElement
   const currentElement = event.target;
-
   // Находим элемент, перед которым будем вставлять
   const nextElement = (currentElement === activeElement.nextElementSibling) ?
     currentElement.nextElementSibling :
     currentElement;
-
   // Вставяем activeElement
   setTimeout(() => {
     if (currentElement.classList.contains(`task`)) {
@@ -257,33 +248,62 @@ board.addEventListener('dragover', (event) => {
     } else if (currentElement.classList.contains(`task-list__body`)) {
       currentElement.prepend(activeElement);
     }
-  }, 150);
+  }, 100);
 });
-
-
-// срабатывает, когда элемент выходит из допустимой зоны для переноса
-board.addEventListener('dragleave', (event) => {
-  // event.target.classList.remove('selected-drop');
-  // currentElement = null;
-});
-
 
 // срабатывает, когда пользователь закончил перетаскивание элемента
 board.addEventListener('dragend', (event) => {
-  // activeElement = null;
-  event.target.classList.remove('selected');
-});
-
-
-const TaskList = document.querySelector('.task-list')
-// с помощью этого можно получить данные зоны куда перетаскиваем "event.target",
-// значит сравнить ее с классом таск листа и в зависимости от совпадения
-// задавать стили и удалять\добавлять элементы тому объекту
-// который перетаскиваем
-board.addEventListener('drop', (event) => {
-    // применяем новые стили
-    // if (event.target.classList.contains('.task-list__body--todo')) {
-    //   activeElement.classList.remove('task--done')
-    //   activeElement.classList.add('task--todo')
-    // }
+  event.target.classList.remove('active-element');
+  // task-list__body--todo
+  if (event.target.closest('.task-list__body--todo')) {
+    if (event.target.classList.contains('task--in-progress')) {
+      event.target.classList.add('task--todo');
+      event.target.classList.remove('task--in-progress');
+      event.target.querySelector('.task__btn--back').textContent = 'EDIT';
+      event.target.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
+      event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
+      event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+      const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+      event.target.querySelector('.task__body').append(elTaskBtnRelocate);
+    } else if (event.target.classList.contains('task--done')) {
+      event.target.classList.add('task--todo');
+      event.target.classList.remove('task--done');
+      const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+      event.target.querySelector('.task__body').append(elTaskBtnRelocate)
+      const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+      event.target.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
+    }
+    // task-list__body--in-progress
+  } else if (event.target.closest('.task-list__body--in-progress')) {
+    if (event.target.classList.contains('task--todo')) {
+      event.target.classList.add('task--in-progress');
+      event.target.classList.remove('task--todo');
+      event.target.querySelector('.task__btn--relocate').remove()
+      event.target.querySelector('.task__btn--edit').textContent = 'BACK';
+      event.target.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
+      event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
+      event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+    } else if (event.target.classList.contains('task--done')) {
+      event.target.classList.add('task--in-progress');
+      event.target.classList.remove('task--done');
+      const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
+      event.target.querySelector('.task__btn-container').prepend(elTaskBtnBack)
+      event.target.querySelector('.task__btn--del').textContent = 'COMPLETE';
+      event.target.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+    }
+    // task-list__body--done
+  } else if (event.target.closest('.task-list__body--done')) {
+    if (event.target.classList.contains('task--todo')) {
+      event.target.classList.add('task--done');
+      event.target.classList.remove('task--todo');
+      event.target.querySelector('.task__btn--relocate').remove();
+      event.target.querySelector('.task__btn--edit').remove();
+    } else if (event.target.classList.contains('task--in-progress')) {
+      event.target.classList.add('task--done');
+      event.target.classList.remove('task--in-progress');
+      event.target.querySelector('.task__btn--back').remove();
+      event.target.querySelector('.task__btn--complete').textContent = 'DELETE';
+      event.target.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+    }
+  }
 });
