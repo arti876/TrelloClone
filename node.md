@@ -47,6 +47,11 @@ npm run dev
 "build": "parcel build ./src/index.html --no-source-maps"
 npm run build
 
+математический рандом
+npm install uuid
+
+import { v4 as uuidv4 } from 'uuid';
+uuidv4();
 
 // formAddTodo.addEventListener('click', function (event) {
 //   const controls = this.querySelectorAll('.form-control');

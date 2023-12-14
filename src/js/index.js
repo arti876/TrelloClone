@@ -4,6 +4,17 @@
 
 // ------------------------------------------------------------------------------
 
+// рандом id
+import { v4 as uuidv4 } from 'uuid';
+
+// console.log(uuidv4());
+
+// рандом статуса дел
+const completedTodo = ['todo', 'inProgress', 'done']
+const randomCompleted = completedTodo[Math.floor(Math.random() * completedTodo.length)];
+
+// ------------------------------------------------------------------------------
+
 // const getTrelloData = async () => {
 //   const todosPlaceholder = await fetch('https://jsonplaceholder.typicode.com/todos').then((response) => response.json());
 //   const usersPlaceholder = await fetch('https://jsonplaceholder.typicode.com/users').then((response) => response.json());
@@ -19,13 +30,14 @@
 function getTrelloData() {
   const fetchData = (type) => fetch(`https://jsonplaceholder.typicode.com/${type}`).then(r => r.json());
 
-  Promise.all(['users', 'todos'].map(fetchData))
-    .then(([users, todos]) => {
+  Promise.all(['users', 'posts'].map(fetchData))
+    .then(([users, posts]) => {
       const usersObj = Object.fromEntries(users.map(n => [n.id, n]))
-      return todos.map(n => ({
-        id: Math.random().toString(36).slice(2),
+      return posts.map(n => ({
+        id: uuidv4(),
         todo: n,
         user: usersObj[n.userId],
+        completed: randomCompleted,
       }))
     })
     .then(todos => setData('todos', todos))
@@ -51,19 +63,21 @@ if (!localStorage.length) {
 const runTrelloApplication = async () => {
   // const { todosPlaceholder, usersPlaceholder, commentsPlaceholder } = await getTrelloData();
 
+  let todosGetData = getData('todos');
 
-  setTimeout(() => {
-    let todosGetData = getData('todos');
+  // setTimeout(() => {
+  //   let todosGetData = getData('todos');
 
-    let [{id, todo: { id: idTodo, title, completed }, user: { id: idUser, name, username } }] = todosGetData
-    console.log(id)
-    console.log(idTodo)
-    console.log(title)
-    console.log(completed)
-    console.log(idUser)
-    console.log(name)
-    console.log(username)
-  }, 100)
+  //   let [{id, todo: { id: idTodo, title, body}, user: { id: idUser, name, username }, completed }] = todosGetData
+  //   console.log(id)
+  //   console.log(idTodo)
+  //   console.log(title)
+  //   console.log(body)
+  //   console.log(completed)
+  //   console.log(idUser)
+  //   console.log(name)
+  //   console.log(username)
+  // }, 100)
 
   // console.log(todosGetData[0].todo.title)
 
@@ -238,23 +252,25 @@ Data: ${Day}.${Month}.${Year}`
     formSelectUser.classList.remove('invalid-control');
   };
 
-  function pressConfirm() {
-    // if () {
-    //   taskListBodyTodo.querySelectorAll('.task--todo')
-    //   .forEach(el => )
-    // }
-    controls.forEach(control => {
-      if (control.classList.contains('required') && !control.value) {
-        control.classList.add('invalid-control');
-      }
-    });
+  function pressConfirm(todosGetData) {
+    let [{id, todo: { title, body}, user: { name, username }, completed }] = todosGetData
 
-    if (formInputTitle.value && formInputDescription.value && formSelectUser.value) {
+    // controls.forEach(control => {
+    //   if (control.classList.contains('required') && !control.value) {
+    //     control.classList.add('invalid-control');
+    //   }
+    // });
+
+    // if (completed === 'inProgress') {
+
+    // } else if (completed === 'done') {
+
+    // } else if ((completed === 'done') || (formInputTitle.value && formInputDescription.value && formSelectUser.value)) {
       formAddTodo.classList.toggle('form-add-todo--vis');
 
       const elTask = createDiv('task task--todo');
       elTask.draggable = true; // Drag'n'drop ***
-      elTask.id = Math.random().toString(36).slice(2);
+      // elTask.id = Math.random().toString(36).slice(2);
 
       taskListBodyTodo.append(
         elTask
@@ -305,7 +321,7 @@ Data: ${Day}.${Month}.${Year}`
         elTaskUser,
         elTaskTime
       );
-    }
+    // }
   };
 
   taskListBtnAddTodo.addEventListener('click', addTodo);
