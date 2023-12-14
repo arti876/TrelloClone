@@ -23,6 +23,7 @@ function getTrelloData() {
     .then(([users, todos]) => {
       const usersObj = Object.fromEntries(users.map(n => [n.id, n]))
       return todos.map(n => ({
+        id: Math.random().toString(36).slice(2),
         todo: n,
         user: usersObj[n.userId],
       }))
@@ -42,26 +43,28 @@ function setData(key, value) {
 
 // setData('todosPlaceholder', todosPlaceholder)
 
+if (!localStorage.length) {
+  getTrelloData()
+  console.log(`Data in localStorage is loaded`)
+}
 
 const runTrelloApplication = async () => {
   // const { todosPlaceholder, usersPlaceholder, commentsPlaceholder } = await getTrelloData();
 
-  if (!localStorage.length) {
-    getTrelloData()
-    console.log(`Data in localStorage is loaded`)
-  }
 
-  let todosGetData = getData('todos');
+  setTimeout(() => {
+    let todosGetData = getData('todos');
 
-let {todo:{id: idTodo, title, completed}, user:{id: idUser, name, username}} = todosGetData[1]
+    let [{id, todo: { id: idTodo, title, completed }, user: { id: idUser, name, username } }] = todosGetData
+    console.log(id)
+    console.log(idTodo)
+    console.log(title)
+    console.log(completed)
+    console.log(idUser)
+    console.log(name)
+    console.log(username)
+  }, 100)
 
-
-  console.log(idTodo)
-  console.log(title)
-  console.log(completed)
-  console.log(idUser)
-  console.log(name)
-  console.log(username)
   // console.log(todosGetData[0].todo.title)
 
   // ------------------------------------------------------------------------------

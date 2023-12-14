@@ -161,6 +161,7 @@ function getTrelloData() {
     }));
     return todos.map(function (n) {
       return {
+        id: Math.random().toString(36).slice(2),
         todo: n,
         user: usersObj[n.userId]
       };
@@ -185,9 +186,13 @@ function setData(key, value) {
 
 // setData('todosPlaceholder', todosPlaceholder)
 
+if (!localStorage.length) {
+  getTrelloData();
+  console.log("Data in localStorage is loaded");
+}
 var runTrelloApplication = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var todosGetData, _todosGetData$, _todosGetData$$todo, idTodo, title, completed, _todosGetData$$user, idUser, name, username, getDate, getTodoObj, startTime, checkTime, updateCounter, createDiv, createLabel, createButton, createInput, headerTime, taskListBodyTodo, taskListBtnAddTodo, formAddTodo, formInputTitle, formInputDescription, formВtnCancel, formВtnConfirm, formSelectUser, controls, addTodo, pressCancel, pressConfirm, board, taskListBody, taskListBodyInProgress, taskListBodyDone, activeElement, relocateProgressInTodo, relocateTodoInProgress, relocateProgressInDone, relocateDoneInTodo, relocateDoneInProgress, relocateTodoInDone, editTodo;
+    var getDate, getTodoObj, startTime, checkTime, updateCounter, createDiv, createLabel, createButton, createInput, headerTime, taskListBodyTodo, taskListBtnAddTodo, formAddTodo, formInputTitle, formInputDescription, formВtnCancel, formВtnConfirm, formSelectUser, controls, addTodo, pressCancel, pressConfirm, board, taskListBody, taskListBodyInProgress, taskListBodyDone, activeElement, relocateProgressInTodo, relocateTodoInProgress, relocateProgressInDone, relocateDoneInTodo, relocateDoneInProgress, relocateTodoInDone, editTodo;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -385,18 +390,28 @@ var runTrelloApplication = /*#__PURE__*/function () {
           };
           // const { todosPlaceholder, usersPlaceholder, commentsPlaceholder } = await getTrelloData();
 
-          if (!localStorage.length) {
-            getTrelloData();
-            console.log("Data in localStorage is loaded");
-          }
-          todosGetData = getData('todos');
-          _todosGetData$ = todosGetData[1], _todosGetData$$todo = _todosGetData$.todo, idTodo = _todosGetData$$todo.id, title = _todosGetData$$todo.title, completed = _todosGetData$$todo.completed, _todosGetData$$user = _todosGetData$.user, idUser = _todosGetData$$user.id, name = _todosGetData$$user.name, username = _todosGetData$$user.username;
-          console.log(idTodo);
-          console.log(title);
-          console.log(completed);
-          console.log(idUser);
-          console.log(name);
-          console.log(username);
+          setTimeout(function () {
+            var todosGetData = getData('todos');
+            var _todosGetData = _slicedToArray(todosGetData, 1),
+              _todosGetData$ = _todosGetData[0],
+              id = _todosGetData$.id,
+              _todosGetData$$todo = _todosGetData$.todo,
+              idTodo = _todosGetData$$todo.id,
+              title = _todosGetData$$todo.title,
+              completed = _todosGetData$$todo.completed,
+              _todosGetData$$user = _todosGetData$.user,
+              idUser = _todosGetData$$user.id,
+              name = _todosGetData$$user.name,
+              username = _todosGetData$$user.username;
+            console.log(id);
+            console.log(idTodo);
+            console.log(title);
+            console.log(completed);
+            console.log(idUser);
+            console.log(name);
+            console.log(username);
+          }, 100);
+
           // console.log(todosGetData[0].todo.title)
 
           // ------------------------------------------------------------------------------
@@ -602,7 +617,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
             }
           });
           ;
-        case 59:
+        case 51:
         case "end":
           return _context.stop();
       }
@@ -638,7 +653,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53774" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50403" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
