@@ -39,7 +39,7 @@ startTime();
 updateCounter();
 
 if (!localStorage.length) {
-  getTrelloData()
+  getTrelloData(uuidv4, randomCompleted, setData)
   console.log(`Data in localStorage is loaded`)
 }
 
@@ -69,14 +69,8 @@ const runTrelloApplication = async () => {
   //   createTodoCard(todo);
   // });
 
-  // addEventListener ---------------------------------------------------------------------------------------------------
-  // модальное окно формы Todo ------------------------------------------------------------------------------------------
-
-
-
-  taskListBtnAddTodo.addEventListener('click', addTodo);
-  formВtnCancel.addEventListener('click', pressCancel);
-  formВtnConfirm.addEventListener('click', pressConfirm);
+  // addEventListener ------------------------------------------------------------------------------------
+  // модальное окно формы Todo ---------------------------------------------------------------------------
 
   formAddTodo.addEventListener('click', function (event) {
     if (event.target.classList.contains('form-add-todo__input-title')) {
@@ -90,9 +84,17 @@ const runTrelloApplication = async () => {
     if (event.target.classList.contains('form-add-todo__user')) {
       event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
     }
+
+    if (event.target.classList.contains('form-add-todo__btn-cancel')) {
+      pressCancel()
+    }
+
+    if (event.target.classList.contains('form-add-todo__btn-confirm')) {
+      pressConfirm(createDiv, createButton)
+    }
   })
 
-  // Drag'n'drop ------------------------------------------------------------------------------------------
+  // события Drag'n'drop -------------------------------------------------------------------------
 
   // элемент который перетаскиваем
   let activeElement = null;
@@ -149,7 +151,7 @@ const runTrelloApplication = async () => {
     }
   });
 
-  // Board ------------------------------------------------------------------------------------------
+  // события по клику в области board -------------------------------------------------------
 
   board.addEventListener('click', function (event) {
     // удаление карточки кнопкой DELETE
@@ -192,12 +194,16 @@ const runTrelloApplication = async () => {
     if (event.target.classList.contains('task__btn--edit')) {
       editTodo()
     }
-
+    // добавить новый Todo
+    if (event.target.classList.contains('task-list__btn--add-todo')) {
+      addTodo()
+    }
+    // очистить localStorage
     if (event.target.classList.contains('task-list__header--done')) {
       localStorage.clear()
     }
   });
-  
+
 }
 
 runTrelloApplication()

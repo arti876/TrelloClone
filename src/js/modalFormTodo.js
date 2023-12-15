@@ -1,3 +1,20 @@
+import {
+  headerTime,
+  taskListBodyTodo,
+  taskListBtnAddTodo,
+  formAddTodo,
+  formInputTitle,
+  formInputDescription,
+  formВtnCancel,
+  formВtnConfirm,
+  formSelectUser,
+  controls,
+  board,
+  taskListBody,
+  taskListBodyInProgress,
+  taskListBodyDone,
+} from './refs.js'; // получение переменных
+import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
 
 function addTodo() {
   formAddTodo.classList.toggle('form-add-todo--vis');
@@ -13,8 +30,8 @@ function pressCancel() {
   formSelectUser.classList.remove('invalid-control');
 };
 
-function pressConfirm(todosGetData) {
-  let [{ id, todo: { title, body }, user: { name, username }, completed }] = todosGetData
+function pressConfirm() {
+  // let [{ id, todo: { title, body }, user: { name, username }, completed }] = todosGetData
 
   // controls.forEach(control => {
   //   if (control.classList.contains('required') && !control.value) {

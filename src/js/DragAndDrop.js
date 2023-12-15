@@ -1,5 +1,21 @@
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
 import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
+import {
+  headerTime,
+  taskListBodyTodo,
+  taskListBtnAddTodo,
+  formAddTodo,
+  formInputTitle,
+  formInputDescription,
+  formВtnCancel,
+  formВtnConfirm,
+  formSelectUser,
+  controls,
+  board,
+  taskListBody,
+  taskListBodyInProgress,
+  taskListBodyDone,
+} from './refs.js'; // получение переменных
 
 // Drag'n'drop
 

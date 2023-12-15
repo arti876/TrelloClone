@@ -1,4 +1,4 @@
-function getTrelloData() {
+function getTrelloData(uuidv4, randomCompleted, setData) {
   const fetchData = (type) => fetch(`https://jsonplaceholder.typicode.com/${type}`).then(r => r.json());
 
   Promise.all(['users', 'posts'].map(fetchData))

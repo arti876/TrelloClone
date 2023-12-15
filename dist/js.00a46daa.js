@@ -221,8 +221,11 @@ exports.relocateTodoInDone = relocateTodoInDone;
 exports.relocateTodoInProgress = relocateTodoInProgress;
 var _updateCounter = require("./updateCounter.js");
 var _htmlCreateElement = require("./htmlCreateElement.js");
+var _refs = require("./refs.js");
 // обновление счетчиков Todos
 // создание элементов html
+
+// получение переменных
 
 // Drag'n'drop
 
@@ -291,15 +294,15 @@ function editTodo() {
   var taskTitleText = idTask.querySelector('.task__title').textContent;
   var taskDescriptionText = idTask.querySelector('.task__description').textContent;
   var taskUserText = idTask.querySelector('.task__user').textContent;
-  formAddTodo.classList.toggle('form-add-todo--vis');
-  formInputTitle.value = taskTitleText;
-  formInputDescription.value = taskDescriptionText;
-  formSelectUser.value = taskUserText;
+  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+  _refs.formInputTitle.value = taskTitleText;
+  _refs.formInputDescription.value = taskDescriptionText;
+  _refs.formSelectUser.value = taskUserText;
 }
 ;
 
 // Drag'n'drop
-},{"./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js"}],"js/clock.js":[function(require,module,exports) {
+},{"./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./refs.js":"js/refs.js"}],"js/clock.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1084,37 +1087,27 @@ Object.defineProperty(exports, "__esModule", {
 exports.addTodo = addTodo;
 exports.pressCancel = pressCancel;
 exports.pressConfirm = pressConfirm;
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+var _refs = require("./refs.js");
+var _htmlCreateElement = require("./htmlCreateElement.js");
+// получение переменных
+// создание элементов html
+
 function addTodo() {
-  formAddTodo.classList.toggle('form-add-todo--vis');
-  formInputTitle.value = '';
-  formInputDescription.value = '';
-  formSelectUser.value = '';
+  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+  _refs.formInputTitle.value = '';
+  _refs.formInputDescription.value = '';
+  _refs.formSelectUser.value = '';
 }
 ;
 function pressCancel() {
-  formAddTodo.classList.toggle('form-add-todo--vis');
-  formInputDescription.classList.remove('invalid-control');
-  formInputTitle.classList.remove('invalid-control');
-  formSelectUser.classList.remove('invalid-control');
+  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+  _refs.formInputDescription.classList.remove('invalid-control');
+  _refs.formInputTitle.classList.remove('invalid-control');
+  _refs.formSelectUser.classList.remove('invalid-control');
 }
 ;
-function pressConfirm(todosGetData) {
-  var _todosGetData = _slicedToArray(todosGetData, 1),
-    _todosGetData$ = _todosGetData[0],
-    id = _todosGetData$.id,
-    _todosGetData$$todo = _todosGetData$.todo,
-    title = _todosGetData$$todo.title,
-    body = _todosGetData$$todo.body,
-    _todosGetData$$user = _todosGetData$.user,
-    name = _todosGetData$$user.name,
-    username = _todosGetData$$user.username,
-    completed = _todosGetData$.completed;
+function pressConfirm() {
+  // let [{ id, todo: { title, body }, user: { name, username }, completed }] = todosGetData
 
   // controls.forEach(control => {
   //   if (control.classList.contains('required') && !control.value) {
@@ -1127,38 +1120,38 @@ function pressConfirm(todosGetData) {
   // } else if (completed === 'done') {
 
   // } else if ((completed === 'done') || (formInputTitle.value && formInputDescription.value && formSelectUser.value)) {
-  formAddTodo.classList.toggle('form-add-todo--vis');
-  var elTask = createDiv('task task--todo');
+  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+  var elTask = (0, _htmlCreateElement.createDiv)('task task--todo');
   elTask.draggable = true; // Drag'n'drop ***
   // elTask.id = Math.random().toString(36).slice(2);
 
-  taskListBodyTodo.append(elTask);
-  var elTaskHeaer = createDiv('task__header');
-  var elTaskBody = createDiv('task__body');
-  var elTaskFooter = createDiv('task__footer');
+  _refs.taskListBodyTodo.append(elTask);
+  var elTaskHeaer = (0, _htmlCreateElement.createDiv)('task__header');
+  var elTaskBody = (0, _htmlCreateElement.createDiv)('task__body');
+  var elTaskFooter = (0, _htmlCreateElement.createDiv)('task__footer');
   elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
-  var elTaskBtnContainer = createDiv('task__btn-container');
-  var elTaskTitle = createDiv('task__title');
-  elTaskTitle.textContent = formInputTitle.value;
+  var elTaskBtnContainer = (0, _htmlCreateElement.createDiv)('task__btn-container');
+  var elTaskTitle = (0, _htmlCreateElement.createDiv)('task__title');
+  elTaskTitle.textContent = _refs.formInputTitle.value;
   elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
-  var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-  var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+  var elTaskBtnEdit = (0, _htmlCreateElement.createButton)('task__btn task__btn--edit', 'EDIT');
+  var elTaskBtnDel = (0, _htmlCreateElement.createButton)('task__btn task__btn--del', 'DELETE');
   elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
-  var elTaskDescription = createDiv('task__description');
-  elTaskDescription.textContent = formInputDescription.value;
-  var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+  var elTaskDescription = (0, _htmlCreateElement.createDiv)('task__description');
+  elTaskDescription.textContent = _refs.formInputDescription.value;
+  var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
   elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
-  var elTaskUser = createDiv('task__user');
-  elTaskUser.textContent = formSelectUser.value;
-  var elTaskTime = createDiv('task__time');
-  elTaskTime.textContent = headerTime.textContent;
+  var elTaskUser = (0, _htmlCreateElement.createDiv)('task__user');
+  elTaskUser.textContent = _refs.formSelectUser.value;
+  var elTaskTime = (0, _htmlCreateElement.createDiv)('task__time');
+  elTaskTime.textContent = _refs.headerTime.textContent;
   elTaskFooter.append(elTaskUser, elTaskTime);
   // }
 }
 ;
 
 //модальное окно FormTodo
-},{}],"js/createTodoObj.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./htmlCreateElement.js":"js/htmlCreateElement.js"}],"js/createTodoObj.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1198,7 +1191,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function getTrelloData() {
+function getTrelloData(uuidv4, randomCompleted, setData) {
   var fetchData = function fetchData(type) {
     return fetch("https://jsonplaceholder.typicode.com/".concat(type)).then(function (r) {
       return r.json();
@@ -1282,7 +1275,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 (0, _clock.startTime)();
 (0, _updateCounter.updateCounter)();
 if (!localStorage.length) {
-  (0, _getTrelloData.getTrelloData)();
+  (0, _getTrelloData.getTrelloData)(_uuid.v4, _randomStatusTodo.randomCompleted, _localStorage.setData);
   console.log("Data in localStorage is loaded");
 }
 var runTrelloApplication = /*#__PURE__*/function () {
@@ -1308,11 +1301,8 @@ var runTrelloApplication = /*#__PURE__*/function () {
           // todos.forEach(todo => {
           //   createTodoCard(todo);
           // });
-          // addEventListener ---------------------------------------------------------------------------------------------------
-          // модальное окно формы Todo ------------------------------------------------------------------------------------------
-          _refs.taskListBtnAddTodo.addEventListener('click', _modalFormTodo.addTodo);
-          _refs.formВtnCancel.addEventListener('click', _modalFormTodo.pressCancel);
-          _refs.formВtnConfirm.addEventListener('click', _modalFormTodo.pressConfirm);
+          // addEventListener ------------------------------------------------------------------------------------
+          // модальное окно формы Todo ---------------------------------------------------------------------------
           _refs.formAddTodo.addEventListener('click', function (event) {
             if (event.target.classList.contains('form-add-todo__input-title')) {
               event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
@@ -1323,9 +1313,15 @@ var runTrelloApplication = /*#__PURE__*/function () {
             if (event.target.classList.contains('form-add-todo__user')) {
               event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
             }
+            if (event.target.classList.contains('form-add-todo__btn-cancel')) {
+              (0, _modalFormTodo.pressCancel)();
+            }
+            if (event.target.classList.contains('form-add-todo__btn-confirm')) {
+              (0, _modalFormTodo.pressConfirm)(_htmlCreateElement.createDiv, _htmlCreateElement.createButton);
+            }
           });
 
-          // Drag'n'drop ------------------------------------------------------------------------------------------
+          // события Drag'n'drop -------------------------------------------------------------------------
 
           // элемент который перетаскиваем
           activeElement = null; // срабатывает в начале операции перетаскивания элемента
@@ -1378,7 +1374,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
             }
           });
 
-          // Board ------------------------------------------------------------------------------------------
+          // события по клику в области board -------------------------------------------------------
 
           _refs.board.addEventListener('click', function (event) {
             // удаление карточки кнопкой DELETE
@@ -1422,11 +1418,16 @@ var runTrelloApplication = /*#__PURE__*/function () {
             if (event.target.classList.contains('task__btn--edit')) {
               (0, _DragAndDrop.editTodo)();
             }
+            // добавить новый Todo
+            if (event.target.classList.contains('task-list__btn--add-todo')) {
+              (0, _modalFormTodo.addTodo)();
+            }
+            // очистить localStorage
             if (event.target.classList.contains('task-list__header--done')) {
               localStorage.clear();
             }
           });
-        case 10:
+        case 7:
         case "end":
           return _context.stop();
       }
