@@ -34,21 +34,24 @@ import { createTodoObj } from './createTodoObj.js' //создать объект
 import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
+import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
 
 // ------------------------------------------------------------------------------
-startTime();
-updateCounter();
 
 if (!localStorage.length) {
   getTrelloData(uuidv4, randomCompleted, randomDate, setData)
   console.log(`Data in localStorage is loaded`)
 }
 
+let todosGetData = getData('todos');
+
+startTime();
+updateCounter();
+addNameInForm(todosGetData); // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
+
+
+
 const runTrelloApplication = async () => {
-  // const { todosPlaceholder, usersPlaceholder, commentsPlaceholder } = await getTrelloData();
-
-  let todosGetData = getData('todos');
-
   // setTimeout(() => {
   //   let todosGetData = getData('todos');
 

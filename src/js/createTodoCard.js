@@ -21,7 +21,7 @@ import { getData, setData } from './localStorage.js'// запись-чтение
 
 
 function createTodoCard(todosGetData, createDiv, createButton) {
-  let { id, todo: { id: idTodo, title, body }, user: { id: idUser, name, username }, completed } = todosGetData;
+  let { id, completed, date, todo: { id: idTodo, title, body }, user: { id: idUser, name } } = todosGetData;
 
   if (completed === 'inProgress') {
     const elTask = createDiv('task task--in-progress');

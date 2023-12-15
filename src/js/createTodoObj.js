@@ -1,36 +1,21 @@
-function createTodoObj(todosGetData) {
-  let { id, todo: { id: idTodo, title, body }, user: { id: idUser, name, username }, completed } = todosGetData;
-  // const idTodo = Math.random().toString(36).slice(2);
-  // const date = getDate();
-  // const title = title;
-  // const despription = despription;
-  // const user = user;
-  // const statusTodo = status;
+function createTodoObj() {
   const todo = {
-    id: id,
-    date: getDate(),
-    title: titleTodo,
-    despription: despriptionTodo,
-    user: usermTodo,
-    status: statusTodo,
-  };
+    id: uuidv4(),
+    date: headerTime.textContent,
+    completed: 'todo',
+    todo: {
+      // userId: user.id,
+      title: formInputTitle.value,
+      body: formInputDescription.value,
+    },
+    user: {
+      // id: todo.userId,
+      name: formSelectUser.value,
+    },
+  }
 
   return todo
 };
 
 export { createTodoObj } //создать объект Todo
 
-let todosGetData = {
-  id,
-  todo: {
-    id: idTodo,
-    title,
-    body
-  },
-  user: {
-    id: idUser,
-    name,
-    username
-  },
-  completed
-}
