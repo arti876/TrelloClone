@@ -25,12 +25,12 @@ import {
 } from './DragAndDrop.js' // Drag'n'drop
 import { startTime, } from './clock.js'; // часы
 import { v4 as uuidv4 } from 'uuid'; // рандом id
-import { randomCompleted } from './randomStatusTodo.js' // рандом статуса Todo
+import { randomCompleted, randomDate } from './randomStatusTodo.js' // рандом статуса Todo и даты
 import { getDate } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
 import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
 import { addTodo, pressCancel, pressConfirm } from './modalFormTodo.js' //модальное окно FormTodo
-import { getTodoObj } from './createTodoObj.js' //создать объект Todo
+import { createTodoObj } from './createTodoObj.js' //создать объект Todo
 import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
@@ -40,7 +40,7 @@ startTime();
 updateCounter();
 
 if (!localStorage.length) {
-  getTrelloData(uuidv4, randomCompleted, setData)
+  getTrelloData(uuidv4, randomCompleted, randomDate, setData)
   console.log(`Data in localStorage is loaded`)
 }
 
@@ -66,8 +66,8 @@ const runTrelloApplication = async () => {
   // console.log(todosGetData[0].todo.title)
 
 
-  // todos.forEach(todo => {
-  //   createTodoCard(todo);
+  // todosGetData.forEach(todo => {
+  //   createTodoCard(todo, createDiv, createButton);
   // });
 
   // addEventListener ------------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ const runTrelloApplication = async () => {
     }
 
     if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-      pressConfirm(createTodoCard)
+      pressConfirm(todosGetData, createDiv, createButton)
     }
   })
 

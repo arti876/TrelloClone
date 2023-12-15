@@ -126,6 +126,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.taskListBtnAddTodo = exports.taskListBodyTodo = exports.taskListBodyInProgress = exports.taskListBodyDone = exports.taskListBody = exports.headerTime = exports.formВtnConfirm = exports.formВtnCancel = exports.formSelectUser = exports.formInputTitle = exports.formInputDescription = exports.formAddTodo = exports.controls = exports.board = void 0;
 var headerTime = exports.headerTime = document.querySelector('.header__time');
 var taskListBodyTodo = exports.taskListBodyTodo = document.querySelector('.task-list__body--todo');
+var taskListBodyInProgress = exports.taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
+var taskListBodyDone = exports.taskListBodyDone = document.querySelector('.task-list__body--done');
 var taskListBtnAddTodo = exports.taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
 var formAddTodo = exports.formAddTodo = document.querySelector('.form-add-todo');
 var formInputTitle = exports.formInputTitle = document.querySelector('.form-add-todo__input-title');
@@ -136,8 +138,6 @@ var formSelectUser = exports.formSelectUser = document.querySelector('.form-add-
 var controls = exports.controls = document.querySelectorAll('.form-control');
 var board = exports.board = document.querySelector('.board');
 var taskListBody = exports.taskListBody = document.querySelector('.task-list__body');
-var taskListBodyInProgress = exports.taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
-var taskListBodyDone = exports.taskListBodyDone = document.querySelector('.task-list__body--done');
 },{}],"js/updateCounter.js":[function(require,module,exports) {
 "use strict";
 
@@ -1054,11 +1054,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.randomCompleted = void 0;
-var completedTodo = ['todo', 'inProgress', 'done'];
-var randomCompleted = exports.randomCompleted = completedTodo[Math.floor(Math.random() * completedTodo.length)];
+exports.randomCompleted = randomCompleted;
+exports.randomDate = randomDate;
+// рандомный статус
+function randomCompleted() {
+  var completedTodo = ['todo', 'inProgress', 'done'];
+  return completedTodo[Math.floor(Math.random() * completedTodo.length)];
+}
 
-// рандом статуса Todo
+// рандомное время
+function randomDate(start, end) {
+  var rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return "".concat(('0' + rDate.getHours()).slice(-2), ":").concat(('0' + rDate.getMinutes()).slice(-2), ":").concat(('0' + rDate.getSeconds()).slice(-2), "\n").concat(rDate.getFullYear(), "-").concat(('0' + (rDate.getMonth() + 1)).slice(-2), "-").concat(('0' + rDate.getDate()).slice(-2));
+}
+console.log(randomDate(new Date(2012, 0, 1), new Date()));
+
+// рандом статуса Todo и даты
 },{}],"js/getData.js":[function(require,module,exports) {
 "use strict";
 
@@ -1078,63 +1089,24 @@ function getDate() {
 }
 
 // получить текущую дату и время
-},{}],"js/modalFormTodo.js":[function(require,module,exports) {
+},{}],"js/createTodoObj.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addTodo = addTodo;
-exports.pressCancel = pressCancel;
-exports.pressConfirm = pressConfirm;
-var _refs = require("./refs.js");
-var _htmlCreateElement = require("./htmlCreateElement.js");
-// получение переменных
-// создание элементов html
-
-//вызов формы создания карточки дел
-function addTodo() {
-  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
-  _refs.formInputTitle.value = '';
-  _refs.formInputDescription.value = '';
-  _refs.formSelectUser.value = '';
-}
-;
-
-//закрыть форму создания карточки дел
-function pressCancel() {
-  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
-  _refs.formInputDescription.classList.remove('invalid-control');
-  _refs.formInputTitle.classList.remove('invalid-control');
-  _refs.formSelectUser.classList.remove('invalid-control');
-}
-;
-
-//создать карточку дел
-function pressConfirm(createTodoCard) {
-  //если обязательные для заполнения поля не содержат данных - сигнализировать
-  _refs.controls.forEach(function (control) {
-    if (control.classList.contains('required') && !control.value) {
-      control.classList.add('invalid-control');
-    }
-  });
-  //проверка обязательных для заполнения полей и вызов функции создания карточки
-  if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
-    _refs.formAddTodo.classList.toggle('form-add-todo--vis');
-    createTodoCard(_htmlCreateElement.createDiv, _htmlCreateElement.createButton);
-  }
-}
-;
-
-//модальное окно FormTodo
-},{"./refs.js":"js/refs.js","./htmlCreateElement.js":"js/htmlCreateElement.js"}],"js/createTodoObj.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getTodoObj = getTodoObj;
-function getTodoObj(titleTodo, despriptionTodo, usermTodo, statusTodo) {
+exports.createTodoObj = createTodoObj;
+function createTodoObj(todosGetData) {
+  var id = todosGetData.id,
+    _todosGetData$todo = todosGetData.todo,
+    idTodo = _todosGetData$todo.id,
+    title = _todosGetData$todo.title,
+    body = _todosGetData$todo.body,
+    _todosGetData$user = todosGetData.user,
+    idUser = _todosGetData$user.id,
+    name = _todosGetData$user.name,
+    username = _todosGetData$user.username,
+    completed = todosGetData.completed;
   // const idTodo = Math.random().toString(36).slice(2);
   // const date = getDate();
   // const title = title;
@@ -1142,18 +1114,32 @@ function getTodoObj(titleTodo, despriptionTodo, usermTodo, statusTodo) {
   // const user = user;
   // const statusTodo = status;
   var todo = {
-    id: Math.random().toString(36).slice(2),
+    id: id,
     date: getDate(),
     title: titleTodo,
     despription: despriptionTodo,
     user: usermTodo,
-    status: statusTodo // 'todo' 'in progress' 'done'
+    status: statusTodo
   };
   return todo;
 }
 ;
-
 //создать объект Todo
+
+var todosGetData = {
+  id: id,
+  todo: {
+    id: idTodo,
+    title: title,
+    body: body
+  },
+  user: {
+    id: idUser,
+    name: name,
+    username: username
+  },
+  completed: completed
+};
 },{}],"js/getTrelloData.js":[function(require,module,exports) {
 "use strict";
 
@@ -1167,7 +1153,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function getTrelloData(uuidv4, randomCompleted, setData) {
+function getTrelloData(uuidv4, randomCompleted, randomDate, setData) {
   var fetchData = function fetchData(type) {
     return fetch("https://jsonplaceholder.typicode.com/".concat(type)).then(function (r) {
       return r.json();
@@ -1183,9 +1169,10 @@ function getTrelloData(uuidv4, randomCompleted, setData) {
     return posts.map(function (n) {
       return {
         id: uuidv4(),
+        date: randomDate(new Date(2020, 0, 1), new Date()),
+        completed: randomCompleted(),
         todo: n,
-        user: usersObj[n.userId],
-        completed: randomCompleted
+        user: usersObj[n.userId]
       };
     });
   }).then(function (todos) {
@@ -1224,29 +1211,45 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createTodoCard = createTodoCard;
 var _refs = require("./refs.js");
+var _localStorage = require("./localStorage.js");
+// let [{id, todo: { id: idTodo, title, body}, user: { id: idUser, name, username }, completed }] = todosGetData
+
 // получение переменных
+// запись-чтение данных localStorage
 
-function createTodoCard(createDiv, createButton) {
-  // let [{ id, todo: { title, body }, user: { name, username }, completed }] = todosGetData
-
-  // controls.forEach(control => {
-  //   if (control.classList.contains('required') && !control.value) {
-  //     control.classList.add('invalid-control');
-  //   }
-  // });
-
-  // if (completed === 'inProgress') {
-
-  // } else if (completed === 'done') {
-
-  // } else if ((completed === 'done') || (formInputTitle.value && formInputDescription.value && formSelectUser.value)) {
-  // }
-
-  var elTask = createDiv('task task--todo');
-  elTask.draggable = true; // Drag'n'drop ***
-  // elTask.id = Math.random().toString(36).slice(2);
-
-  _refs.taskListBodyTodo.append(elTask);
+function createTodoCard(todosGetData, createDiv, createButton) {
+  var id = todosGetData.id,
+    _todosGetData$todo = todosGetData.todo,
+    idTodo = _todosGetData$todo.id,
+    title = _todosGetData$todo.title,
+    body = _todosGetData$todo.body,
+    _todosGetData$user = todosGetData.user,
+    idUser = _todosGetData$user.id,
+    name = _todosGetData$user.name,
+    username = _todosGetData$user.username,
+    completed = todosGetData.completed;
+  if (completed === 'inProgress') {
+    var _elTask = createDiv('task task--in-progress');
+    _refs.taskListBodyInProgress.append(_elTask);
+    var elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
+    var elTaskBtnComplete = createButton('task__btn task__btn--complete', 'COMPLETE');
+    elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
+  } else if (completed === 'done') {
+    var _elTask2 = createDiv('task task--done');
+    _refs.taskListBodyDone.append(_elTask2);
+    var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+    elTaskBtnContainer.append(elTaskBtnDel);
+  } else {
+    var _elTask3 = createDiv('task task--todo');
+    _refs.taskListBodyTodo.append(_elTask3);
+    var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+    var _elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+    elTaskBtnContainer.append(elTaskBtnEdit, _elTaskBtnDel);
+    var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+    elTaskBody.append(elTaskBtnRelocate);
+  }
+  elTask.draggable = true; // Drag'n'drop ON
+  elTask.id = id;
   var elTaskHeaer = createDiv('task__header');
   var elTaskBody = createDiv('task__body');
   var elTaskFooter = createDiv('task__footer');
@@ -1255,13 +1258,9 @@ function createTodoCard(createDiv, createButton) {
   var elTaskTitle = createDiv('task__title');
   elTaskTitle.textContent = _refs.formInputTitle.value;
   elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
-  var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-  var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-  elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
   var elTaskDescription = createDiv('task__description');
   elTaskDescription.textContent = _refs.formInputDescription.value;
-  var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-  elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
+  elTaskBody.append(elTaskDescription);
   var elTaskUser = createDiv('task__user');
   elTaskUser.textContent = _refs.formSelectUser.value;
   var elTaskTime = createDiv('task__time');
@@ -1270,7 +1269,83 @@ function createTodoCard(createDiv, createButton) {
 }
 
 // создание новой карточки дел
-},{"./refs.js":"js/refs.js"}],"js/index.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./localStorage.js":"js/localStorage.js"}],"js/modalFormTodo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addTodo = addTodo;
+exports.pressCancel = pressCancel;
+exports.pressConfirm = pressConfirm;
+var _refs = require("./refs.js");
+var _DragAndDrop = require("./DragAndDrop.js");
+var _clock = require("./clock.js");
+var _uuid = require("uuid");
+var _randomStatusTodo = require("./randomStatusTodo.js");
+var _getData = require("./getData.js");
+var _updateCounter = require("./updateCounter.js");
+var _htmlCreateElement = require("./htmlCreateElement.js");
+var _createTodoObj = require("./createTodoObj.js");
+var _getTrelloData = require("./getTrelloData.js");
+var _localStorage = require("./localStorage.js");
+var _createTodoCard = require("./createTodoCard.js");
+// получение переменных
+
+// Drag'n'drop
+// часы
+// рандом id
+// рандом статуса Todo
+// получить текущую дату и время
+// обновление счетчиков Todos
+// создание элементов html
+//создать объект Todo
+// получение данных с jsonplaceholder
+// запись-чтение данных localStorage
+// создание новой карточки дел
+
+//вызов формы создания карточки дел
+function addTodo() {
+  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+  _refs.formInputTitle.value = '';
+  _refs.formInputDescription.value = '';
+  _refs.formSelectUser.value = '';
+}
+;
+
+//закрыть форму создания карточки дел
+function pressCancel() {
+  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+  _refs.formInputDescription.classList.remove('invalid-control');
+  _refs.formInputTitle.classList.remove('invalid-control');
+  _refs.formSelectUser.classList.remove('invalid-control');
+}
+;
+
+//создать карточку дел
+function pressConfirm(todosGetData, createDiv, createButton) {
+  //если обязательные для заполнения поля не содержат данных - сигнализировать
+  _refs.controls.forEach(function (control) {
+    if (control.classList.contains('required') && !control.value) {
+      control.classList.add('invalid-control');
+    }
+  });
+  //проверка обязательных для заполнения полей и вызов функции создания карточки
+  if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
+    _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+    var todoObj = (0, _createTodoObj.createTodoObj)();
+    (0, _createTodoCard.createTodoCard)(todoObj);
+    todosGetData.push(todoObj);
+    setName(todosGetData);
+    // updateCounterCards(paramsUpdateCounterCards);
+
+    // createTodoCard(todosGetData, createDiv, createButton);
+  }
+}
+;
+
+//модальное окно FormTodo
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _refs = require("./refs.js");
@@ -1293,7 +1368,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 // Drag'n'drop
 // часы
 // рандом id
-// рандом статуса Todo
+// рандом статуса Todo и даты
 // получить текущую дату и время
 // обновление счетчиков Todos
 // создание элементов html
@@ -1307,7 +1382,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 (0, _clock.startTime)();
 (0, _updateCounter.updateCounter)();
 if (!localStorage.length) {
-  (0, _getTrelloData.getTrelloData)(_uuid.v4, _randomStatusTodo.randomCompleted, _localStorage.setData);
+  (0, _getTrelloData.getTrelloData)(_uuid.v4, _randomStatusTodo.randomCompleted, _randomStatusTodo.randomDate, _localStorage.setData);
   console.log("Data in localStorage is loaded");
 }
 var runTrelloApplication = /*#__PURE__*/function () {
@@ -1330,8 +1405,8 @@ var runTrelloApplication = /*#__PURE__*/function () {
           //   console.log(username)
           // }, 100)
           // console.log(todosGetData[0].todo.title)
-          // todos.forEach(todo => {
-          //   createTodoCard(todo);
+          // todosGetData.forEach(todo => {
+          //   createTodoCard(todo, createDiv, createButton);
           // });
           // addEventListener ------------------------------------------------------------------------------------
           // модальное окно формы Todo ---------------------------------------------------------------------------
@@ -1349,7 +1424,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
               (0, _modalFormTodo.pressCancel)();
             }
             if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-              (0, _modalFormTodo.pressConfirm)(_createTodoCard.createTodoCard);
+              (0, _modalFormTodo.pressConfirm)(todosGetData, _htmlCreateElement.createDiv, _htmlCreateElement.createButton);
             }
           });
 

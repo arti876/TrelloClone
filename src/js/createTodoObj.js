@@ -1,4 +1,5 @@
-function getTodoObj(titleTodo, despriptionTodo, usermTodo, statusTodo) {
+function createTodoObj(todosGetData) {
+  let { id, todo: { id: idTodo, title, body }, user: { id: idUser, name, username }, completed } = todosGetData;
   // const idTodo = Math.random().toString(36).slice(2);
   // const date = getDate();
   // const title = title;
@@ -6,15 +7,30 @@ function getTodoObj(titleTodo, despriptionTodo, usermTodo, statusTodo) {
   // const user = user;
   // const statusTodo = status;
   const todo = {
-    id: Math.random().toString(36).slice(2),
+    id: id,
     date: getDate(),
     title: titleTodo,
     despription: despriptionTodo,
     user: usermTodo,
-    status: statusTodo, // 'todo' 'in progress' 'done'
+    status: statusTodo,
   };
 
   return todo
 };
 
-export { getTodoObj } //создать объект Todo
+export { createTodoObj } //создать объект Todo
+
+let todosGetData = {
+  id,
+  todo: {
+    id: idTodo,
+    title,
+    body
+  },
+  user: {
+    id: idUser,
+    name,
+    username
+  },
+  completed
+}
