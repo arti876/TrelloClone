@@ -1089,33 +1089,6 @@ function getDate() {
 }
 
 // получить текущую дату и время
-},{}],"js/createTodoObj.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createTodoObj = createTodoObj;
-function createTodoObj() {
-  var todo = {
-    id: uuidv4(),
-    date: headerTime.textContent,
-    completed: 'todo',
-    todo: {
-      // userId: user.id,
-      title: formInputTitle.value,
-      body: formInputDescription.value
-    },
-    user: {
-      // id: todo.userId,
-      name: formSelectUser.value
-    }
-  };
-  return todo;
-}
-;
-
-//создать объект Todo
 },{}],"js/getTrelloData.js":[function(require,module,exports) {
 "use strict";
 
@@ -1245,7 +1218,101 @@ function createTodoCard(todosGetData, createDiv, createButton) {
 }
 
 // создание новой карточки дел
-},{"./refs.js":"js/refs.js","./localStorage.js":"js/localStorage.js"}],"js/modalFormTodo.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./localStorage.js":"js/localStorage.js"}],"js/addNameInForm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addNameInForm = addNameInForm;
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function addNameInForm(todosGetData) {
+  var formAddTodoUser = document.querySelector('.form-add-todo__user');
+  var userArr = todosGetData.map(function (el) {
+    return el.user.name;
+  });
+  var countUser = {};
+  var _iterator = _createForOfIteratorHelper(userArr),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var user = _step.value;
+      countUser[user] = countUser[user] ? countUser[user] + 1 : 1;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  var result = Object.keys(countUser).filter(function (user) {
+    return countUser[user] > 1;
+  }).forEach(function (name) {
+    var elOption = document.createElement('option');
+    elOption.value = name;
+    elOption.textContent = name;
+    formAddTodoUser.append(elOption);
+  });
+}
+
+//добавить имена из загружаемых данных в форму
+},{}],"js/createTodoObj.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createTodoObj = createTodoObj;
+var _refs = require("./refs.js");
+var _DragAndDrop = require("./DragAndDrop.js");
+var _clock = require("./clock.js");
+var _uuid = require("uuid");
+var _randomStatusTodo = require("./randomStatusTodo.js");
+var _getData = require("./getData.js");
+var _updateCounter = require("./updateCounter.js");
+var _htmlCreateElement = require("./htmlCreateElement.js");
+var _modalFormTodo = require("./modalFormTodo.js");
+var _getTrelloData = require("./getTrelloData.js");
+var _localStorage = require("./localStorage.js");
+var _createTodoCard = require("./createTodoCard.js");
+var _addNameInForm = require("./addNameInForm.js");
+// получение переменных
+
+// Drag'n'drop
+// часы
+// рандом id
+// рандом статуса Todo и даты
+// получить текущую дату и время
+// обновление счетчиков Todos
+// создание элементов html
+//модальное окно FormTodo
+// получение данных с jsonplaceholder
+// запись-чтение данных localStorage
+// создание новой карточки дел
+//добавить имена из загружаемых данных в форму
+
+function createTodoObj() {
+  var todo = {
+    id: (0, _uuid.v4)(),
+    date: _refs.headerTime.textContent,
+    completed: 'todo',
+    todo: {
+      // userId: user.id,
+      title: _refs.formInputTitle.value,
+      body: _refs.formInputDescription.value
+    },
+    user: {
+      // id: todo.userId,
+      name: _refs.formSelectUser.value
+    }
+  };
+  return todo;
+}
+;
+
+//создать объект Todo
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./modalFormTodo.js":"js/modalFormTodo.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js","./addNameInForm.js":"js/addNameInForm.js"}],"js/modalFormTodo.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1310,7 +1377,7 @@ function pressConfirm(todosGetData, createDiv, createButton) {
   if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
     _refs.formAddTodo.classList.toggle('form-add-todo--vis');
     var todoObj = (0, _createTodoObj.createTodoObj)();
-    (0, _createTodoCard.createTodoCard)(todoObj);
+    (0, _createTodoCard.createTodoCard)(todoObj, createDiv, createButton);
     todosGetData.push(todoObj);
     setName(todosGetData);
     // updateCounterCards(paramsUpdateCounterCards);
@@ -1321,46 +1388,7 @@ function pressConfirm(todosGetData, createDiv, createButton) {
 ;
 
 //модальное окно FormTodo
-},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js"}],"js/addNameInForm.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.addNameInForm = addNameInForm;
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function addNameInForm(todosGetData) {
-  var formAddTodoUser = document.querySelector('.form-add-todo__user');
-  var userArr = todosGetData.map(function (el) {
-    return el.user.name;
-  });
-  var countUser = {};
-  var _iterator = _createForOfIteratorHelper(userArr),
-    _step;
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var user = _step.value;
-      countUser[user] = countUser[user] ? countUser[user] + 1 : 1;
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-  var result = Object.keys(countUser).filter(function (user) {
-    return countUser[user] > 1;
-  }).forEach(function (name) {
-    var elOption = document.createElement('option');
-    elOption.value = name;
-    elOption.textContent = name;
-    formAddTodoUser.append(elOption);
-  });
-}
-
-//добавить имена из загружаемых данных в форму
-},{}],"js/index.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _refs = require("./refs.js");
