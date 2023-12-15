@@ -33,6 +33,7 @@ import { addTodo, pressCancel, pressConfirm } from './modalFormTodo.js' //мод
 import { getTodoObj } from './createTodoObj.js' //создать объект Todo
 import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
+import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
 
 // ------------------------------------------------------------------------------
 startTime();
@@ -90,7 +91,7 @@ const runTrelloApplication = async () => {
     }
 
     if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-      pressConfirm(createDiv, createButton)
+      pressConfirm(createTodoCard)
     }
   })
 
