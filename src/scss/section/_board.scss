@@ -81,6 +81,9 @@
     display: flex;
     justify-content: space-between;
   }
+  &__time{
+    text-align: end;
+  }
   button {
     color: #5b5b5b;
     background-color: #ffffff;

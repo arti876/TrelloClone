@@ -203,6 +203,9 @@ input::-ms-clear {
   display: flex;
   justify-content: space-between;
 }
+.task__time {
+  text-align: end;
+}
 .task button {
   color: #5b5b5b;
   background-color: #ffffff;

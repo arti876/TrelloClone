@@ -7,8 +7,7 @@ function getDate() {
   const Minutes = data.getMinutes();
   const Seconds = data.getSeconds();
 
-  return `Time: ${Hour}:${Minutes}:${Seconds}
-Data: ${Day}.${Month}.${Year}`
+  return `${Hour}:${Minutes}:${Seconds}\n${Year}-${Month}-${Day}`
 }
 
 export { getDate } // получить текущую дату и время

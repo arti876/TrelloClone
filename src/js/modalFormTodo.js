@@ -63,7 +63,7 @@ function pressConfirm(todosGetData, createDiv, createButton) {
     formAddTodo.classList.toggle('form-add-todo--vis');
     
     const todoObj = createTodoObj();
-    createTodoCard(todoObj, createDiv, createButton);
+    createTodoCard(todoObj, createDiv, createButton, getDate);
     todosGetData.push(todoObj);
     setName(todosGetData);
     // updateCounterCards(paramsUpdateCounterCards);

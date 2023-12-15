@@ -13,6 +13,6 @@ function randomDate(start, end) {
 ${rDate.getFullYear()}-${('0' + (rDate.getMonth() + 1)).slice(-2)}-${('0' + rDate.getDate()).slice(-2)}`
 }
 
-console.log(randomDate(new Date(2012, 0, 1), new Date()))
+// console.log(randomDate(new Date(2012, 0, 1), new Date()))
 
 export { randomCompleted, randomDate } // рандом статуса Todo и даты

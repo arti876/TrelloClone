@@ -1067,7 +1067,8 @@ function randomDate(start, end) {
   var rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
   return "".concat(('0' + rDate.getHours()).slice(-2), ":").concat(('0' + rDate.getMinutes()).slice(-2), ":").concat(('0' + rDate.getSeconds()).slice(-2), "\n").concat(rDate.getFullYear(), "-").concat(('0' + (rDate.getMonth() + 1)).slice(-2), "-").concat(('0' + rDate.getDate()).slice(-2));
 }
-console.log(randomDate(new Date(2012, 0, 1), new Date()));
+
+// console.log(randomDate(new Date(2012, 0, 1), new Date()))
 
 // рандом статуса Todo и даты
 },{}],"js/getData.js":[function(require,module,exports) {
@@ -1085,7 +1086,7 @@ function getDate() {
   var Hour = data.getHours();
   var Minutes = data.getMinutes();
   var Seconds = data.getSeconds();
-  return "Time: ".concat(Hour, ":").concat(Minutes, ":").concat(Seconds, "\nData: ").concat(Day, ".").concat(Month, ".").concat(Year);
+  return "".concat(Hour, ":").concat(Minutes, ":").concat(Seconds, "\n").concat(Year, "-").concat(Month, "-").concat(Day);
 }
 
 // получить текущую дату и время
@@ -1166,7 +1167,7 @@ var _localStorage = require("./localStorage.js");
 // получение переменных
 // запись-чтение данных localStorage
 
-function createTodoCard(todosGetData, createDiv, createButton) {
+function createTodoCard(todosGetData, createDiv, createButton, getDate) {
   var id = todosGetData.id,
     completed = todosGetData.completed,
     date = todosGetData.date,
@@ -1177,43 +1178,60 @@ function createTodoCard(todosGetData, createDiv, createButton) {
     _todosGetData$user = todosGetData.user,
     idUser = _todosGetData$user.id,
     name = _todosGetData$user.name;
-  if (completed === 'inProgress') {
-    var _elTask = createDiv('task task--in-progress');
-    _refs.taskListBodyInProgress.append(_elTask);
-    var elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
-    var elTaskBtnComplete = createButton('task__btn task__btn--complete', 'COMPLETE');
-    elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
-  } else if (completed === 'done') {
-    var _elTask2 = createDiv('task task--done');
-    _refs.taskListBodyDone.append(_elTask2);
-    var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-    elTaskBtnContainer.append(elTaskBtnDel);
-  } else {
-    var _elTask3 = createDiv('task task--todo');
-    _refs.taskListBodyTodo.append(_elTask3);
-    var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-    var _elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-    elTaskBtnContainer.append(elTaskBtnEdit, _elTaskBtnDel);
-    var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-    elTaskBody.append(elTaskBtnRelocate);
-  }
-  elTask.draggable = true; // Drag'n'drop ON
-  elTask.id = id;
   var elTaskHeaer = createDiv('task__header');
   var elTaskBody = createDiv('task__body');
   var elTaskFooter = createDiv('task__footer');
-  elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
   var elTaskBtnContainer = createDiv('task__btn-container');
   var elTaskTitle = createDiv('task__title');
+  var elTaskDescription = createDiv('task__description');
+  var elTaskUser = createDiv('task__user');
+  var elTaskTime = createDiv('task__time');
+
+  // if (completed === 'inProgress') {
+  //   const elTask = createDiv('task task--in-progress');
+  //   taskListBodyInProgress.append(elTask);
+  //   const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
+  //   const elTaskBtnComplete = createButton('task__btn task__btn--complete', 'COMPLETE');
+  //   elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
+
+  // } else if (completed === 'done') {
+  //   const elTask = createDiv('task task--done');
+  //   taskListBodyDone.append(elTask);
+  //   const elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+  //   elTaskBtnContainer.append(elTaskBtnDel);
+  // } else {
+  var elTask = createDiv('task task--todo');
+  _refs.taskListBodyTodo.append(elTask);
+  var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+  var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+  elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
+  var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+  elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
+  // }
+
+  elTask.draggable = true; // Drag'n'drop ON
+  elTask.id = id;
+
+  // const elTaskHeaer = createDiv('task__header');
+  // const elTaskBody = createDiv('task__body');
+  // const elTaskFooter = createDiv('task__footer');
+
+  elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
+
+  // const elTaskBtnContainer = createDiv('task__btn-container');
+  // const elTaskTitle = createDiv('task__title');
   elTaskTitle.textContent = _refs.formInputTitle.value;
   elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
-  var elTaskDescription = createDiv('task__description');
+
+  // const elTaskDescription = createDiv('task__description');
   elTaskDescription.textContent = _refs.formInputDescription.value;
-  elTaskBody.append(elTaskDescription);
-  var elTaskUser = createDiv('task__user');
+
+  // elTaskBody.append(elTaskDescription);
+
+  // const elTaskUser = createDiv('task__user');
   elTaskUser.textContent = _refs.formSelectUser.value;
-  var elTaskTime = createDiv('task__time');
-  elTaskTime.textContent = _refs.headerTime.textContent;
+  // const elTaskTime = createDiv('task__time');
+  elTaskTime.textContent = getDate();
   elTaskFooter.append(elTaskUser, elTaskTime);
 }
 
@@ -1377,7 +1395,7 @@ function pressConfirm(todosGetData, createDiv, createButton) {
   if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
     _refs.formAddTodo.classList.toggle('form-add-todo--vis');
     var todoObj = (0, _createTodoObj.createTodoObj)();
-    (0, _createTodoCard.createTodoCard)(todoObj, createDiv, createButton);
+    (0, _createTodoCard.createTodoCard)(todoObj, createDiv, createButton, _getData.getDate);
     todosGetData.push(todoObj);
     setName(todosGetData);
     // updateCounterCards(paramsUpdateCounterCards);
@@ -1623,7 +1641,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59456" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50669" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
