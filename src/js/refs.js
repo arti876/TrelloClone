@@ -1,55 +1,31 @@
-const getData = (type) => fetch(`https://jsonplaceholder.typicode.com/${type}`).then(r => r.json());
+const headerTime = document.querySelector('.header__time');
+const taskListBodyTodo = document.querySelector('.task-list__body--todo');
+const taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
+const formAddTodo = document.querySelector('.form-add-todo');
+const formInputTitle = document.querySelector('.form-add-todo__input-title');
+const formInputDescription = document.querySelector('.form-add-todo__input-description');
+const formВtnCancel = document.querySelector('.form-add-todo__btn-cancel');
+const formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
+const formSelectUser = document.querySelector('.form-add-todo__user');
+const controls = document.querySelectorAll('.form-control');
+const board = document.querySelector('.board');
+const taskListBody = document.querySelector('.task-list__body');
+const taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
+const taskListBodyDone = document.querySelector('.task-list__body--done');
 
-const [ data, setData ] = useState([]);
-
-useEffect(() => {
-  Promise.all([ 'posts', 'users' ].map(getData))
-    .then(([ posts, users ]) => {
-      const usersObj = Object.fromEntries(users.map(n => [ n.id, n ]));
-      setData(posts.map(n => ({
-        post: n,
-        user: usersObj[n.userId],
-      })));
-    });
-}, []);
-
-return (
-  <div>
-    {data.map(({ post, user }) => (
-      <div>
-        <h2>{post.title}</h2>
-        <h3>{user.name}</h3>
-        <p>{post.body}</p>
-      </div>
-    ))}
-  </div>
-);
-
-function Feed() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-      const fetchData = async () => {
-          const result = await axios.get (
-              "https://jsonplaceholder.typicode.com/posts",
-          );
-
-          setPosts(result.data);
-      };
-      
-      fetchData();
-  }, []);
-      return (
-             <div className='container'>
-                  <div className='user-cards'>
-                      {posts && 
-                          posts.map(post => (
-                              <div className='user-card'>
-                                  <p>{post.title}</p>
-                                  <p>{post.body}</p>
-                              </div>
-                          ))}
-                  </div>
-              </div>
- )
+export {
+  headerTime,
+  taskListBodyTodo,
+  taskListBtnAddTodo,
+  formAddTodo,
+  formInputTitle,
+  formInputDescription,
+  formВtnCancel,
+  formВtnConfirm,
+  formSelectUser,
+  controls,
+  board,
+  taskListBody,
+  taskListBodyInProgress,
+  taskListBodyDone,
 }

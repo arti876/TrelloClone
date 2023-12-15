@@ -117,7 +117,215 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/uuid/dist/esm-browser/rng.js":[function(require,module,exports) {
+})({"js/refs.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.taskListBtnAddTodo = exports.taskListBodyTodo = exports.taskListBodyInProgress = exports.taskListBodyDone = exports.taskListBody = exports.headerTime = exports.formВtnConfirm = exports.formВtnCancel = exports.formSelectUser = exports.formInputTitle = exports.formInputDescription = exports.formAddTodo = exports.controls = exports.board = void 0;
+var headerTime = exports.headerTime = document.querySelector('.header__time');
+var taskListBodyTodo = exports.taskListBodyTodo = document.querySelector('.task-list__body--todo');
+var taskListBtnAddTodo = exports.taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
+var formAddTodo = exports.formAddTodo = document.querySelector('.form-add-todo');
+var formInputTitle = exports.formInputTitle = document.querySelector('.form-add-todo__input-title');
+var formInputDescription = exports.formInputDescription = document.querySelector('.form-add-todo__input-description');
+var formВtnCancel = exports.formВtnCancel = document.querySelector('.form-add-todo__btn-cancel');
+var formВtnConfirm = exports.formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
+var formSelectUser = exports.formSelectUser = document.querySelector('.form-add-todo__user');
+var controls = exports.controls = document.querySelectorAll('.form-control');
+var board = exports.board = document.querySelector('.board');
+var taskListBody = exports.taskListBody = document.querySelector('.task-list__body');
+var taskListBodyInProgress = exports.taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
+var taskListBodyDone = exports.taskListBodyDone = document.querySelector('.task-list__body--done');
+},{}],"js/updateCounter.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.updateCounter = updateCounter;
+function updateCounter() {
+  // счетчик Todo
+  (function getTodoCounter() {
+    return document.querySelector('.task-list__counters--todo').textContent = document.getElementsByClassName('task--todo').length;
+  })();
+  // счетчик InProgress
+  (function getInProgressCounter() {
+    return document.querySelector('.task-list__counters--in-progress').textContent = document.getElementsByClassName('task--in-progress').length;
+  })();
+  // счетчик Done
+  (function getDoneCounter() {
+    return document.querySelector('.task-list__counters--done').textContent = document.getElementsByClassName('task--done').length;
+  })();
+}
+;
+
+// обновление счетчиков Todos
+},{}],"js/htmlCreateElement.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createButton = createButton;
+exports.createDiv = createDiv;
+exports.createInput = createInput;
+exports.createLabel = createLabel;
+// создание элемента - div
+function createDiv(classList) {
+  var element = document.createElement('div');
+  element.classList = classList;
+  return element;
+}
+
+// создание элемента - label
+function createLabel(classList) {
+  var element = document.createElement('label');
+  element.classList = classList;
+  return element;
+}
+
+// создание элемента - button
+function createButton(classList, textContent) {
+  var element = document.createElement('button');
+  element.classList = classList;
+  element.type = 'button';
+  element.textContent = textContent;
+  return element;
+}
+
+// создание элемента - input
+function createInput(classList, name, placeholder) {
+  var element = document.createElement('input');
+  element.classList = classList;
+  element.type = 'text';
+  element.name = name;
+  element.placeholder = placeholder;
+  return element;
+}
+
+// создание элементов html
+},{}],"js/DragAndDrop.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.editTodo = editTodo;
+exports.relocateDoneInProgress = relocateDoneInProgress;
+exports.relocateDoneInTodo = relocateDoneInTodo;
+exports.relocateProgressInDone = relocateProgressInDone;
+exports.relocateProgressInTodo = relocateProgressInTodo;
+exports.relocateTodoInDone = relocateTodoInDone;
+exports.relocateTodoInProgress = relocateTodoInProgress;
+var _updateCounter = require("./updateCounter.js");
+var _htmlCreateElement = require("./htmlCreateElement.js");
+// обновление счетчиков Todos
+// создание элементов html
+
+// Drag'n'drop
+
+// События, происходящие с объектом перетаскивания:
+// dragstart   (срабатывает в начале операции перетаскивания элемента)
+// drag  (срабатывает, когда элемент перетаскивается)
+// dragend   (срабатывает, когда пользователь закончил перетаскивание элемента)
+
+// События, происходящие с объектом на который перетаскивают:
+// dragenter   (когда элемент будет перенесен на заданную зону (цель для переноса)) event.preventDefault();
+// dragover  (срабатывает, когда элемент перемещают над допустимой зоной для переноса) event.preventDefault();
+// dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
+// drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
+
+function relocateProgressInTodo(elem) {
+  elem.classList = 'task task--todo';
+  elem.querySelector('.task__btn--back').textContent = 'EDIT';
+  elem.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
+  elem.querySelector('.task__btn--complete').textContent = 'DELETE';
+  elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
+  elem.querySelector('.task__body').append(elTaskBtnRelocate);
+  (0, _updateCounter.updateCounter)();
+}
+function relocateTodoInProgress(elem) {
+  elem.classList = 'task task--in-progress';
+  elem.querySelector('.task__btn--relocate').remove();
+  elem.querySelector('.task__btn--edit').textContent = 'BACK';
+  elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
+  elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
+  elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  (0, _updateCounter.updateCounter)();
+}
+function relocateProgressInDone(elem) {
+  elem.classList = 'task task--done';
+  // elem.classList.remove('task--in-progress');
+  elem.querySelector('.task__btn--back').remove();
+  elem.querySelector('.task__btn--complete').textContent = 'DELETE';
+  elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  (0, _updateCounter.updateCounter)();
+}
+function relocateDoneInTodo(elem) {
+  elem.classList = 'task task--todo';
+  var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
+  elem.querySelector('.task__body').append(elTaskBtnRelocate);
+  var elTaskBtnEdit = (0, _htmlCreateElement.createButton)('task__btn task__btn--edit', 'EDIT');
+  elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
+  (0, _updateCounter.updateCounter)();
+}
+function relocateDoneInProgress(elem) {
+  elem.classList = 'task task--in-progress';
+  var elTaskBtnBack = (0, _htmlCreateElement.createButton)('task__btn task__btn--back', 'BACK');
+  elem.querySelector('.task__btn-container').prepend(elTaskBtnBack);
+  elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
+  elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  (0, _updateCounter.updateCounter)();
+}
+function relocateTodoInDone(elem) {
+  elem.classList = 'task task--done';
+  elem.querySelector('.task__btn--relocate').remove();
+  elem.querySelector('.task__btn--edit').remove();
+  (0, _updateCounter.updateCounter)();
+}
+function editTodo() {
+  var idTask = event.target.closest('.task');
+  var taskTitleText = idTask.querySelector('.task__title').textContent;
+  var taskDescriptionText = idTask.querySelector('.task__description').textContent;
+  var taskUserText = idTask.querySelector('.task__user').textContent;
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  formInputTitle.value = taskTitleText;
+  formInputDescription.value = taskDescriptionText;
+  formSelectUser.value = taskUserText;
+}
+;
+
+// Drag'n'drop
+},{"./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js"}],"js/clock.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.startTime = startTime;
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.querySelector('.header__time').innerHTML = h + ':' + m + ':' + s;
+  setTimeout(startTime, 1000);
+}
+function checkTime(i) {
+  if (i < 10) {
+    i = '0' + i;
+  }
+  ;
+  return i;
+}
+
+// часы
+},{}],"../node_modules/uuid/dist/esm-browser/rng.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -837,44 +1045,159 @@ var _validate = _interopRequireDefault(require("./validate.js"));
 var _stringify = _interopRequireDefault(require("./stringify.js"));
 var _parse = _interopRequireDefault(require("./parse.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./v1.js":"../node_modules/uuid/dist/esm-browser/v1.js","./v3.js":"../node_modules/uuid/dist/esm-browser/v3.js","./v4.js":"../node_modules/uuid/dist/esm-browser/v4.js","./v5.js":"../node_modules/uuid/dist/esm-browser/v5.js","./nil.js":"../node_modules/uuid/dist/esm-browser/nil.js","./version.js":"../node_modules/uuid/dist/esm-browser/version.js","./validate.js":"../node_modules/uuid/dist/esm-browser/validate.js","./stringify.js":"../node_modules/uuid/dist/esm-browser/stringify.js","./parse.js":"../node_modules/uuid/dist/esm-browser/parse.js"}],"js/index.js":[function(require,module,exports) {
+},{"./v1.js":"../node_modules/uuid/dist/esm-browser/v1.js","./v3.js":"../node_modules/uuid/dist/esm-browser/v3.js","./v4.js":"../node_modules/uuid/dist/esm-browser/v4.js","./v5.js":"../node_modules/uuid/dist/esm-browser/v5.js","./nil.js":"../node_modules/uuid/dist/esm-browser/nil.js","./version.js":"../node_modules/uuid/dist/esm-browser/version.js","./validate.js":"../node_modules/uuid/dist/esm-browser/validate.js","./stringify.js":"../node_modules/uuid/dist/esm-browser/stringify.js","./parse.js":"../node_modules/uuid/dist/esm-browser/parse.js"}],"js/randomStatusTodo.js":[function(require,module,exports) {
 "use strict";
 
-var _uuid = require("uuid");
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator.return && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, catch: function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.randomCompleted = void 0;
+var completedTodo = ['todo', 'inProgress', 'done'];
+var randomCompleted = exports.randomCompleted = completedTodo[Math.floor(Math.random() * completedTodo.length)];
+
+// рандом статуса Todo
+},{}],"js/getData.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getDate = getDate;
+function getDate() {
+  var data = new Date();
+  var Year = data.getFullYear();
+  var Month = data.getMonth();
+  var Day = data.getDate();
+  var Hour = data.getHours();
+  var Minutes = data.getMinutes();
+  var Seconds = data.getSeconds();
+  return "Time: ".concat(Hour, ":").concat(Minutes, ":").concat(Seconds, "\nData: ").concat(Day, ".").concat(Month, ".").concat(Year);
+}
+
+// получить текущую дату и время
+},{}],"js/modalFormTodo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addTodo = addTodo;
+exports.pressCancel = pressCancel;
+exports.pressConfirm = pressConfirm;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; } // import {
-//   startTime,
-// } from './reExport.js';
-// ------------------------------------------------------------------------------
-// рандом id
-// console.log(uuidv4());
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function addTodo() {
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  formInputTitle.value = '';
+  formInputDescription.value = '';
+  formSelectUser.value = '';
+}
+;
+function pressCancel() {
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  formInputDescription.classList.remove('invalid-control');
+  formInputTitle.classList.remove('invalid-control');
+  formSelectUser.classList.remove('invalid-control');
+}
+;
+function pressConfirm(todosGetData) {
+  var _todosGetData = _slicedToArray(todosGetData, 1),
+    _todosGetData$ = _todosGetData[0],
+    id = _todosGetData$.id,
+    _todosGetData$$todo = _todosGetData$.todo,
+    title = _todosGetData$$todo.title,
+    body = _todosGetData$$todo.body,
+    _todosGetData$$user = _todosGetData$.user,
+    name = _todosGetData$$user.name,
+    username = _todosGetData$$user.username,
+    completed = _todosGetData$.completed;
 
-// рандом статуса дел
-var completedTodo = ['todo', 'inProgress', 'done'];
-var randomCompleted = completedTodo[Math.floor(Math.random() * completedTodo.length)];
+  // controls.forEach(control => {
+  //   if (control.classList.contains('required') && !control.value) {
+  //     control.classList.add('invalid-control');
+  //   }
+  // });
 
-// ------------------------------------------------------------------------------
+  // if (completed === 'inProgress') {
 
-// const getTrelloData = async () => {
-//   const todosPlaceholder = await fetch('https://jsonplaceholder.typicode.com/todos').then((response) => response.json());
-//   const usersPlaceholder = await fetch('https://jsonplaceholder.typicode.com/users').then((response) => response.json());
-//   const commentsPlaceholder = await fetch('https://jsonplaceholder.typicode.com/comments').then((response) => response.json());
+  // } else if (completed === 'done') {
 
-//   return {
-//     todosPlaceholder,
-//     usersPlaceholder,
-//     commentsPlaceholder
-//   }
-// }
+  // } else if ((completed === 'done') || (formInputTitle.value && formInputDescription.value && formSelectUser.value)) {
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  var elTask = createDiv('task task--todo');
+  elTask.draggable = true; // Drag'n'drop ***
+  // elTask.id = Math.random().toString(36).slice(2);
 
+  taskListBodyTodo.append(elTask);
+  var elTaskHeaer = createDiv('task__header');
+  var elTaskBody = createDiv('task__body');
+  var elTaskFooter = createDiv('task__footer');
+  elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
+  var elTaskBtnContainer = createDiv('task__btn-container');
+  var elTaskTitle = createDiv('task__title');
+  elTaskTitle.textContent = formInputTitle.value;
+  elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
+  var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+  var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+  elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
+  var elTaskDescription = createDiv('task__description');
+  elTaskDescription.textContent = formInputDescription.value;
+  var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+  elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
+  var elTaskUser = createDiv('task__user');
+  elTaskUser.textContent = formSelectUser.value;
+  var elTaskTime = createDiv('task__time');
+  elTaskTime.textContent = headerTime.textContent;
+  elTaskFooter.append(elTaskUser, elTaskTime);
+  // }
+}
+;
+
+//модальное окно FormTodo
+},{}],"js/createTodoObj.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getTodoObj = getTodoObj;
+function getTodoObj(titleTodo, despriptionTodo, usermTodo, statusTodo) {
+  // const idTodo = Math.random().toString(36).slice(2);
+  // const date = getDate();
+  // const title = title;
+  // const despription = despription;
+  // const user = user;
+  // const statusTodo = status;
+  var todo = {
+    id: Math.random().toString(36).slice(2),
+    date: getDate(),
+    title: titleTodo,
+    despription: despriptionTodo,
+    user: usermTodo,
+    status: statusTodo // 'todo' 'in progress' 'done'
+  };
+  return todo;
+}
+;
+
+//создать объект Todo
+},{}],"js/getTrelloData.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getTrelloData = getTrelloData;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function getTrelloData() {
   var fetchData = function fetchData(type) {
     return fetch("https://jsonplaceholder.typicode.com/".concat(type)).then(function (r) {
@@ -890,7 +1213,7 @@ function getTrelloData() {
     }));
     return posts.map(function (n) {
       return {
-        id: (0, _uuid.v4)(),
+        id: uuidv4(),
         todo: n,
         user: usersObj[n.userId],
         completed: randomCompleted
@@ -901,6 +1224,15 @@ function getTrelloData() {
   });
 }
 
+// получение данных с jsonplaceholder
+},{}],"js/localStorage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getData = getData;
+exports.setData = setData;
 // получить
 function getData(key) {
   var _JSON$parse;
@@ -914,225 +1246,53 @@ function setData(key, value) {
 }
 ;
 
-// setData('todosPlaceholder', todosPlaceholder)
+// запись-чтение данных localStorage
+},{}],"js/index.js":[function(require,module,exports) {
+"use strict";
 
+var _refs = require("./refs.js");
+var _DragAndDrop = require("./DragAndDrop.js");
+var _clock = require("./clock.js");
+var _uuid = require("uuid");
+var _randomStatusTodo = require("./randomStatusTodo.js");
+var _getData = require("./getData.js");
+var _updateCounter = require("./updateCounter.js");
+var _htmlCreateElement = require("./htmlCreateElement.js");
+var _modalFormTodo = require("./modalFormTodo.js");
+var _createTodoObj = require("./createTodoObj.js");
+var _getTrelloData = require("./getTrelloData.js");
+var _localStorage = require("./localStorage.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator.return && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, catch: function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; } // получение переменных
+// Drag'n'drop
+// часы
+// рандом id
+// рандом статуса Todo
+// получить текущую дату и время
+// обновление счетчиков Todos
+// создание элементов html
+//модальное окно FormTodo
+//создать объект Todo
+// получение данных с jsonplaceholder
+// запись-чтение данных localStorage
+
+// ------------------------------------------------------------------------------
+(0, _clock.startTime)();
+(0, _updateCounter.updateCounter)();
 if (!localStorage.length) {
-  getTrelloData();
+  (0, _getTrelloData.getTrelloData)();
   console.log("Data in localStorage is loaded");
 }
 var runTrelloApplication = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var todosGetData, getDate, getTodoObj, startTime, checkTime, updateCounter, createDiv, createLabel, createButton, createInput, headerTime, taskListBodyTodo, taskListBtnAddTodo, formAddTodo, formInputTitle, formInputDescription, formВtnCancel, formВtnConfirm, formSelectUser, controls, addTodo, pressCancel, pressConfirm, board, taskListBody, taskListBodyInProgress, taskListBodyDone, activeElement, relocateProgressInTodo, relocateTodoInProgress, relocateProgressInDone, relocateDoneInTodo, relocateDoneInProgress, relocateTodoInDone, editTodo;
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var todosGetData, activeElement;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          editTodo = function _editTodo() {
-            var idTask = event.target.closest('.task');
-            var taskTitleText = idTask.querySelector('.task__title').textContent;
-            var taskDescriptionText = idTask.querySelector('.task__description').textContent;
-            var taskUserText = idTask.querySelector('.task__user').textContent;
-            formAddTodo.classList.toggle('form-add-todo--vis');
-            formInputTitle.value = taskTitleText;
-            formInputDescription.value = taskDescriptionText;
-            formSelectUser.value = taskUserText;
-          };
-          relocateTodoInDone = function _relocateTodoInDone(elem) {
-            elem.classList = 'task task--done';
-            elem.querySelector('.task__btn--relocate').remove();
-            elem.querySelector('.task__btn--edit').remove();
-            updateCounter();
-          };
-          relocateDoneInProgress = function _relocateDoneInProgre(elem) {
-            elem.classList = 'task task--in-progress';
-            var elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
-            elem.querySelector('.task__btn-container').prepend(elTaskBtnBack);
-            elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
-            elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-            updateCounter();
-          };
-          relocateDoneInTodo = function _relocateDoneInTodo(elem) {
-            elem.classList = 'task task--todo';
-            var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-            elem.querySelector('.task__body').append(elTaskBtnRelocate);
-            var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-            elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
-            updateCounter();
-          };
-          relocateProgressInDone = function _relocateProgressInDo(elem) {
-            elem.classList = 'task task--done';
-            // elem.classList.remove('task--in-progress');
-            elem.querySelector('.task__btn--back').remove();
-            elem.querySelector('.task__btn--complete').textContent = 'DELETE';
-            elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-            updateCounter();
-          };
-          relocateTodoInProgress = function _relocateTodoInProgre(elem) {
-            elem.classList = 'task task--in-progress';
-            elem.querySelector('.task__btn--relocate').remove();
-            elem.querySelector('.task__btn--edit').textContent = 'BACK';
-            elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
-            elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
-            elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-            updateCounter();
-          };
-          relocateProgressInTodo = function _relocateProgressInTo(elem) {
-            elem.classList = 'task task--todo';
-            elem.querySelector('.task__btn--back').textContent = 'EDIT';
-            elem.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
-            elem.querySelector('.task__btn--complete').textContent = 'DELETE';
-            elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-            var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-            elem.querySelector('.task__body').append(elTaskBtnRelocate);
-            updateCounter();
-          };
-          pressConfirm = function _pressConfirm(todosGetData) {
-            var _todosGetData = _slicedToArray(todosGetData, 1),
-              _todosGetData$ = _todosGetData[0],
-              id = _todosGetData$.id,
-              _todosGetData$$todo = _todosGetData$.todo,
-              title = _todosGetData$$todo.title,
-              body = _todosGetData$$todo.body,
-              _todosGetData$$user = _todosGetData$.user,
-              name = _todosGetData$$user.name,
-              username = _todosGetData$$user.username,
-              completed = _todosGetData$.completed;
-
-            // controls.forEach(control => {
-            //   if (control.classList.contains('required') && !control.value) {
-            //     control.classList.add('invalid-control');
-            //   }
-            // });
-
-            // if (completed === 'inProgress') {
-
-            // } else if (completed === 'done') {
-
-            // } else if ((completed === 'done') || (formInputTitle.value && formInputDescription.value && formSelectUser.value)) {
-            formAddTodo.classList.toggle('form-add-todo--vis');
-            var elTask = createDiv('task task--todo');
-            elTask.draggable = true; // Drag'n'drop ***
-            // elTask.id = Math.random().toString(36).slice(2);
-
-            taskListBodyTodo.append(elTask);
-            var elTaskHeaer = createDiv('task__header');
-            var elTaskBody = createDiv('task__body');
-            var elTaskFooter = createDiv('task__footer');
-            elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
-            var elTaskBtnContainer = createDiv('task__btn-container');
-            var elTaskTitle = createDiv('task__title');
-            elTaskTitle.textContent = formInputTitle.value;
-            elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
-            var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-            var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-            elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
-            var elTaskDescription = createDiv('task__description');
-            elTaskDescription.textContent = formInputDescription.value;
-            var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-            elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
-            var elTaskUser = createDiv('task__user');
-            elTaskUser.textContent = formSelectUser.value;
-            var elTaskTime = createDiv('task__time');
-            elTaskTime.textContent = headerTime.textContent;
-            elTaskFooter.append(elTaskUser, elTaskTime);
-            // }
-          };
-          pressCancel = function _pressCancel() {
-            formAddTodo.classList.toggle('form-add-todo--vis');
-            formInputDescription.classList.remove('invalid-control');
-            formInputTitle.classList.remove('invalid-control');
-            formSelectUser.classList.remove('invalid-control');
-          };
-          addTodo = function _addTodo() {
-            formAddTodo.classList.toggle('form-add-todo--vis');
-            formInputTitle.value = '';
-            formInputDescription.value = '';
-            formSelectUser.value = '';
-          };
-          createInput = function _createInput(classList, name, placeholder) {
-            var element = document.createElement('input');
-            element.classList = classList;
-            element.type = 'text';
-            element.name = name;
-            element.placeholder = placeholder;
-            return element;
-          };
-          createButton = function _createButton(classList, textContent) {
-            var element = document.createElement('button');
-            element.classList = classList;
-            element.type = 'button';
-            element.textContent = textContent;
-            return element;
-          };
-          createLabel = function _createLabel(classList) {
-            var element = document.createElement('label');
-            element.classList = classList;
-            return element;
-          };
-          createDiv = function _createDiv(classList) {
-            var element = document.createElement('div');
-            element.classList = classList;
-            return element;
-          };
-          updateCounter = function _updateCounter() {
-            // счетчик Todo
-            (function getTodoCounter() {
-              return document.querySelector('.task-list__counters--todo').textContent = document.getElementsByClassName('task--todo').length;
-            })();
-            // счетчик InProgress
-            (function getInProgressCounter() {
-              return document.querySelector('.task-list__counters--in-progress').textContent = document.getElementsByClassName('task--in-progress').length;
-            })();
-            // счетчик Done
-            (function getDoneCounter() {
-              return document.querySelector('.task-list__counters--done').textContent = document.getElementsByClassName('task--done').length;
-            })();
-          };
-          checkTime = function _checkTime(i) {
-            if (i < 10) {
-              i = '0' + i;
-            }
-            ;
-            return i;
-          };
-          startTime = function _startTime() {
-            var today = new Date();
-            var h = today.getHours();
-            var m = today.getMinutes();
-            var s = today.getSeconds();
-            m = checkTime(m);
-            s = checkTime(s);
-            document.querySelector('.header__time').innerHTML = h + ':' + m + ':' + s;
-            setTimeout(startTime, 1000);
-          };
-          getTodoObj = function _getTodoObj(titleTodo, despriptionTodo, usermTodo, statusTodo) {
-            // const idTodo = Math.random().toString(36).slice(2);
-            // const date = getDate();
-            // const title = title;
-            // const despription = despription;
-            // const user = user;
-            // const statusTodo = status;
-            var todo = {
-              id: Math.random().toString(36).slice(2),
-              date: getDate(),
-              title: titleTodo,
-              despription: despriptionTodo,
-              user: usermTodo,
-              status: statusTodo // 'todo' 'in progress' 'done'
-            };
-            return todo;
-          };
-          getDate = function _getDate() {
-            var data = new Date();
-            var Year = data.getFullYear();
-            var Month = data.getMonth();
-            var Day = data.getDate();
-            var Hour = data.getHours();
-            var Minutes = data.getMinutes();
-            var Seconds = data.getSeconds();
-            return "Time: ".concat(Hour, ":").concat(Minutes, ":").concat(Seconds, "\nData: ").concat(Day, ".").concat(Month, ".").concat(Year);
-          };
           // const { todosPlaceholder, usersPlaceholder, commentsPlaceholder } = await getTrelloData();
-          todosGetData = getData('todos'); // setTimeout(() => {
+          todosGetData = (0, _localStorage.getData)('todos'); // setTimeout(() => {
           //   let todosGetData = getData('todos');
           //   let [{id, todo: { id: idTodo, title, body}, user: { id: idUser, name, username }, completed }] = todosGetData
           //   console.log(id)
@@ -1145,72 +1305,15 @@ var runTrelloApplication = /*#__PURE__*/function () {
           //   console.log(username)
           // }, 100)
           // console.log(todosGetData[0].todo.title)
-          // ------------------------------------------------------------------------------
-          // localStorage
-          // // получить
-          // function getData(key) {
-          //   return JSON.parse(localStorage.getItem(key)) ?? [];
-          // };
-          // // записать
-          // function setData(key, value) {
-          //   localStorage.setItem(key, JSON.stringify(value));
-          // };
-          // setData('todosPlaceholder', todosPlaceholder)
-          // setData('usersPlaceholder', usersPlaceholder)
-          // setData('commentsPlaceholder', commentsPlaceholder)
-          // const todosPlaceholderGetData = getData('todosPlaceholder'); // id + title + completed
-          // const usersPlaceholderGetData = getData('usersPlaceholder'); // id + name
-          // const commentsPlaceholderGetData = getData('commentsPlaceholder'); // id + body
           // todos.forEach(todo => {
           //   createTodoCard(todo);
           // });
-          // ------------------------------------------------------------------------------
-          // получить текущую дату и время
-          // ------------------------------------------------------------------------------
-          // получить объект "todo"
-          ;
-
-          // ------------------------------------------------------------------------------
-          // часы
-
-          // вызов
-          startTime();
-
-          // ------------------------------------------------------------------------------
-          // счетчик Todos
-
-          ;
-          updateCounter();
-
-          // ------------------------------------------------------------------------------
-          // создание элементов
-
-          // создание элемента - div
-
-          // создание элемента - label
-
-          // создание элемента - button
-
-          // создание элемента - input
-          // ------------------------------------------------------------------------------
-          // модальное окно формы Todo
-          headerTime = document.querySelector('.header__time');
-          taskListBodyTodo = document.querySelector('.task-list__body--todo');
-          taskListBtnAddTodo = document.querySelector('.task-list__btn--add-todo');
-          formAddTodo = document.querySelector('.form-add-todo');
-          formInputTitle = document.querySelector('.form-add-todo__input-title');
-          formInputDescription = document.querySelector('.form-add-todo__input-description');
-          formВtnCancel = document.querySelector('.form-add-todo__btn-cancel');
-          formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
-          formSelectUser = document.querySelector('.form-add-todo__user');
-          controls = document.querySelectorAll('.form-control');
-          ;
-          ;
-          ;
-          taskListBtnAddTodo.addEventListener('click', addTodo);
-          formВtnCancel.addEventListener('click', pressCancel);
-          formВtnConfirm.addEventListener('click', pressConfirm);
-          formAddTodo.addEventListener('click', function (event) {
+          // addEventListener ---------------------------------------------------------------------------------------------------
+          // модальное окно формы Todo ------------------------------------------------------------------------------------------
+          _refs.taskListBtnAddTodo.addEventListener('click', _modalFormTodo.addTodo);
+          _refs.formВtnCancel.addEventListener('click', _modalFormTodo.pressCancel);
+          _refs.formВtnConfirm.addEventListener('click', _modalFormTodo.pressConfirm);
+          _refs.formAddTodo.addEventListener('click', function (event) {
             if (event.target.classList.contains('form-add-todo__input-title')) {
               event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
             }
@@ -1222,32 +1325,17 @@ var runTrelloApplication = /*#__PURE__*/function () {
             }
           });
 
-          // ------------------------------------------------------------------------------
-          // Drag'n'drop
+          // Drag'n'drop ------------------------------------------------------------------------------------------
 
-          // События, происходящие с объектом перетаскивания:
-          // dragstart   (срабатывает в начале операции перетаскивания элемента)
-          // drag  (срабатывает, когда элемент перетаскивается)
-          // dragend   (срабатывает, когда пользователь закончил перетаскивание элемента)
-
-          // События, происходящие с объектом на который перетаскивают:
-          // dragenter   (когда элемент будет перенесен на заданную зону (цель для переноса)) event.preventDefault();
-          // dragover  (срабатывает, когда элемент перемещают над допустимой зоной для переноса) event.preventDefault();
-          // dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
-          // drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
-          board = document.querySelector('.board');
-          taskListBody = document.querySelector('.task-list__body');
-          taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
-          taskListBodyDone = document.querySelector('.task-list__body--done'); // элемент который перетаскиваем
-          activeElement = null;
-          // срабатывает в начале операции перетаскивания элемента
-          board.addEventListener('dragstart', function (event) {
+          // элемент который перетаскиваем
+          activeElement = null; // срабатывает в начале операции перетаскивания элемента
+          _refs.board.addEventListener('dragstart', function (event) {
             event.target.classList.add('active-element');
             activeElement = event.target;
           });
 
           // срабатывает, когда элемент перемещают над допустимой зоной для переноса
-          board.addEventListener('dragover', function (event) {
+          _refs.board.addEventListener('dragover', function (event) {
             event.preventDefault();
             // Элемент перед которым нужно разместить activeElement
             var currentElement = event.target;
@@ -1264,48 +1352,47 @@ var runTrelloApplication = /*#__PURE__*/function () {
           });
 
           // срабатывает, когда пользователь закончил перетаскивание элемента
-          board.addEventListener('dragend', function (event) {
+          _refs.board.addEventListener('dragend', function (event) {
             event.target.classList.remove('active-element');
             // перемещение в TodoList
             if (event.target.closest('.task-list__body--todo')) {
               if (event.target.classList.contains('task--in-progress')) {
-                relocateProgressInTodo(event.target);
+                (0, _DragAndDrop.relocateProgressInTodo)(event.target);
               } else if (event.target.classList.contains('task--done')) {
-                relocateDoneInTodo(event.target);
+                (0, _DragAndDrop.relocateDoneInTodo)(event.target);
               }
               // перемещение в InProgress
             } else if (event.target.closest('.task-list__body--in-progress')) {
               if (event.target.classList.contains('task--todo')) {
-                relocateTodoInProgress(event.target);
+                (0, _DragAndDrop.relocateTodoInProgress)(event.target);
               } else if (event.target.classList.contains('task--done')) {
-                relocateDoneInProgress(event.target);
+                (0, _DragAndDrop.relocateDoneInProgress)(event.target);
               }
               // перемещение в Done
             } else if (event.target.closest('.task-list__body--done')) {
               if (event.target.classList.contains('task--todo')) {
-                relocateTodoInDone(event.target);
+                (0, _DragAndDrop.relocateTodoInDone)(event.target);
               } else if (event.target.classList.contains('task--in-progress')) {
-                relocateProgressInDone(event.target);
+                (0, _DragAndDrop.relocateProgressInDone)(event.target);
               }
             }
           });
 
-          // ------------------------------------------------------------------------------
-          // Ивенты в board
+          // Board ------------------------------------------------------------------------------------------
 
-          board.addEventListener('click', function (event) {
+          _refs.board.addEventListener('click', function (event) {
             // удаление карточки кнопкой DELETE
             if (event.target.classList.contains('task__btn--del')) {
               var task = event.target.closest('.task');
               task.remove();
-              updateCounter();
+              (0, _updateCounter.updateCounter)();
             }
             // перемещение из Todo в InProgress
             if (event.target.classList.contains('task__btn--relocate')) {
               var _task = event.target.closest('.task');
               var cloneTask = _task.cloneNode(true);
               _task.remove();
-              relocateTodoInProgress(cloneTask);
+              (0, _DragAndDrop.relocateTodoInProgress)(cloneTask);
               document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
             }
             // перемещение из InProgress в Todo
@@ -1313,7 +1400,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
               var _task2 = event.target.closest('.task');
               var _cloneTask = _task2.cloneNode(true);
               _task2.remove();
-              relocateProgressInTodo(_cloneTask);
+              (0, _DragAndDrop.relocateProgressInTodo)(_cloneTask);
               document.querySelector('.task-list__body--todo').prepend(_cloneTask);
             }
             // перемещение из InProgress в Done
@@ -1321,37 +1408,36 @@ var runTrelloApplication = /*#__PURE__*/function () {
               var _task3 = event.target.closest('.task');
               var _cloneTask2 = _task3.cloneNode(true);
               _task3.remove();
-              relocateProgressInDone(_cloneTask2);
+              (0, _DragAndDrop.relocateProgressInDone)(_cloneTask2);
               document.querySelector('.task-list__body--done').prepend(_cloneTask2);
             }
             // удаление всех карточек
             if (event.target.classList.contains('task-list__btn--del-all')) {
-              taskListBodyDone.querySelectorAll('.task--done').forEach(function (elem) {
+              _refs.taskListBodyDone.querySelectorAll('.task--done').forEach(function (elem) {
                 return elem.remove();
               });
-              updateCounter();
+              (0, _updateCounter.updateCounter)();
             }
             // редакрирование Todo
             if (event.target.classList.contains('task__btn--edit')) {
-              editTodo();
+              (0, _DragAndDrop.editTodo)();
             }
             if (event.target.classList.contains('task-list__header--done')) {
               localStorage.clear();
             }
           });
-          ;
-        case 51:
+        case 10:
         case "end":
           return _context.stop();
       }
     }, _callee);
   }));
   return function runTrelloApplication() {
-    return _ref3.apply(this, arguments);
+    return _ref.apply(this, arguments);
   };
 }();
 runTrelloApplication();
-},{"uuid":"../node_modules/uuid/dist/esm-browser/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./modalFormTodo.js":"js/modalFormTodo.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1376,7 +1462,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58734" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58087" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
