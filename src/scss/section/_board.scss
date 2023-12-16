@@ -68,6 +68,12 @@
     display: grid;
     gap: 15px;
   }
+  &__title,
+  &__user,
+  &__time,
+  &__date{
+    font-weight: 900;
+  }
   &__btn-container {
     display: flex;
     gap: 7px;
@@ -83,6 +89,11 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    font-size: 13px;
+    font-weight: 900;
+  }
+  &__user{
+
   }
   &__date-container{
     text-align: end;

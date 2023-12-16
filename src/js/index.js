@@ -35,10 +35,23 @@ import { getTrelloData } from './getTrelloData.js' // получение дан�
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
 import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
-import {trackScroll, goTop} from './goTod.js' //кнопка вверх
+import { trackScroll, goTop } from './goTod.js' //кнопка вверх
 
 // ------------------------------------------------------------------------------
 startTime();
+
+// const run = async () => {
+
+// if (!localStorage.length) {
+// getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
+// }
+
+// let todosGetData = getData('todos');
+
+// return {
+// todosGetData
+//   }
+// }
 
 if (!localStorage.length) {
   getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
@@ -46,17 +59,29 @@ if (!localStorage.length) {
 
 let todosGetData = getData('todos');
 
-const runTrelloApplication = async () => {
-
-  // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
+document.addEventListener("DOMContentLoaded", function () {
   addNameInForm(todosGetData);
 
-  // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
   todosGetData.forEach(todo => {
     createTodoCard(todo, createDiv, createButton, getDay, getTime);
   });
 
   updateCounter();
+});
+
+
+
+const runTrelloApplication = async () => {
+
+  // const { todosGetData } = await run();
+
+  // addNameInForm(todosGetData);
+
+  // todosGetData.forEach(todo => {
+  //   createTodoCard(todo, createDiv, createButton, getDay, getTime);
+  // });
+
+  // updateCounter();
 
   // addEventListener ------------------------------------------------------------------------------------
   // кнопка - скролл вверх -------------------------------------------------------------------------------
@@ -209,6 +234,29 @@ const runTrelloApplication = async () => {
       addTodo()
     }
   });
+
+  //редакрирование todo
+  function editTodo() {
+    formAddTodo.classList.toggle('form-add-todo--vis');
+
+    const idTask = event.target.closest('.task')
+    const taskTitleText = idTask.querySelector('.task__title').textContent
+    const taskDescriptionText = idTask.querySelector('.task__description').textContent
+    const taskUserText = idTask.querySelector('.task__user').textContent
+
+    formInputTitle.value = taskTitleText;
+    formInputDescription.value = taskDescriptionText;
+    formSelectUser.value = taskUserText;
+
+    const currentTaskLocalStorage = todosGetData.filter(({ todo: { id } }) => id === idTask.id)
+
+    currentTaskLocalStorage
+
+    todos.splice(cardDel, 1);
+    setName(todos);
+
+    updateCounterCards(paramsUpdateCounterCards);
+  };
 
 }
 

@@ -212,7 +212,6 @@ function createInput(classList, name, placeholder) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.editTodo = editTodo;
 exports.relocateDoneInProgress = relocateDoneInProgress;
 exports.relocateDoneInTodo = relocateDoneInTodo;
 exports.relocateProgressInDone = relocateProgressInDone;
@@ -289,17 +288,6 @@ function relocateTodoInDone(elem) {
   elem.querySelector('.task__btn--edit').remove();
   (0, _updateCounter.updateCounter)();
 }
-function editTodo() {
-  var idTask = event.target.closest('.task');
-  var taskTitleText = idTask.querySelector('.task__title').textContent;
-  var taskDescriptionText = idTask.querySelector('.task__description').textContent;
-  var taskUserText = idTask.querySelector('.task__user').textContent;
-  _refs.formAddTodo.classList.toggle('form-add-todo--vis');
-  _refs.formInputTitle.value = taskTitleText;
-  _refs.formInputDescription.value = taskDescriptionText;
-  _refs.formSelectUser.value = taskUserText;
-}
-;
 
 // Drag'n'drop
 },{"./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./refs.js":"js/refs.js"}],"js/clock.js":[function(require,module,exports) {
@@ -1200,11 +1188,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var elTaskHeaer = createDiv('task__header');
     var elTaskFooter = createDiv('task__footer');
     var elTaskTitle = createDiv('task__title');
-    elTaskTitle.textContent = 'Title: ' + title;
+    elTaskTitle.textContent = title;
     var elTaskDescription = createDiv('task__description');
-    elTaskDescription.textContent = 'Description: ' + body;
+    elTaskDescription.textContent = body;
     var elTaskUser = createDiv('task__user');
-    elTaskUser.textContent = 'User: ' + name;
+    elTaskUser.textContent = name;
     var elTaskDateContainer = createDiv('task__date-container');
     var elTaskTime = createDiv('task__time');
     elTaskTime.textContent = time;
@@ -1229,11 +1217,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var _elTaskHeaer = createDiv('task__header');
     var _elTaskFooter = createDiv('task__footer');
     var _elTaskTitle = createDiv('task__title');
-    _elTaskTitle.textContent = 'Title: ' + title;
+    _elTaskTitle.textContent = title;
     var _elTaskDescription = createDiv('task__description');
-    _elTaskDescription.textContent = 'Description: ' + body;
+    _elTaskDescription.textContent = body;
     var _elTaskUser = createDiv('task__user');
-    _elTaskUser.textContent = 'User: ' + name;
+    _elTaskUser.textContent = name;
     var _elTaskDateContainer = createDiv('task__date-container');
     var _elTaskTime = createDiv('task__time');
     _elTaskTime.textContent = time;
@@ -1258,11 +1246,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var _elTaskHeaer2 = createDiv('task__header');
     var _elTaskFooter2 = createDiv('task__footer');
     var _elTaskTitle2 = createDiv('task__title');
-    _elTaskTitle2.textContent = 'Title: ' + title;
+    _elTaskTitle2.textContent = title;
     var _elTaskDescription2 = createDiv('task__description');
-    _elTaskDescription2.textContent = 'Description: ' + body;
+    _elTaskDescription2.textContent = body;
     var _elTaskUser2 = createDiv('task__user');
-    _elTaskUser2.textContent = 'User: ' + name;
+    _elTaskUser2.textContent = name;
     var _elTaskDateContainer2 = createDiv('task__date-container');
     var _elTaskTime2 = createDiv('task__time');
     _elTaskTime2.textContent = time;
@@ -1522,16 +1510,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 // ------------------------------------------------------------------------------
 (0, _clock.startTime)();
+
+// const run = async () => {
+
+// if (!localStorage.length) {
+// getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
+// }
+
+// let todosGetData = getData('todos');
+
+// return {
+// todosGetData
+//   }
+// }
+
 if (!localStorage.length) {
   (0, _getTrelloData.getTrelloData)(_uuid.v4, _getRandom.randomCompleted, _getRandom.randomDay, _getRandom.randomTime, _localStorage.setData);
 }
 var todosGetData = (0, _localStorage.getData)('todos');
+document.addEventListener("DOMContentLoaded", function () {
+  (0, _addNameInForm.addNameInForm)(todosGetData);
+  todosGetData.forEach(function (todo) {
+    (0, _createTodoCard.createTodoCard)(todo, _htmlCreateElement.createDiv, _htmlCreateElement.createButton, _getData.getDay, _getData.getTime);
+  });
+  (0, _updateCounter.updateCounter)();
+});
 var runTrelloApplication = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var goTopBtn, boardClear, boardClearBtn, activeElement;
+    var goTopBtn, boardClear, boardClearBtn, activeElement, editTodo;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          editTodo = function _editTodo() {
+            _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+            var idTask = event.target.closest('.task');
+            var taskTitleText = idTask.querySelector('.task__title').textContent;
+            var taskDescriptionText = idTask.querySelector('.task__description').textContent;
+            var taskUserText = idTask.querySelector('.task__user').textContent;
+            _refs.formInputTitle.value = taskTitleText;
+            _refs.formInputDescription.value = taskDescriptionText;
+            _refs.formSelectUser.value = taskUserText;
+            var currentTask = todosGetData.filter(function (_ref2) {
+              var id = _ref2.todo.id;
+              return id === idTask.id;
+            });
+            closestCardItem.remove();
+            todos.splice(cardDel, 1);
+            setName(todos);
+            updateCounterCards(paramsUpdateCounterCards);
+          };
           boardClear = function _boardClear() {
             var allTask = document.querySelectorAll('.task');
             allTask.forEach(function (task) {
@@ -1541,15 +1568,12 @@ var runTrelloApplication = /*#__PURE__*/function () {
             localStorage.clear();
             // location. reload()
           };
-          // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
-          (0, _addNameInForm.addNameInForm)(todosGetData);
-
-          // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
-          todosGetData.forEach(function (todo) {
-            (0, _createTodoCard.createTodoCard)(todo, _htmlCreateElement.createDiv, _htmlCreateElement.createButton, _getData.getDay, _getData.getTime);
-          });
-          (0, _updateCounter.updateCounter)();
-
+          // const { todosGetData } = await run();
+          // addNameInForm(todosGetData);
+          // todosGetData.forEach(todo => {
+          //   createTodoCard(todo, createDiv, createButton, getDay, getTime);
+          // });
+          // updateCounter();
           // addEventListener ------------------------------------------------------------------------------------
           // кнопка - скролл вверх -------------------------------------------------------------------------------
           goTopBtn = document.querySelector(".go-top"); // обработчик на скролл окна
@@ -1675,14 +1699,18 @@ var runTrelloApplication = /*#__PURE__*/function () {
             }
             // редакрирование Todo
             if (event.target.classList.contains('task__btn--edit')) {
-              (0, _DragAndDrop.editTodo)();
+              editTodo();
             }
             // добавить новый Todo
             if (event.target.classList.contains('task-list__btn--add-todo')) {
               (0, _modalFormTodo.addTodo)();
             }
           });
-        case 15:
+
+          //редакрирование todo
+
+          ;
+        case 14:
         case "end":
           return _context.stop();
       }
@@ -1718,7 +1746,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50611" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49965" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -85,19 +85,6 @@ function relocateTodoInDone(elem) {
   updateCounter();
 }
 
-function editTodo() {
-  const idTask = event.target.closest('.task')
-  const taskTitleText = idTask.querySelector('.task__title').textContent
-  const taskDescriptionText = idTask.querySelector('.task__description').textContent
-  const taskUserText = idTask.querySelector('.task__user').textContent
-
-  formAddTodo.classList.toggle('form-add-todo--vis');
-
-  formInputTitle.value = taskTitleText;
-  formInputDescription.value = taskDescriptionText;
-  formSelectUser.value = taskUserText;
-};
-
 export {
   relocateProgressInTodo,
   relocateTodoInProgress,
@@ -105,5 +92,4 @@ export {
   relocateDoneInTodo,
   relocateDoneInProgress,
   relocateTodoInDone,
-  editTodo,
 } // Drag'n'drop

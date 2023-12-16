@@ -230,6 +230,9 @@ input::-ms-clear {
   display: grid;
   gap: 15px;
 }
+.task__title, .task__user, .task__time, .task__date {
+  font-weight: 900;
+}
 .task__btn-container {
   display: flex;
   gap: 7px;
@@ -245,6 +248,8 @@ input::-ms-clear {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  font-size: 13px;
+  font-weight: 900;
 }
 .task__date-container {
   text-align: end;
