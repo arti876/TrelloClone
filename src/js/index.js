@@ -35,33 +35,52 @@ import { getTrelloData } from './getTrelloData.js' // получение дан�
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
 import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
+import {trackScroll, goTop} from './goTod.js' //кнопка вверх
 
 // ------------------------------------------------------------------------------
+startTime();
 
 if (!localStorage.length) {
   getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
-  console.log(`Data in localStorage is loaded`)
 }
-
-
 
 let todosGetData = getData('todos');
 
-startTime();
-addNameInForm(todosGetData); // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
-
-
-
 const runTrelloApplication = async () => {
 
+  // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
+  addNameInForm(todosGetData);
+
+  // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
   todosGetData.forEach(todo => {
     createTodoCard(todo, createDiv, createButton, getDay, getTime);
   });
 
   updateCounter();
-  
+
   // addEventListener ------------------------------------------------------------------------------------
+  // кнопка - скролл вверх -------------------------------------------------------------------------------
+
+  const goTopBtn = document.querySelector(".go-top");
+  // обработчик на скролл окна
+  window.addEventListener('scroll', function (event) {
+    trackScroll(goTopBtn);
+  })
+  // обработчик на нажатии
+  goTopBtn.addEventListener("click", goTop);
+
   // модальное окно формы Todo ---------------------------------------------------------------------------
+
+  function boardClear() {
+    const allTask = document.querySelectorAll('.task');
+    allTask.forEach(task => task.remove())
+    updateCounter();
+    localStorage.clear()
+    // location. reload()
+  }
+
+  const boardClearBtn = document.querySelector('.board-clear');
+  boardClearBtn.addEventListener('click', boardClear);
 
   formAddTodo.addEventListener('click', function (event) {
     if (event.target.classList.contains('form-add-todo__input-title')) {
@@ -188,10 +207,6 @@ const runTrelloApplication = async () => {
     // добавить новый Todo
     if (event.target.classList.contains('task-list__btn--add-todo')) {
       addTodo()
-    }
-    // очистить localStorage
-    if (event.target.classList.contains('task-list__header--done')) {
-      localStorage.clear()
     }
   });
 

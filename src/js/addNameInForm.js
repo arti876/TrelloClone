@@ -16,6 +16,8 @@ function addNameInForm(todosGetData) {
       elOption.textContent = name;
       formAddTodoUser.append(elOption);
     })
+
+    return result
 }
 
 export { addNameInForm } //добавить имена из загружаемых данных в форму

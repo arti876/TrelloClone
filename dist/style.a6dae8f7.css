@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 * {
   margin: 0;
@@ -81,6 +82,32 @@ input::-ms-clear {
   display: none;
 }
 
+.go-top {
+  position: fixed; /* фиксированное позиционирование */
+  right: 25px; /* отступ слева 20px */
+  bottom: 25px; /* выравниваем по центру */
+  cursor: pointer; /* при наведении меняем курсор */
+  display: none; /* по умолчанию скрываем кнопку */
+  font-size: 20px;
+  color: rgba(0, 51, 153, 0.5);
+  border: 1px solid rgba(0, 51, 153, 0.5);
+  border-radius: 5px;
+  background-color: rgba(0, 51, 153, 0.1);
+  padding: 10px 7px;
+}
+
+/* меняем прозрачность при наведении мышкой */
+.go-top:hover {
+  color: rgba(0, 51, 153, 0.8);
+  border: 1px solid rgba(0, 51, 153, 0.8);
+  background-color: rgba(0, 51, 153, 0.15);
+}
+
+/* модификатор для отображения кнопки */
+.go-top--show {
+  display: block;
+}
+
 .trello {
   padding: 25px;
 }
@@ -96,7 +123,20 @@ input::-ms-clear {
   padding: 25px;
 }
 
+.board-clear {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  padding: 10px;
+  transition: 0.3s;
+}
+
+.board-clear:hover {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+}
+
 .header {
+  position: sticky;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
