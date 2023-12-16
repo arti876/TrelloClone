@@ -21,8 +21,9 @@ import { getData, setData } from './localStorage.js'// запись-чтение
 
 function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) {
   let { todo: { id, title, body, time, day, completed }, user: { name } } = todosGetData;
+  const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
 
-  if (completed === 'inProgress') {
+  if (completed === 'inProgress' && lengthTaskInProgress < 6) {
     const elTask = createDiv('task task--in-progress');
     elTask.draggable = true; // Drag'n'drop ON
     elTask.id = id;
@@ -31,11 +32,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     const elTaskHeaer = createDiv('task__header');
     const elTaskFooter = createDiv('task__footer');
     const elTaskTitle = createDiv('task__title');
-    elTaskTitle.textContent = title;
+    elTaskTitle.textContent = 'Title: ' + title;
     const elTaskDescription = createDiv('task__description');
-    elTaskDescription.textContent = body;
+    elTaskDescription.textContent = 'Description: ' + body;
     const elTaskUser = createDiv('task__user');
-    elTaskUser.textContent = name;
+    elTaskUser.textContent = 'User: ' + name;
     const elTaskDateContainer = createDiv('task__date-container');
     const elTaskTime = createDiv('task__time');
     elTaskTime.textContent = time;
@@ -47,6 +48,7 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
     elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
     elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
+    elTaskBody.append(elTaskDescription);
     elTaskFooter.append(elTaskUser, elTaskDateContainer);
     elTaskDateContainer.append(elTaskTime, elTaskDate);
   } else if (completed === 'done') {
@@ -59,11 +61,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     const elTaskHeaer = createDiv('task__header');
     const elTaskFooter = createDiv('task__footer');
     const elTaskTitle = createDiv('task__title');
-    elTaskTitle.textContent = title;
+    elTaskTitle.textContent = 'Title: ' + title;
     const elTaskDescription = createDiv('task__description');
-    elTaskDescription.textContent = body;
+    elTaskDescription.textContent = 'Description: ' + body;
     const elTaskUser = createDiv('task__user');
-    elTaskUser.textContent = name;
+    elTaskUser.textContent = 'User: ' + name;
     const elTaskDateContainer = createDiv('task__date-container');
     const elTaskTime = createDiv('task__time');
     elTaskTime.textContent = time;
@@ -73,6 +75,7 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
     elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
     elTaskBtnContainer.append(elTaskBtnDel);
+    elTaskBody.append(elTaskDescription);
     elTaskFooter.append(elTaskUser, elTaskDateContainer);
     elTaskDateContainer.append(elTaskTime, elTaskDate);
   } else if (completed === 'todo') {
@@ -87,45 +90,16 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     const elTaskHeaer = createDiv('task__header');
     const elTaskFooter = createDiv('task__footer');
     const elTaskTitle = createDiv('task__title');
-    elTaskTitle.textContent = title;
+    elTaskTitle.textContent = 'Title: ' + title;
     const elTaskDescription = createDiv('task__description');
-    elTaskDescription.textContent = body;
+    elTaskDescription.textContent = 'Description: ' + body;
     const elTaskUser = createDiv('task__user');
-    elTaskUser.textContent = name;
+    elTaskUser.textContent = 'User: ' + name;
     const elTaskDateContainer = createDiv('task__date-container');
     const elTaskTime = createDiv('task__time');
     elTaskTime.textContent = time;
     const elTaskDate = createDiv('task__date');
     elTaskDate.textContent = day;
-    taskListBodyTodo.append(elTask);
-    elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
-    elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
-    elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
-    elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
-    elTaskFooter.append(elTaskUser, elTaskDateContainer);
-    elTaskDateContainer.append(elTaskTime, elTaskDate);
-  } else {
-    const elTask = createDiv('task task--todo');
-    elTask.draggable = true; // Drag'n'drop ON
-    elTask.id = id;
-    const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-    const elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-    const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-    const elTaskBtnContainer = createDiv('task__btn-container');
-    const elTaskBody = createDiv('task__body');
-    const elTaskHeaer = createDiv('task__header');
-    const elTaskFooter = createDiv('task__footer');
-    const elTaskTitle = createDiv('task__title');
-    elTaskTitle.textContent = formInputTitle.value;
-    const elTaskDescription = createDiv('task__description');
-    elTaskDescription.textContent = formInputDescription.value;
-    const elTaskUser = createDiv('task__user');
-    elTaskUser.textContent = formSelectUser.value;
-    const elTaskDateContainer = createDiv('task__date-container');
-    const elTaskTime = createDiv('task__time');
-    elTaskTime.textContent = getTime();
-    const elTaskDate = createDiv('task__date');
-    elTaskDate.textContent = getDay();
     taskListBodyTodo.append(elTask);
     elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
     elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);

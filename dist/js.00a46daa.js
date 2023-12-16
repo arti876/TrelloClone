@@ -1139,6 +1139,7 @@ function getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData) 
       }, "todo", n.time = randomTime(new Date(2020, 0, 1), new Date())), "todo", n.day = randomDay(new Date(2020, 0, 1), new Date())), "todo", n.completed = randomCompleted()), "todo", n), "user", usersObj[n.userId]);
     });
   }).then(function (todos) {
+    // todos.length = 10;
     return setData('todos', todos);
   });
 }
@@ -1189,7 +1190,8 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     day = _todosGetData$todo.day,
     completed = _todosGetData$todo.completed,
     name = todosGetData.user.name;
-  if (completed === 'inProgress') {
+  var lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
+  if (completed === 'inProgress' && lengthTaskInProgress < 6) {
     var elTask = createDiv('task task--in-progress');
     elTask.draggable = true; // Drag'n'drop ON
     elTask.id = id;
@@ -1198,11 +1200,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var elTaskHeaer = createDiv('task__header');
     var elTaskFooter = createDiv('task__footer');
     var elTaskTitle = createDiv('task__title');
-    elTaskTitle.textContent = title;
+    elTaskTitle.textContent = 'Title: ' + title;
     var elTaskDescription = createDiv('task__description');
-    elTaskDescription.textContent = body;
+    elTaskDescription.textContent = 'Description: ' + body;
     var elTaskUser = createDiv('task__user');
-    elTaskUser.textContent = name;
+    elTaskUser.textContent = 'User: ' + name;
     var elTaskDateContainer = createDiv('task__date-container');
     var elTaskTime = createDiv('task__time');
     elTaskTime.textContent = time;
@@ -1214,6 +1216,7 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
     elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
     elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
+    elTaskBody.append(elTaskDescription);
     elTaskFooter.append(elTaskUser, elTaskDateContainer);
     elTaskDateContainer.append(elTaskTime, elTaskDate);
   } else if (completed === 'done') {
@@ -1226,11 +1229,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var _elTaskHeaer = createDiv('task__header');
     var _elTaskFooter = createDiv('task__footer');
     var _elTaskTitle = createDiv('task__title');
-    _elTaskTitle.textContent = title;
+    _elTaskTitle.textContent = 'Title: ' + title;
     var _elTaskDescription = createDiv('task__description');
-    _elTaskDescription.textContent = body;
+    _elTaskDescription.textContent = 'Description: ' + body;
     var _elTaskUser = createDiv('task__user');
-    _elTaskUser.textContent = name;
+    _elTaskUser.textContent = 'User: ' + name;
     var _elTaskDateContainer = createDiv('task__date-container');
     var _elTaskTime = createDiv('task__time');
     _elTaskTime.textContent = time;
@@ -1240,6 +1243,7 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     _elTask.append(_elTaskHeaer, _elTaskBody, _elTaskFooter);
     _elTaskHeaer.append(_elTaskBtnContainer, _elTaskTitle);
     _elTaskBtnContainer.append(elTaskBtnDel);
+    _elTaskBody.append(_elTaskDescription);
     _elTaskFooter.append(_elTaskUser, _elTaskDateContainer);
     _elTaskDateContainer.append(_elTaskTime, _elTaskDate);
   } else if (completed === 'todo') {
@@ -1254,11 +1258,11 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var _elTaskHeaer2 = createDiv('task__header');
     var _elTaskFooter2 = createDiv('task__footer');
     var _elTaskTitle2 = createDiv('task__title');
-    _elTaskTitle2.textContent = title;
+    _elTaskTitle2.textContent = 'Title: ' + title;
     var _elTaskDescription2 = createDiv('task__description');
-    _elTaskDescription2.textContent = body;
+    _elTaskDescription2.textContent = 'Description: ' + body;
     var _elTaskUser2 = createDiv('task__user');
-    _elTaskUser2.textContent = name;
+    _elTaskUser2.textContent = 'User: ' + name;
     var _elTaskDateContainer2 = createDiv('task__date-container');
     var _elTaskTime2 = createDiv('task__time');
     _elTaskTime2.textContent = time;
@@ -1271,35 +1275,6 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     _elTaskBody2.append(_elTaskDescription2, elTaskBtnRelocate);
     _elTaskFooter2.append(_elTaskUser2, _elTaskDateContainer2);
     _elTaskDateContainer2.append(_elTaskTime2, _elTaskDate2);
-  } else {
-    var _elTask3 = createDiv('task task--todo');
-    _elTask3.draggable = true; // Drag'n'drop ON
-    _elTask3.id = id;
-    var _elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-    var _elTaskBtnDel2 = createButton('task__btn task__btn--del', 'DELETE');
-    var _elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-    var _elTaskBtnContainer3 = createDiv('task__btn-container');
-    var _elTaskBody3 = createDiv('task__body');
-    var _elTaskHeaer3 = createDiv('task__header');
-    var _elTaskFooter3 = createDiv('task__footer');
-    var _elTaskTitle3 = createDiv('task__title');
-    _elTaskTitle3.textContent = _refs.formInputTitle.value;
-    var _elTaskDescription3 = createDiv('task__description');
-    _elTaskDescription3.textContent = _refs.formInputDescription.value;
-    var _elTaskUser3 = createDiv('task__user');
-    _elTaskUser3.textContent = _refs.formSelectUser.value;
-    var _elTaskDateContainer3 = createDiv('task__date-container');
-    var _elTaskTime3 = createDiv('task__time');
-    _elTaskTime3.textContent = getTime();
-    var _elTaskDate3 = createDiv('task__date');
-    _elTaskDate3.textContent = getDay();
-    _refs.taskListBodyTodo.append(_elTask3);
-    _elTask3.append(_elTaskHeaer3, _elTaskBody3, _elTaskFooter3);
-    _elTaskHeaer3.append(_elTaskBtnContainer3, _elTaskTitle3);
-    _elTaskBtnContainer3.append(_elTaskBtnEdit, _elTaskBtnDel2);
-    _elTaskBody3.append(_elTaskDescription3, _elTaskBtnRelocate);
-    _elTaskFooter3.append(_elTaskUser3, _elTaskDateContainer3);
-    _elTaskDateContainer3.append(_elTaskTime3, _elTaskDate3);
   }
 }
 

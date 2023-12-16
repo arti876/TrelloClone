@@ -4,7 +4,6 @@ function getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData) 
   Promise.all(['users', 'posts'].map(fetchData))
     .then(([users, posts]) => {
       const usersObj = Object.fromEntries(users.map(n => [n.id, n]))
-
       return posts.map(n => ({
         todo: n.id = uuidv4(),
         todo: n.time = randomTime(new Date(2020, 0, 1), new Date()),
@@ -14,7 +13,10 @@ function getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData) 
         user: usersObj[n.userId],
       }))
     })
-    .then(todos => setData('todos', todos))
+    .then(todos => {
+      // todos.length = 10;
+      return setData('todos', todos)
+    })
 }
 
 export { getTrelloData } // получение данных с jsonplaceholder

@@ -126,6 +126,7 @@ input::-ms-clear {
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  align-items: start;
   gap: 20px;
 }
 
@@ -198,6 +199,7 @@ input::-ms-clear {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 .task__footer {
   display: flex;
