@@ -25,8 +25,8 @@ import {
 } from './DragAndDrop.js' // Drag'n'drop
 import { startTime, } from './clock.js'; // часы
 import { v4 as uuidv4 } from 'uuid'; // рандом id
-import { randomCompleted, randomDate } from './randomStatusTodo.js' // рандом статуса Todo и даты
-import { getDate, getTime } from './getData.js' // получить текущую дату и время
+import { randomCompleted, randomDay, randomTime } from './getRandom.js' // рандом статуса Todo и даты
+import { getDay, getTime } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
 import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
 import { addTodo, pressCancel, pressConfirm } from './modalFormTodo.js' //модальное окно FormTodo
@@ -39,9 +39,11 @@ import { addNameInForm } from './addNameInForm.js' //добавить имена
 // ------------------------------------------------------------------------------
 
 if (!localStorage.length) {
-  getTrelloData(uuidv4, randomCompleted, randomDate, setData)
+  getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
   console.log(`Data in localStorage is loaded`)
 }
+
+
 
 let todosGetData = getData('todos');
 
@@ -52,22 +54,6 @@ addNameInForm(todosGetData); // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫ
 
 
 const runTrelloApplication = async () => {
-  // setTimeout(() => {
-  //   let todosGetData = getData('todos');
-
-  //   let [{id, todo: { id: idTodo, title, body}, user: { id: idUser, name, username }, completed }] = todosGetData
-  //   console.log(id)
-  //   console.log(idTodo)
-  //   console.log(title)
-  //   console.log(body)
-  //   console.log(completed)
-  //   console.log(idUser)
-  //   console.log(name)
-  //   console.log(username)
-  // }, 100)
-
-  // console.log(todosGetData[0].todo.title)
-
 
   // todosGetData.forEach(todo => {
   //   createTodoCard(todo, createDiv, createButton);

@@ -1048,41 +1048,35 @@ var _validate = _interopRequireDefault(require("./validate.js"));
 var _stringify = _interopRequireDefault(require("./stringify.js"));
 var _parse = _interopRequireDefault(require("./parse.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./v1.js":"../node_modules/uuid/dist/esm-browser/v1.js","./v3.js":"../node_modules/uuid/dist/esm-browser/v3.js","./v4.js":"../node_modules/uuid/dist/esm-browser/v4.js","./v5.js":"../node_modules/uuid/dist/esm-browser/v5.js","./nil.js":"../node_modules/uuid/dist/esm-browser/nil.js","./version.js":"../node_modules/uuid/dist/esm-browser/version.js","./validate.js":"../node_modules/uuid/dist/esm-browser/validate.js","./stringify.js":"../node_modules/uuid/dist/esm-browser/stringify.js","./parse.js":"../node_modules/uuid/dist/esm-browser/parse.js"}],"js/randomStatusTodo.js":[function(require,module,exports) {
+},{"./v1.js":"../node_modules/uuid/dist/esm-browser/v1.js","./v3.js":"../node_modules/uuid/dist/esm-browser/v3.js","./v4.js":"../node_modules/uuid/dist/esm-browser/v4.js","./v5.js":"../node_modules/uuid/dist/esm-browser/v5.js","./nil.js":"../node_modules/uuid/dist/esm-browser/nil.js","./version.js":"../node_modules/uuid/dist/esm-browser/version.js","./validate.js":"../node_modules/uuid/dist/esm-browser/validate.js","./stringify.js":"../node_modules/uuid/dist/esm-browser/stringify.js","./parse.js":"../node_modules/uuid/dist/esm-browser/parse.js"}],"js/getRandom.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.randomCompleted = randomCompleted;
-exports.randomDate = randomDate;
+exports.randomDay = randomDay;
+exports.randomTime = randomTime;
 // рандомный статус
 function randomCompleted() {
   var completedTodo = ['todo', 'inProgress', 'done'];
   return completedTodo[Math.floor(Math.random() * completedTodo.length)];
 }
 
-// // рандомная дата
-// function randomDate(start, end) {
-//   const rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-
-//   return `${('0' + rDate.getHours()).slice(-2)}:${('0' + rDate.getMinutes()).slice(-2)}:${('0' + rDate.getSeconds()).slice(-2)}
-// ${rDate.getFullYear()}-${('0' + (rDate.getMonth() + 1)).slice(-2)}-${('0' + rDate.getDate()).slice(-2)}`
-// }
-
-// рандомная дата
-function randomDate(start, end) {
+// рандомный день
+function randomDay(start, end) {
   var rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  return "".concat(rDate.getFullYear(), "-").concat(('0' + (rDate.getMonth() + 1)).slice(-2), "-").concat(('0' + rDate.getDate()).slice(-2));
+  return "".concat(('0' + rDate.getDate()).slice(-2), "-").concat(('0' + (rDate.getMonth() + 1)).slice(-2), "-").concat(rDate.getFullYear());
 }
 
 // рандомное время
-function randomDate(start, end) {
+function randomTime(start, end) {
   var rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  return "".concat(('0' + rDate.getHours()).slice(-2), ":").concat(('0' + rDate.getMinutes()).slice(-2), ":").concat(('0' + rDate.getSeconds()).slice(-2), "\n").concat(rDate.getFullYear(), "-").concat(('0' + (rDate.getMonth() + 1)).slice(-2), "-").concat(('0' + rDate.getDate()).slice(-2));
+  return "".concat(('0' + rDate.getHours()).slice(-2), ":").concat(('0' + rDate.getMinutes()).slice(-2), ":").concat(('0' + rDate.getSeconds()).slice(-2));
 }
 
-// console.log(randomDate(new Date(2012, 0, 1), new Date()))
+// console.log(randomDay(new Date(2023, 0, 1), new Date()))
+// console.log(randomTime(new Date(2023, 0, 1), new Date()))
 
 // рандом статуса Todo и даты
 },{}],"js/getData.js":[function(require,module,exports) {
@@ -1091,9 +1085,9 @@ function randomDate(start, end) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getDate = getDate;
+exports.getDay = getDay;
 exports.getTime = getTime;
-function getDate() {
+function getDay() {
   var data = new Date();
   var Year = data.getFullYear();
   var Month = data.getMonth();
@@ -1102,9 +1096,9 @@ function getDate() {
 }
 function getTime() {
   var data = new Date();
-  var Hour = data.getHours();
-  var Minutes = data.getMinutes();
-  var Seconds = data.getSeconds();
+  var Hour = ('0' + data.getHours()).slice(-2);
+  var Minutes = ('0' + data.getMinutes()).slice(-2);
+  var Seconds = ('0' + data.getSeconds()).slice(-2);
   return "".concat(Hour, ":").concat(Minutes, ":").concat(Seconds);
 }
 
@@ -1116,13 +1110,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getTrelloData = getTrelloData;
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function getTrelloData(uuidv4, randomCompleted, randomDate, setData) {
+function getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData) {
   var fetchData = function fetchData(type) {
     return fetch("https://jsonplaceholder.typicode.com/".concat(type)).then(function (r) {
       return r.json();
@@ -1136,13 +1134,9 @@ function getTrelloData(uuidv4, randomCompleted, randomDate, setData) {
       return [n.id, n];
     }));
     return posts.map(function (n) {
-      return {
-        id: uuidv4(),
-        date: randomDate(new Date(2020, 0, 1), new Date()),
-        completed: randomCompleted(),
-        todo: n,
-        user: usersObj[n.userId]
-      };
+      return _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
+        todo: n.id = uuidv4()
+      }, "todo", n.time = randomTime(new Date(2020, 0, 1), new Date())), "todo", n.day = randomDay(new Date(2020, 0, 1), new Date())), "todo", n.completed = randomCompleted()), "todo", n), "user", usersObj[n.userId]);
     });
   }).then(function (todos) {
     return setData('todos', todos);
@@ -1186,79 +1180,98 @@ var _localStorage = require("./localStorage.js");
 // получение переменных
 // запись-чтение данных localStorage
 
-function createTodoCard(todosGetData, createDiv, createButton, getDate, getTime) {
-  var id = todosGetData.id,
-    completed = todosGetData.completed,
-    date = todosGetData.date,
-    _todosGetData$todo = todosGetData.todo,
-    idTodo = _todosGetData$todo.id,
+function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) {
+  var _todosGetData$todo = todosGetData.todo,
+    id = _todosGetData$todo.id,
     title = _todosGetData$todo.title,
     body = _todosGetData$todo.body,
-    _todosGetData$user = todosGetData.user,
-    idUser = _todosGetData$user.id,
-    name = _todosGetData$user.name;
-  var elTaskHeaer = createDiv('task__header');
-  var elTaskBody = createDiv('task__body');
-  var elTaskFooter = createDiv('task__footer');
-  var elTaskBtnContainer = createDiv('task__btn-container');
-  var elTaskTitle = createDiv('task__title');
-  var elTaskDescription = createDiv('task__description');
-  var elTaskUser = createDiv('task__user');
-  var elTaskDateContainer = createDiv('task__date-container');
-  var elTaskTime = createDiv('task__time');
-  var elTaskDate = createDiv('task__date');
-
-  // if (completed === 'inProgress') {
-  //   const elTask = createDiv('task task--in-progress');
-  //   taskListBodyInProgress.append(elTask);
-  //   const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
-  //   const elTaskBtnComplete = createButton('task__btn task__btn--complete', 'COMPLETE');
-  //   elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
-
-  // } else if (completed === 'done') {
-  //   const elTask = createDiv('task task--done');
-  //   taskListBodyDone.append(elTask);
-  //   const elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-  //   elTaskBtnContainer.append(elTaskBtnDel);
-  // } else {
-  var elTask = createDiv('task task--todo');
-  _refs.taskListBodyTodo.append(elTask);
-  var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-  var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-  elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
-  var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-  elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
-  // }
-
-  elTask.draggable = true; // Drag'n'drop ON
-  elTask.id = id;
-
-  // const elTaskHeaer = createDiv('task__header');
-  // const elTaskBody = createDiv('task__body');
-  // const elTaskFooter = createDiv('task__footer');
-
-  elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
-
-  // const elTaskBtnContainer = createDiv('task__btn-container');
-  // const elTaskTitle = createDiv('task__title');
-  elTaskTitle.textContent = _refs.formInputTitle.value;
-  elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
-
-  // const elTaskDescription = createDiv('task__description');
-  elTaskDescription.textContent = _refs.formInputDescription.value;
-
-  // elTaskBody.append(elTaskDescription);
-
-  // const elTaskUser = createDiv('task__user');
-  elTaskUser.textContent = _refs.formSelectUser.value;
-  // const elTaskDateContainer = createDiv('task__date-container');
-
-  elTaskFooter.append(elTaskUser, elTaskDateContainer);
-  elTaskTime.textContent = getTime();
-  elTaskDate.textContent = getDate();
-  // const elTaskTime = createDiv('task__time');
-  // const elTaskDate = createDiv('task__date');
-  elTaskDateContainer.append(elTaskTime, elTaskDate);
+    time = _todosGetData$todo.time,
+    day = _todosGetData$todo.day,
+    completed = _todosGetData$todo.completed,
+    name = todosGetData.user.name;
+  if (completed === 'inProgress') {
+    var elTask = createDiv('task task--in-progress');
+    elTask.draggable = true; // Drag'n'drop ON
+    elTask.id = id;
+    var elTaskBtnContainer = createDiv('task__btn-container');
+    var elTaskBody = createDiv('task__body');
+    var elTaskHeaer = createDiv('task__header');
+    var elTaskFooter = createDiv('task__footer');
+    var elTaskTitle = createDiv('task__title');
+    elTaskTitle.textContent = title;
+    var elTaskDescription = createDiv('task__description');
+    elTaskDescription.textContent = body;
+    var elTaskUser = createDiv('task__user');
+    elTaskUser.textContent = name;
+    var elTaskDateContainer = createDiv('task__date-container');
+    var elTaskTime = createDiv('task__time');
+    elTaskTime.textContent = time;
+    var elTaskDate = createDiv('task__date');
+    elTaskDate.textContent = day;
+    var elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
+    var elTaskBtnComplete = createButton('task__btn task__btn--complete', 'COMPLETE');
+    _refs.taskListBodyInProgress.append(elTask);
+    elTask.append(elTaskHeaer, elTaskBody, elTaskFooter);
+    elTaskHeaer.append(elTaskBtnContainer, elTaskTitle);
+    elTaskBtnContainer.append(elTaskBtnBack, elTaskBtnComplete);
+    elTaskFooter.append(elTaskUser, elTaskDateContainer);
+    elTaskDateContainer.append(elTaskTime, elTaskDate);
+  } else if (completed === 'done') {
+    var _elTask = createDiv('task task--done');
+    _elTask.draggable = true; // Drag'n'drop ON
+    _elTask.id = id;
+    var elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+    var _elTaskBtnContainer = createDiv('task__btn-container');
+    var _elTaskBody = createDiv('task__body');
+    var _elTaskHeaer = createDiv('task__header');
+    var _elTaskFooter = createDiv('task__footer');
+    var _elTaskTitle = createDiv('task__title');
+    _elTaskTitle.textContent = title;
+    var _elTaskDescription = createDiv('task__description');
+    _elTaskDescription.textContent = body;
+    var _elTaskUser = createDiv('task__user');
+    _elTaskUser.textContent = name;
+    var _elTaskDateContainer = createDiv('task__date-container');
+    var _elTaskTime = createDiv('task__time');
+    _elTaskTime.textContent = time;
+    var _elTaskDate = createDiv('task__date');
+    _elTaskDate.textContent = day;
+    _refs.taskListBodyDone.append(_elTask);
+    _elTask.append(_elTaskHeaer, _elTaskBody, _elTaskFooter);
+    _elTaskHeaer.append(_elTaskBtnContainer, _elTaskTitle);
+    _elTaskBtnContainer.append(elTaskBtnDel);
+    _elTaskFooter.append(_elTaskUser, _elTaskDateContainer);
+    _elTaskDateContainer.append(_elTaskTime, _elTaskDate);
+  } else {
+    var _elTask2 = createDiv('task task--todo');
+    _elTask2.draggable = true; // Drag'n'drop ON
+    _elTask2.id = id;
+    var elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+    var _elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+    var elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+    var _elTaskBtnContainer2 = createDiv('task__btn-container');
+    var _elTaskBody2 = createDiv('task__body');
+    var _elTaskHeaer2 = createDiv('task__header');
+    var _elTaskFooter2 = createDiv('task__footer');
+    var _elTaskTitle2 = createDiv('task__title');
+    _elTaskTitle2.textContent = _refs.formInputTitle.value;
+    var _elTaskDescription2 = createDiv('task__description');
+    _elTaskDescription2.textContent = _refs.formInputDescription.value;
+    var _elTaskUser2 = createDiv('task__user');
+    _elTaskUser2.textContent = _refs.formSelectUser.value;
+    var _elTaskDateContainer2 = createDiv('task__date-container');
+    var _elTaskTime2 = createDiv('task__time');
+    _elTaskTime2.textContent = getTime();
+    var _elTaskDate2 = createDiv('task__date');
+    _elTaskDate2.textContent = getDay();
+    _refs.taskListBodyTodo.append(_elTask2);
+    _elTask2.append(_elTaskHeaer2, _elTaskBody2, _elTaskFooter2);
+    _elTaskHeaer2.append(_elTaskBtnContainer2, _elTaskTitle2);
+    _elTaskBtnContainer2.append(elTaskBtnEdit, _elTaskBtnDel);
+    _elTaskBody2.append(_elTaskDescription2, elTaskBtnRelocate);
+    _elTaskFooter2.append(_elTaskUser2, _elTaskDateContainer2);
+    _elTaskDateContainer2.append(_elTaskTime2, _elTaskDate2);
+  }
 }
 
 // создание новой карточки дел
@@ -1312,7 +1325,7 @@ var _refs = require("./refs.js");
 var _DragAndDrop = require("./DragAndDrop.js");
 var _clock = require("./clock.js");
 var _uuid = require("uuid");
-var _randomStatusTodo = require("./randomStatusTodo.js");
+var _getRandom = require("./getRandom.js");
 var _getData = require("./getData.js");
 var _updateCounter = require("./updateCounter.js");
 var _htmlCreateElement = require("./htmlCreateElement.js");
@@ -1337,17 +1350,19 @@ var _addNameInForm = require("./addNameInForm.js");
 //добавить имена из загружаемых данных в форму
 
 function createTodoObj() {
+  var userId = (0, _uuid.v4)();
   var todo = {
-    id: (0, _uuid.v4)(),
-    date: _refs.headerTime.textContent,
-    completed: 'todo',
     todo: {
-      // userId: user.id,
+      id: (0, _uuid.v4)(),
+      time: (0, _getData.getTime)(),
+      day: (0, _getData.getDay)(),
+      completed: 'todo',
+      userId: userId,
       title: _refs.formInputTitle.value,
       body: _refs.formInputDescription.value
     },
     user: {
-      // id: todo.userId,
+      id: userId,
       name: _refs.formSelectUser.value
     }
   };
@@ -1356,7 +1371,7 @@ function createTodoObj() {
 ;
 
 //создать объект Todo
-},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./modalFormTodo.js":"js/modalFormTodo.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js","./addNameInForm.js":"js/addNameInForm.js"}],"js/modalFormTodo.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./getRandom.js":"js/getRandom.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./modalFormTodo.js":"js/modalFormTodo.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js","./addNameInForm.js":"js/addNameInForm.js"}],"js/modalFormTodo.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1369,7 +1384,7 @@ var _refs = require("./refs.js");
 var _DragAndDrop = require("./DragAndDrop.js");
 var _clock = require("./clock.js");
 var _uuid = require("uuid");
-var _randomStatusTodo = require("./randomStatusTodo.js");
+var _getRandom = require("./getRandom.js");
 var _getData = require("./getData.js");
 var _updateCounter = require("./updateCounter.js");
 var _htmlCreateElement = require("./htmlCreateElement.js");
@@ -1410,7 +1425,7 @@ function pressCancel() {
 ;
 
 //создать карточку дел
-function pressConfirm(todosGetData, createDiv, createButton) {
+function pressConfirm() {
   //если обязательные для заполнения поля не содержат данных - сигнализировать
   _refs.controls.forEach(function (control) {
     if (control.classList.contains('required') && !control.value) {
@@ -1420,26 +1435,25 @@ function pressConfirm(todosGetData, createDiv, createButton) {
   //проверка обязательных для заполнения полей и вызов функции создания карточки
   if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
     _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+    var todosGetData = (0, _localStorage.getData)('todos');
     var todoObj = (0, _createTodoObj.createTodoObj)();
-    (0, _createTodoCard.createTodoCard)(todoObj, createDiv, createButton, _getData.getDate, _getData.getTime);
+    (0, _createTodoCard.createTodoCard)(todoObj, _htmlCreateElement.createDiv, _htmlCreateElement.createButton, _getData.getDay, _getData.getTime);
     todosGetData.push(todoObj);
-    setName(todosGetData);
+    (0, _localStorage.setData)('todos', todosGetData);
     // updateCounterCards(paramsUpdateCounterCards);
-
-    // createTodoCard(todosGetData, createDiv, createButton);
   }
 }
 ;
 
 //модальное окно FormTodo
-},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js"}],"js/index.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./getRandom.js":"js/getRandom.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _refs = require("./refs.js");
 var _DragAndDrop = require("./DragAndDrop.js");
 var _clock = require("./clock.js");
 var _uuid = require("uuid");
-var _randomStatusTodo = require("./randomStatusTodo.js");
+var _getRandom = require("./getRandom.js");
 var _getData = require("./getData.js");
 var _updateCounter = require("./updateCounter.js");
 var _htmlCreateElement = require("./htmlCreateElement.js");
@@ -1470,7 +1484,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 // ------------------------------------------------------------------------------
 
 if (!localStorage.length) {
-  (0, _getTrelloData.getTrelloData)(_uuid.v4, _randomStatusTodo.randomCompleted, _randomStatusTodo.randomDate, _localStorage.setData);
+  (0, _getTrelloData.getTrelloData)(_uuid.v4, _getRandom.randomCompleted, _getRandom.randomDay, _getRandom.randomTime, _localStorage.setData);
   console.log("Data in localStorage is loaded");
 }
 var todosGetData = (0, _localStorage.getData)('todos');
@@ -1484,22 +1498,6 @@ var runTrelloApplication = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          // setTimeout(() => {
-          //   let todosGetData = getData('todos');
-
-          //   let [{id, todo: { id: idTodo, title, body}, user: { id: idUser, name, username }, completed }] = todosGetData
-          //   console.log(id)
-          //   console.log(idTodo)
-          //   console.log(title)
-          //   console.log(body)
-          //   console.log(completed)
-          //   console.log(idUser)
-          //   console.log(name)
-          //   console.log(username)
-          // }, 100)
-
-          // console.log(todosGetData[0].todo.title)
-
           // todosGetData.forEach(todo => {
           //   createTodoCard(todo, createDiv, createButton);
           // });
@@ -1642,7 +1640,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
   };
 }();
 runTrelloApplication();
-},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./randomStatusTodo.js":"js/randomStatusTodo.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./modalFormTodo.js":"js/modalFormTodo.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js","./addNameInForm.js":"js/addNameInForm.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./refs.js":"js/refs.js","./DragAndDrop.js":"js/DragAndDrop.js","./clock.js":"js/clock.js","uuid":"../node_modules/uuid/dist/esm-browser/index.js","./getRandom.js":"js/getRandom.js","./getData.js":"js/getData.js","./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./modalFormTodo.js":"js/modalFormTodo.js","./createTodoObj.js":"js/createTodoObj.js","./getTrelloData.js":"js/getTrelloData.js","./localStorage.js":"js/localStorage.js","./createTodoCard.js":"js/createTodoCard.js","./addNameInForm.js":"js/addNameInForm.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1667,7 +1665,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54827" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59749" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

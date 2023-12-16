@@ -1,4 +1,4 @@
-function getDate() {
+function getDay() {
   const data = new Date();
   const Year = data.getFullYear();
   const Month = data.getMonth();
@@ -9,11 +9,11 @@ function getDate() {
 
 function getTime() {
   const data = new Date();
-  const Hour = data.getHours();
-  const Minutes = data.getMinutes();
-  const Seconds = data.getSeconds();
+  const Hour = ('0' + data.getHours()).slice(-2);
+  const Minutes = ('0' + data.getMinutes()).slice(-2);
+  const Seconds = ('0' + data.getSeconds()).slice(-2);
 
   return `${Hour}:${Minutes}:${Seconds}`
 }
 
-export { getDate, getTime } // получить текущую дату и время
+export { getDay, getTime } // получить текущую дату и время

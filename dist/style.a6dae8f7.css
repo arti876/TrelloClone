@@ -204,7 +204,7 @@ input::-ms-clear {
   justify-content: space-between;
   align-items: flex-end;
 }
-.task__time {
+.task__date-container {
   text-align: end;
 }
 .task button {
