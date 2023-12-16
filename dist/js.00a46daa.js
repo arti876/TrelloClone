@@ -1062,6 +1062,20 @@ function randomCompleted() {
   return completedTodo[Math.floor(Math.random() * completedTodo.length)];
 }
 
+// // рандомная дата
+// function randomDate(start, end) {
+//   const rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+
+//   return `${('0' + rDate.getHours()).slice(-2)}:${('0' + rDate.getMinutes()).slice(-2)}:${('0' + rDate.getSeconds()).slice(-2)}
+// ${rDate.getFullYear()}-${('0' + (rDate.getMonth() + 1)).slice(-2)}-${('0' + rDate.getDate()).slice(-2)}`
+// }
+
+// рандомная дата
+function randomDate(start, end) {
+  var rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return "".concat(rDate.getFullYear(), "-").concat(('0' + (rDate.getMonth() + 1)).slice(-2), "-").concat(('0' + rDate.getDate()).slice(-2));
+}
+
 // рандомное время
 function randomDate(start, end) {
   var rDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -1078,15 +1092,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getDate = getDate;
+exports.getTime = getTime;
 function getDate() {
   var data = new Date();
   var Year = data.getFullYear();
   var Month = data.getMonth();
   var Day = data.getDate();
+  return "".concat(Day, "-").concat(Month, "-").concat(Year);
+}
+function getTime() {
+  var data = new Date();
   var Hour = data.getHours();
   var Minutes = data.getMinutes();
   var Seconds = data.getSeconds();
-  return "".concat(Hour, ":").concat(Minutes, ":").concat(Seconds, "\n").concat(Year, "-").concat(Month, "-").concat(Day);
+  return "".concat(Hour, ":").concat(Minutes, ":").concat(Seconds);
 }
 
 // получить текущую дату и время
@@ -1167,7 +1186,7 @@ var _localStorage = require("./localStorage.js");
 // получение переменных
 // запись-чтение данных localStorage
 
-function createTodoCard(todosGetData, createDiv, createButton, getDate) {
+function createTodoCard(todosGetData, createDiv, createButton, getDate, getTime) {
   var id = todosGetData.id,
     completed = todosGetData.completed,
     date = todosGetData.date,
@@ -1185,7 +1204,9 @@ function createTodoCard(todosGetData, createDiv, createButton, getDate) {
   var elTaskTitle = createDiv('task__title');
   var elTaskDescription = createDiv('task__description');
   var elTaskUser = createDiv('task__user');
+  var elTaskDateContainer = createDiv('task__date-container');
   var elTaskTime = createDiv('task__time');
+  var elTaskDate = createDiv('task__date');
 
   // if (completed === 'inProgress') {
   //   const elTask = createDiv('task task--in-progress');
@@ -1230,9 +1251,14 @@ function createTodoCard(todosGetData, createDiv, createButton, getDate) {
 
   // const elTaskUser = createDiv('task__user');
   elTaskUser.textContent = _refs.formSelectUser.value;
+  // const elTaskDateContainer = createDiv('task__date-container');
+
+  elTaskFooter.append(elTaskUser, elTaskDateContainer);
+  elTaskTime.textContent = getTime();
+  elTaskDate.textContent = getDate();
   // const elTaskTime = createDiv('task__time');
-  elTaskTime.textContent = getDate();
-  elTaskFooter.append(elTaskUser, elTaskTime);
+  // const elTaskDate = createDiv('task__date');
+  elTaskDateContainer.append(elTaskTime, elTaskDate);
 }
 
 // создание новой карточки дел
@@ -1395,7 +1421,7 @@ function pressConfirm(todosGetData, createDiv, createButton) {
   if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
     _refs.formAddTodo.classList.toggle('form-add-todo--vis');
     var todoObj = (0, _createTodoObj.createTodoObj)();
-    (0, _createTodoCard.createTodoCard)(todoObj, createDiv, createButton, _getData.getDate);
+    (0, _createTodoCard.createTodoCard)(todoObj, createDiv, createButton, _getData.getDate, _getData.getTime);
     todosGetData.push(todoObj);
     setName(todosGetData);
     // updateCounterCards(paramsUpdateCounterCards);
@@ -1641,7 +1667,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50669" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54827" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

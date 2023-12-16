@@ -20,7 +20,7 @@ import { getData, setData } from './localStorage.js'// запись-чтение
 
 
 
-function createTodoCard(todosGetData, createDiv, createButton, getDate) {
+function createTodoCard(todosGetData, createDiv, createButton, getDate, getTime) {
   let { id, completed, date, todo: { id: idTodo, title, body }, user: { id: idUser, name } } = todosGetData;
 
   const elTaskHeaer = createDiv('task__header');
@@ -30,7 +30,9 @@ function createTodoCard(todosGetData, createDiv, createButton, getDate) {
   const elTaskTitle = createDiv('task__title');
   const elTaskDescription = createDiv('task__description');
   const elTaskUser = createDiv('task__user');
+  const elTaskDateContainer = createDiv('task__date-container');
   const elTaskTime = createDiv('task__time');
+  const elTaskDate = createDiv('task__date');
 
   // if (completed === 'inProgress') {
   //   const elTask = createDiv('task task--in-progress');
@@ -45,13 +47,13 @@ function createTodoCard(todosGetData, createDiv, createButton, getDate) {
   //   const elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
   //   elTaskBtnContainer.append(elTaskBtnDel);
   // } else {
-    const elTask = createDiv('task task--todo');
-    taskListBodyTodo.append(elTask);
-    const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
-    const elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
-    elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
-    const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
-    elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
+  const elTask = createDiv('task task--todo');
+  taskListBodyTodo.append(elTask);
+  const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+  const elTaskBtnDel = createButton('task__btn task__btn--del', 'DELETE');
+  elTaskBtnContainer.append(elTaskBtnEdit, elTaskBtnDel);
+  const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+  elTaskBody.append(elTaskDescription, elTaskBtnRelocate);
   // }
 
   elTask.draggable = true; // Drag'n'drop ON
@@ -76,10 +78,15 @@ function createTodoCard(todosGetData, createDiv, createButton, getDate) {
 
   // const elTaskUser = createDiv('task__user');
   elTaskUser.textContent = formSelectUser.value;
-  // const elTaskTime = createDiv('task__time');
-  elTaskTime.textContent = getDate();
+  // const elTaskDateContainer = createDiv('task__date-container');
 
-  elTaskFooter.append(elTaskUser, elTaskTime);
+  elTaskFooter.append(elTaskUser, elTaskDateContainer);
+
+  elTaskTime.textContent = getTime();
+  elTaskDate.textContent = getDate();
+  // const elTaskTime = createDiv('task__time');
+  // const elTaskDate = createDiv('task__date');
+  elTaskDateContainer.append(elTaskTime, elTaskDate);
 }
 
 export { createTodoCard } // создание новой карточки дел

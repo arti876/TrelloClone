@@ -26,7 +26,7 @@ import {
 import { startTime, } from './clock.js'; // часы
 import { v4 as uuidv4 } from 'uuid'; // рандом id
 import { randomCompleted, randomDate } from './randomStatusTodo.js' // рандом статуса Todo и даты
-import { getDate } from './getData.js' // получить текущую дату и время
+import { getDate, getTime } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
 import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
 import { addTodo, pressCancel, pressConfirm } from './modalFormTodo.js' //модальное окно FormTodo
