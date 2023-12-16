@@ -1242,7 +1242,7 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     _elTaskBtnContainer.append(elTaskBtnDel);
     _elTaskFooter.append(_elTaskUser, _elTaskDateContainer);
     _elTaskDateContainer.append(_elTaskTime, _elTaskDate);
-  } else {
+  } else if (completed === 'todo') {
     var _elTask2 = createDiv('task task--todo');
     _elTask2.draggable = true; // Drag'n'drop ON
     _elTask2.id = id;
@@ -1254,16 +1254,16 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     var _elTaskHeaer2 = createDiv('task__header');
     var _elTaskFooter2 = createDiv('task__footer');
     var _elTaskTitle2 = createDiv('task__title');
-    _elTaskTitle2.textContent = _refs.formInputTitle.value;
+    _elTaskTitle2.textContent = title;
     var _elTaskDescription2 = createDiv('task__description');
-    _elTaskDescription2.textContent = _refs.formInputDescription.value;
+    _elTaskDescription2.textContent = body;
     var _elTaskUser2 = createDiv('task__user');
-    _elTaskUser2.textContent = _refs.formSelectUser.value;
+    _elTaskUser2.textContent = name;
     var _elTaskDateContainer2 = createDiv('task__date-container');
     var _elTaskTime2 = createDiv('task__time');
-    _elTaskTime2.textContent = getTime();
+    _elTaskTime2.textContent = time;
     var _elTaskDate2 = createDiv('task__date');
-    _elTaskDate2.textContent = getDay();
+    _elTaskDate2.textContent = day;
     _refs.taskListBodyTodo.append(_elTask2);
     _elTask2.append(_elTaskHeaer2, _elTaskBody2, _elTaskFooter2);
     _elTaskHeaer2.append(_elTaskBtnContainer2, _elTaskTitle2);
@@ -1271,6 +1271,35 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     _elTaskBody2.append(_elTaskDescription2, elTaskBtnRelocate);
     _elTaskFooter2.append(_elTaskUser2, _elTaskDateContainer2);
     _elTaskDateContainer2.append(_elTaskTime2, _elTaskDate2);
+  } else {
+    var _elTask3 = createDiv('task task--todo');
+    _elTask3.draggable = true; // Drag'n'drop ON
+    _elTask3.id = id;
+    var _elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
+    var _elTaskBtnDel2 = createButton('task__btn task__btn--del', 'DELETE');
+    var _elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
+    var _elTaskBtnContainer3 = createDiv('task__btn-container');
+    var _elTaskBody3 = createDiv('task__body');
+    var _elTaskHeaer3 = createDiv('task__header');
+    var _elTaskFooter3 = createDiv('task__footer');
+    var _elTaskTitle3 = createDiv('task__title');
+    _elTaskTitle3.textContent = _refs.formInputTitle.value;
+    var _elTaskDescription3 = createDiv('task__description');
+    _elTaskDescription3.textContent = _refs.formInputDescription.value;
+    var _elTaskUser3 = createDiv('task__user');
+    _elTaskUser3.textContent = _refs.formSelectUser.value;
+    var _elTaskDateContainer3 = createDiv('task__date-container');
+    var _elTaskTime3 = createDiv('task__time');
+    _elTaskTime3.textContent = getTime();
+    var _elTaskDate3 = createDiv('task__date');
+    _elTaskDate3.textContent = getDay();
+    _refs.taskListBodyTodo.append(_elTask3);
+    _elTask3.append(_elTaskHeaer3, _elTaskBody3, _elTaskFooter3);
+    _elTaskHeaer3.append(_elTaskBtnContainer3, _elTaskTitle3);
+    _elTaskBtnContainer3.append(_elTaskBtnEdit, _elTaskBtnDel2);
+    _elTaskBody3.append(_elTaskDescription3, _elTaskBtnRelocate);
+    _elTaskFooter3.append(_elTaskUser3, _elTaskDateContainer3);
+    _elTaskDateContainer3.append(_elTaskTime3, _elTaskDate3);
   }
 }
 
@@ -1489,7 +1518,6 @@ if (!localStorage.length) {
 }
 var todosGetData = (0, _localStorage.getData)('todos');
 (0, _clock.startTime)();
-(0, _updateCounter.updateCounter)();
 (0, _addNameInForm.addNameInForm)(todosGetData); // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
 
 var runTrelloApplication = /*#__PURE__*/function () {
@@ -1498,9 +1526,10 @@ var runTrelloApplication = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          // todosGetData.forEach(todo => {
-          //   createTodoCard(todo, createDiv, createButton);
-          // });
+          todosGetData.forEach(function (todo) {
+            (0, _createTodoCard.createTodoCard)(todo, _htmlCreateElement.createDiv, _htmlCreateElement.createButton, _getData.getDay, _getData.getTime);
+          });
+          (0, _updateCounter.updateCounter)();
 
           // addEventListener ------------------------------------------------------------------------------------
           // модальное окно формы Todo ---------------------------------------------------------------------------
@@ -1629,7 +1658,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
               localStorage.clear();
             }
           });
-        case 6:
+        case 8:
         case "end":
           return _context.stop();
       }

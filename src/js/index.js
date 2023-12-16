@@ -48,17 +48,18 @@ if (!localStorage.length) {
 let todosGetData = getData('todos');
 
 startTime();
-updateCounter();
 addNameInForm(todosGetData); // ПОФИКСИТЬ - ЗАГРУЗКА ДАННЫХ ПРОИСХОДИТ НЕ СРАЗУ
 
 
 
 const runTrelloApplication = async () => {
 
-  // todosGetData.forEach(todo => {
-  //   createTodoCard(todo, createDiv, createButton);
-  // });
+  todosGetData.forEach(todo => {
+    createTodoCard(todo, createDiv, createButton, getDay, getTime);
+  });
 
+  updateCounter();
+  
   // addEventListener ------------------------------------------------------------------------------------
   // модальное окно формы Todo ---------------------------------------------------------------------------
 
