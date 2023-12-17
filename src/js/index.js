@@ -172,7 +172,7 @@ updateCounter();
     event.preventDefault();
     if (event.target.closest('.task-list__body--in-progress')) {
       const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
-      if (lengthTaskInProgress >= 6) {
+      if (!activeElement.classList.contains('task--in-progress') && lengthTaskInProgress >= 6) {
         warning.classList.toggle('warning--vis');
         warningBtnConfirm.classList.add('warning__btn-confirm--none');
         warningText.textContent = 'Before you can add a new task, you must complete at least one current task!';

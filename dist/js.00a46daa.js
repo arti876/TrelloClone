@@ -1169,7 +1169,7 @@ exports.randomDay = randomDay;
 exports.randomTime = randomTime;
 // рандомный статус
 function randomCompleted() {
-  var completedTodo = ['todo', 'inProgress', 'done'];
+  var completedTodo = ['todo', 'done'];
   return completedTodo[Math.floor(Math.random() * completedTodo.length)];
 }
 
@@ -1207,10 +1207,9 @@ function createTodoCard(todosGetData) {
     day = _todosGetData$todo.day,
     completed = _todosGetData$todo.completed,
     name = todosGetData.user.name;
-  // const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
-
-  // if (completed === 'inProgress' && lengthTaskInProgress < 6) {
-  if (completed === 'inProgress') {
+  var lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
+  if (completed === 'inProgress' && lengthTaskInProgress < 6) {
+    // if (completed === 'inProgress') {
     var elTask = (0, _htmlCreateElement.createDiv)('task task--in-progress');
     elTask.draggable = true; // Drag'n'drop ON
     elTask.id = id;
@@ -1516,7 +1515,7 @@ function _getTrelloData() {
               }, "todo", n.time = (0, _getRandom.randomTime)(new Date(2020, 0, 1), new Date())), "todo", n.day = (0, _getRandom.randomDay)(new Date(2020, 0, 1), new Date())), "todo", n.completed = (0, _getRandom.randomCompleted)()), "todo", n), "user", usersObj[n.userId]);
             });
           }).then(function (todos) {
-            // todos.length = 10;
+            // todos.length = 30;
             return (0, _localStorage.setData)('todos', todos);
           });
         case 3:
@@ -1769,7 +1768,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
             event.preventDefault();
             if (event.target.closest('.task-list__body--in-progress')) {
               var lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
-              if (lengthTaskInProgress >= 6) {
+              if (!activeElement.classList.contains('task--in-progress') && lengthTaskInProgress >= 6) {
                 _refs.warning.classList.toggle('warning--vis');
                 _refs.warningBtnConfirm.classList.add('warning__btn-confirm--none');
                 _refs.warningText.textContent = 'Before you can add a new task, you must complete at least one current task!';

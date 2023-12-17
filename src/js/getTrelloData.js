@@ -18,7 +18,7 @@ async function getTrelloData() {
       }))
     })
     .then(todos => {
-      // todos.length = 10;
+      // todos.length = 30;
       return setData('todos', todos)
     })
 }

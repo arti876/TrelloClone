@@ -1,6 +1,6 @@
 // рандомный статус
 function randomCompleted() {
-  const completedTodo = ['todo', 'inProgress', 'done'];
+  const completedTodo = ['todo', 'done'];
   return completedTodo[Math.floor(Math.random() * completedTodo.length)];
 }
 

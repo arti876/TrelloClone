@@ -3,10 +3,10 @@ import { createDiv, createButton, } from './htmlCreateElement.js' // созда�
 
 function createTodoCard(todosGetData) {
   let { todo: { id, title, body, time, day, completed }, user: { name } } = todosGetData;
-  // const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
+  const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
 
-  // if (completed === 'inProgress' && lengthTaskInProgress < 6) {
-  if (completed === 'inProgress') {
+  if (completed === 'inProgress' && lengthTaskInProgress < 6) {
+  // if (completed === 'inProgress') {
     const elTask = createDiv('task task--in-progress');
     elTask.draggable = true; // Drag'n'drop ON
     elTask.id = id;
