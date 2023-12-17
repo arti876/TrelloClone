@@ -32,67 +32,81 @@ import { getData, setData } from './localStorage.js'// запись-чтение
 // drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
 
 // изменение статуса карточки при переносе
-function statusTaskСhange(activeElementId, todosGetData, status) {
+function statusTaskСhange(activeElementId, todosGetData, status, getDay, getTime) {
   for (let i = 0; i < todosGetData.length; i++) {
     if (todosGetData[i].todo.id === activeElementId) {
       todosGetData[i].todo.completed = status;
+      todosGetData[i].todo.time = getTime();
+      todosGetData[i].todo.day = getDay();
       setData('todos', todosGetData);
     };
   };
 }
 
 // перенос карточки из ProgressInTodo
-function relocateProgressInTodo(elem) {
+function relocateProgressInTodo(elem, getDay, getTime) {
   elem.classList = 'task task--todo';
   elem.querySelector('.task__btn--back').textContent = 'EDIT';
   elem.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate);
 }
 
 // перенос карточки из TodoInProgress
-function relocateTodoInProgress(elem) {
+function relocateTodoInProgress(elem, getDay, getTime) {
   elem.classList = 'task task--in-progress';
   elem.querySelector('.task__btn--relocate').remove()
   elem.querySelector('.task__btn--edit').textContent = 'BACK';
   elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из ProgressInDone
-function relocateProgressInDone(elem) {
+function relocateProgressInDone(elem, getDay, getTime) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--back').remove();
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из DoneInTodo
-function relocateDoneInTodo(elem) {
+function relocateDoneInTodo(elem, getDay, getTime) {
   elem.classList = 'task task--todo';
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate)
   const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из DoneInProgress
-function relocateDoneInProgress(elem) {
+function relocateDoneInProgress(elem, getDay, getTime) {
   elem.classList = 'task task--in-progress';
   const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnBack)
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из TodoInDone
-function relocateTodoInDone(elem) {
+function relocateTodoInDone(elem, getDay, getTime) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').remove();
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 export {

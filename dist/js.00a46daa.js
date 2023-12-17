@@ -265,10 +265,12 @@ var _localStorage = require("./localStorage.js");
 // drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
 
 // изменение статуса карточки при переносе
-function statusTaskСhange(activeElementId, todosGetData, status) {
+function statusTaskСhange(activeElementId, todosGetData, status, getDay, getTime) {
   for (var i = 0; i < todosGetData.length; i++) {
     if (todosGetData[i].todo.id === activeElementId) {
       todosGetData[i].todo.completed = status;
+      todosGetData[i].todo.time = getTime();
+      todosGetData[i].todo.day = getDay();
       (0, _localStorage.setData)('todos', todosGetData);
     }
     ;
@@ -277,57 +279,69 @@ function statusTaskСhange(activeElementId, todosGetData, status) {
 }
 
 // перенос карточки из ProgressInTodo
-function relocateProgressInTodo(elem) {
+function relocateProgressInTodo(elem, getDay, getTime) {
   elem.classList = 'task task--todo';
   elem.querySelector('.task__btn--back').textContent = 'EDIT';
   elem.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
   var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate);
 }
 
 // перенос карточки из TodoInProgress
-function relocateTodoInProgress(elem) {
+function relocateTodoInProgress(elem, getDay, getTime) {
   elem.classList = 'task task--in-progress';
   elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').textContent = 'BACK';
   elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из ProgressInDone
-function relocateProgressInDone(elem) {
+function relocateProgressInDone(elem, getDay, getTime) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--back').remove();
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из DoneInTodo
-function relocateDoneInTodo(elem) {
+function relocateDoneInTodo(elem, getDay, getTime) {
   elem.classList = 'task task--todo';
   var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate);
   var elTaskBtnEdit = (0, _htmlCreateElement.createButton)('task__btn task__btn--edit', 'EDIT');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из DoneInProgress
-function relocateDoneInProgress(elem) {
+function relocateDoneInProgress(elem, getDay, getTime) {
   elem.classList = 'task task--in-progress';
   var elTaskBtnBack = (0, _htmlCreateElement.createButton)('task__btn task__btn--back', 'BACK');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnBack);
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // перенос карточки из TodoInDone
-function relocateTodoInDone(elem) {
+function relocateTodoInDone(elem, getDay, getTime) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').remove();
+  elem.querySelector('.task__time').textContent = getTime();
+  elem.querySelector('.task__date').textContent = getDay();
 }
 
 // Drag'n'drop
@@ -1711,35 +1725,48 @@ var runTrelloApplication = /*#__PURE__*/function () {
             if (event.target.closest('.task-list__body--todo')) {
               // перемещение в Todo
               if (event.target.classList.contains('task--in-progress')) {
-                (0, _DragAndDrop.relocateProgressInTodo)(event.target);
-                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'todo');
+                (0, _DragAndDrop.relocateProgressInTodo)(event.target, _getData.getDay, _getData.getTime);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'todo', _getData.getDay, _getData.getTime);
                 (0, _updateCounter.updateCounter)();
               } else if (event.target.classList.contains('task--done')) {
-                (0, _DragAndDrop.relocateDoneInTodo)(event.target);
-                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'todo');
+                (0, _DragAndDrop.relocateDoneInTodo)(event.target, _getData.getDay, _getData.getTime);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'todo', _getData.getDay, _getData.getTime);
                 (0, _updateCounter.updateCounter)();
               }
               // перемещение в InProgress
             } else if (event.target.closest('.task-list__body--in-progress')) {
               if (event.target.classList.contains('task--todo')) {
-                (0, _DragAndDrop.relocateTodoInProgress)(event.target);
-                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'inProgress');
+                (0, _DragAndDrop.relocateTodoInProgress)(event.target, _getData.getDay, _getData.getTime);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'inProgress', _getData.getDay, _getData.getTime);
                 (0, _updateCounter.updateCounter)();
               } else if (event.target.classList.contains('task--done')) {
-                (0, _DragAndDrop.relocateDoneInProgress)(event.target);
-                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'inProgress');
+                (0, _DragAndDrop.relocateDoneInProgress)(event.target, _getData.getDay, _getData.getTime);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'inProgress', _getData.getDay, _getData.getTime);
                 (0, _updateCounter.updateCounter)();
               }
               // перемещение в Done
             } else if (event.target.closest('.task-list__body--done')) {
               if (event.target.classList.contains('task--todo')) {
-                (0, _DragAndDrop.relocateTodoInDone)(event.target);
-                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'done');
+                (0, _DragAndDrop.relocateTodoInDone)(event.target, _getData.getDay, _getData.getTime);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'done', _getData.getDay, _getData.getTime);
                 (0, _updateCounter.updateCounter)();
               } else if (event.target.classList.contains('task--in-progress')) {
-                (0, _DragAndDrop.relocateProgressInDone)(event.target);
-                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'done');
+                (0, _DragAndDrop.relocateProgressInDone)(event.target, _getData.getDay, _getData.getTime);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'done', _getData.getDay, _getData.getTime);
                 (0, _updateCounter.updateCounter)();
+              }
+            }
+          });
+
+          // запрет переноса в InProgress если дел 6 или больше
+          _refs.board.addEventListener('dragenter', function (event) {
+            event.preventDefault();
+            if (event.target.closest('.task-list__body--in-progress')) {
+              var lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
+              if (lengthTaskInProgress >= 6) {
+                warning.classList.toggle('warning--vis');
+                warningBtnConfirm.classList.add('warning__btn-confirm--none');
+                warningText.textContent = 'Before you can add a new task, you must complete at least one current task!';
               }
             }
           });
@@ -1776,10 +1803,10 @@ var runTrelloApplication = /*#__PURE__*/function () {
                 // удаление оригинальной карточки
                 _task.remove();
                 // перемещение склонированной карточки в новое место
-                (0, _DragAndDrop.relocateTodoInProgress)(cloneTask);
+                (0, _DragAndDrop.relocateTodoInProgress)(cloneTask, _getData.getDay, _getData.getTime);
                 document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
                 // изменение статуса карточки
-                (0, _DragAndDrop.statusTaskСhange)(taskId, todosGetData, 'inProgress');
+                (0, _DragAndDrop.statusTaskСhange)(taskId, todosGetData, 'inProgress', _getData.getDay, _getData.getTime);
                 // обновление счетчиков
                 (0, _updateCounter.updateCounter)();
               }
@@ -1790,10 +1817,10 @@ var runTrelloApplication = /*#__PURE__*/function () {
               var _taskId = _task2.id;
               var _cloneTask = _task2.cloneNode(true);
               _task2.remove();
-              (0, _DragAndDrop.relocateProgressInTodo)(_cloneTask);
+              (0, _DragAndDrop.relocateProgressInTodo)(_cloneTask, _getData.getDay, _getData.getTime);
               document.querySelector('.task-list__body--todo').prepend(_cloneTask);
               // изменение статуса карточки
-              (0, _DragAndDrop.statusTaskСhange)(_taskId, todosGetData, 'todo');
+              (0, _DragAndDrop.statusTaskСhange)(_taskId, todosGetData, 'todo', _getData.getDay, _getData.getTime);
               // обновление счетчиков
               (0, _updateCounter.updateCounter)();
             }
@@ -1803,10 +1830,10 @@ var runTrelloApplication = /*#__PURE__*/function () {
               var _taskId2 = _task3.id;
               var _cloneTask2 = _task3.cloneNode(true);
               _task3.remove();
-              (0, _DragAndDrop.relocateProgressInDone)(_cloneTask2);
+              (0, _DragAndDrop.relocateProgressInDone)(_cloneTask2, _getData.getDay, _getData.getTime);
               document.querySelector('.task-list__body--done').prepend(_cloneTask2);
               // изменение статуса карточки
-              (0, _DragAndDrop.statusTaskСhange)(_taskId2, todosGetData, 'done');
+              (0, _DragAndDrop.statusTaskСhange)(_taskId2, todosGetData, 'done', _getData.getDay, _getData.getTime);
               // обновление счетчиков
               (0, _updateCounter.updateCounter)();
             }
@@ -1854,7 +1881,7 @@ var runTrelloApplication = /*#__PURE__*/function () {
               warningBtnConfirm.classList.remove('warning__btn-confirm--none');
             }
           });
-        case 16:
+        case 17:
         case "end":
           return _context.stop();
       }
@@ -1890,7 +1917,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51087" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56499" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

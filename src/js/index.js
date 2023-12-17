@@ -164,38 +164,51 @@ const runTrelloApplication = async () => {
     if (event.target.closest('.task-list__body--todo')) {
       // перемещение в Todo
       if (event.target.classList.contains('task--in-progress')) {
-        relocateProgressInTodo(event.target);
-        statusTaskСhange(activeElementId, todosGetData, 'todo');
+        relocateProgressInTodo(event.target, getDay, getTime);
+        statusTaskСhange(activeElementId, todosGetData, 'todo', getDay, getTime);
         updateCounter();
       } else if (event.target.classList.contains('task--done')) {
-        relocateDoneInTodo(event.target);
-        statusTaskСhange(activeElementId, todosGetData, 'todo');
+        relocateDoneInTodo(event.target, getDay, getTime);
+        statusTaskСhange(activeElementId, todosGetData, 'todo', getDay, getTime);
         updateCounter();
       }
       // перемещение в InProgress
     } else if (event.target.closest('.task-list__body--in-progress')) {
       if (event.target.classList.contains('task--todo')) {
-        relocateTodoInProgress(event.target);
-        statusTaskСhange(activeElementId, todosGetData, 'inProgress');
+        relocateTodoInProgress(event.target, getDay, getTime);
+        statusTaskСhange(activeElementId, todosGetData, 'inProgress', getDay, getTime);
         updateCounter();
       } else if (event.target.classList.contains('task--done')) {
-        relocateDoneInProgress(event.target);
-        statusTaskСhange(activeElementId, todosGetData, 'inProgress');
+        relocateDoneInProgress(event.target, getDay, getTime);
+        statusTaskСhange(activeElementId, todosGetData, 'inProgress', getDay, getTime);
         updateCounter();
       }
       // перемещение в Done
     } else if (event.target.closest('.task-list__body--done')) {
       if (event.target.classList.contains('task--todo')) {
-        relocateTodoInDone(event.target);
-        statusTaskСhange(activeElementId, todosGetData, 'done');
+        relocateTodoInDone(event.target, getDay, getTime);
+        statusTaskСhange(activeElementId, todosGetData, 'done', getDay, getTime);
         updateCounter();
       } else if (event.target.classList.contains('task--in-progress')) {
-        relocateProgressInDone(event.target);
-        statusTaskСhange(activeElementId, todosGetData, 'done');
+        relocateProgressInDone(event.target, getDay, getTime);
+        statusTaskСhange(activeElementId, todosGetData, 'done', getDay, getTime);
         updateCounter();
       }
     }
   });
+
+  // запрет переноса в InProgress если дел 6 или больше
+  board.addEventListener('dragenter', (event) => {
+    event.preventDefault();
+    if (event.target.closest('.task-list__body--in-progress')) {
+      const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
+      if (lengthTaskInProgress >= 6) {
+        warning.classList.toggle('warning--vis');
+        warningBtnConfirm.classList.add('warning__btn-confirm--none');
+        warningText.textContent = 'Before you can add a new task, you must complete at least one current task!';
+      }
+    }
+  })
 
   // события по клику в области board -------------------------------------------------------
 
@@ -226,10 +239,10 @@ const runTrelloApplication = async () => {
         // удаление оригинальной карточки
         task.remove();
         // перемещение склонированной карточки в новое место
-        relocateTodoInProgress(cloneTask)
+        relocateTodoInProgress(cloneTask, getDay, getTime)
         document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
         // изменение статуса карточки
-        statusTaskСhange(taskId, todosGetData, 'inProgress')
+        statusTaskСhange(taskId, todosGetData, 'inProgress', getDay, getTime)
         // обновление счетчиков
         updateCounter();
       }
@@ -240,10 +253,10 @@ const runTrelloApplication = async () => {
       const taskId = task.id;
       const cloneTask = task.cloneNode(true);
       task.remove();
-      relocateProgressInTodo(cloneTask);
+      relocateProgressInTodo(cloneTask, getDay, getTime);
       document.querySelector('.task-list__body--todo').prepend(cloneTask);
       // изменение статуса карточки
-      statusTaskСhange(taskId, todosGetData, 'todo')
+      statusTaskСhange(taskId, todosGetData, 'todo', getDay, getTime)
       // обновление счетчиков
       updateCounter();
     }
@@ -253,10 +266,10 @@ const runTrelloApplication = async () => {
       const taskId = task.id;
       const cloneTask = task.cloneNode(true);
       task.remove();
-      relocateProgressInDone(cloneTask)
+      relocateProgressInDone(cloneTask, getDay, getTime)
       document.querySelector('.task-list__body--done').prepend(cloneTask);
       // изменение статуса карточки
-      statusTaskСhange(taskId, todosGetData, 'done')
+      statusTaskСhange(taskId, todosGetData, 'done', getDay, getTime)
       // обновление счетчиков
       updateCounter();
     }
