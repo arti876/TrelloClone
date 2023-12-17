@@ -1,38 +1,19 @@
+import { formAddTodo, formInputTitle, formInputDescription, formВtnConfirm, formSelectUser } from './refs.js'; // получение переменных
+import { getDay, getTime } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
-import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
-import {
-  headerTime,
-  taskListBodyTodo,
-  taskListBtnAddTodo,
-  formAddTodo,
-  formInputTitle,
-  formInputDescription,
-  formВtnCancel,
-  formВtnConfirm,
-  formSelectUser,
-  controls,
-  board,
-  taskListBody,
-  taskListBodyInProgress,
-  taskListBodyDone,
-} from './refs.js'; // получение переменных
-import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
+import { createButton, } from './htmlCreateElement.js' // создание элементов html
+import { setData } from './localStorage.js'// запись-чтение данных localStorage
 
-// Drag'n'drop
-
-// События, происходящие с объектом перетаскивания:
-// dragstart   (срабатывает в начале операции перетаскивания элемента)
-// drag  (срабатывает, когда элемент перетаскивается)
-// dragend   (срабатывает, когда пользователь закончил перетаскивание элемента)
-
-// События, происходящие с объектом на который перетаскивают:
-// dragenter   (когда элемент будет перенесен на заданную зону (цель для переноса)) event.preventDefault();
-// dragover  (срабатывает, когда элемент перемещают над допустимой зоной для переноса) event.preventDefault();
-// dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
-// drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
+// удалить все карточки дел
+function boardClear() {
+  const allTask = document.querySelectorAll('.task');
+  allTask.forEach(task => task.remove())
+  updateCounter();
+  localStorage.clear();
+}
 
 // изменение статуса карточки при переносе
-function statusTaskСhange(activeElementId, todosGetData, status, getDay, getTime) {
+function statusTaskСhange(activeElementId, todosGetData, status) {
   for (let i = 0; i < todosGetData.length; i++) {
     if (todosGetData[i].todo.id === activeElementId) {
       todosGetData[i].todo.completed = status;
@@ -43,8 +24,40 @@ function statusTaskСhange(activeElementId, todosGetData, status, getDay, getTim
   };
 }
 
+//редакрирование todo
+function editTodo() {
+  const idTask = event.target.closest('.task');
+  const taskTitleText = idTask.querySelector('.task__title').textContent;
+  const taskDescriptionText = idTask.querySelector('.task__description').textContent;
+  const taskUserText = idTask.querySelector('.task__user').textContent;
+  formAddTodo.id = idTask.id;
+  formВtnConfirm.classList.add('form-add-todo__btn-confirm--edit');
+  formAddTodo.classList.toggle('form-add-todo--vis');
+  formInputTitle.value = taskTitleText;
+  formInputDescription.value = taskDescriptionText;
+  formSelectUser.value = taskUserText;
+};
+
+// перемещение элемента DnD
+function elementMovement(activeElement) {
+  // Элемент перед которым нужно разместить activeElement
+  const currentElement = event.target;
+  // Находим элемент, перед которым будем вставлять
+  const nextElement = (currentElement === activeElement.nextElementSibling) ?
+    currentElement.nextElementSibling :
+    currentElement;
+  // Вставяем activeElement
+  setTimeout(() => {
+    if (currentElement.classList.contains(`task`)) {
+      currentElement.closest('.task-list__body').insertBefore(activeElement, nextElement);
+    } else if (currentElement.classList.contains(`task-list__body`)) {
+      currentElement.prepend(activeElement);
+    }
+  }, 100);
+}
+
 // перенос карточки из ProgressInTodo
-function relocateProgressInTodo(elem, getDay, getTime) {
+function relocateProgressInTodo(elem) {
   elem.classList = 'task task--todo';
   elem.querySelector('.task__btn--back').textContent = 'EDIT';
   elem.querySelector('.task__btn--back').classList = 'task__btn task__btn--edit';
@@ -57,9 +70,9 @@ function relocateProgressInTodo(elem, getDay, getTime) {
 }
 
 // перенос карточки из TodoInProgress
-function relocateTodoInProgress(elem, getDay, getTime) {
+function relocateTodoInProgress(elem) {
   elem.classList = 'task task--in-progress';
-  elem.querySelector('.task__btn--relocate').remove()
+  elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').textContent = 'BACK';
   elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
@@ -69,7 +82,7 @@ function relocateTodoInProgress(elem, getDay, getTime) {
 }
 
 // перенос карточки из ProgressInDone
-function relocateProgressInDone(elem, getDay, getTime) {
+function relocateProgressInDone(elem) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--back').remove();
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
@@ -79,7 +92,7 @@ function relocateProgressInDone(elem, getDay, getTime) {
 }
 
 // перенос карточки из DoneInTodo
-function relocateDoneInTodo(elem, getDay, getTime) {
+function relocateDoneInTodo(elem) {
   elem.classList = 'task task--todo';
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate)
@@ -90,7 +103,7 @@ function relocateDoneInTodo(elem, getDay, getTime) {
 }
 
 // перенос карточки из DoneInProgress
-function relocateDoneInProgress(elem, getDay, getTime) {
+function relocateDoneInProgress(elem) {
   elem.classList = 'task task--in-progress';
   const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnBack)
@@ -101,7 +114,7 @@ function relocateDoneInProgress(elem, getDay, getTime) {
 }
 
 // перенос карточки из TodoInDone
-function relocateTodoInDone(elem, getDay, getTime) {
+function relocateTodoInDone(elem) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').remove();
@@ -117,4 +130,7 @@ export {
   relocateDoneInTodo,
   relocateDoneInProgress,
   relocateTodoInDone,
-} // Drag'n'drop
+  boardClear,
+  editTodo,
+  elementMovement,
+} // functionEvent

@@ -1,4 +1,6 @@
-function trackScroll(goTopBtn) {
+import { goTopBtn } from './refs.js'; // получение переменных
+
+function trackScroll() {
   // вычисляем положение от верхушки страницы
   const scrolled = window.pageYOffset;
   // считаем высоту окна браузера
@@ -22,4 +24,4 @@ function goTop() {
   }
 }
 
-export {trackScroll, goTop} //кнопка вверх
+export { trackScroll, goTop } //кнопка вверх

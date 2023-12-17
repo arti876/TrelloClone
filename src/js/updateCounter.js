@@ -1,15 +1,21 @@
 function updateCounter() {
-  // счетчик Todo
-  (function getTodoCounter() {
-    return document.querySelector('.task-list__counters--todo').textContent = document.getElementsByClassName('task--todo').length;
-  })();
+    // счетчик Todo
+    (function getTodoCounter() {
+      const taskListCountersTodo = document.querySelector('.task-list__counters--todo');
+      const taskTodoAll = document.getElementsByClassName('task--todo');
+      return taskListCountersTodo.textContent = taskTodoAll.length;
+    })();
   // счетчик InProgress
   (function getInProgressCounter() {
-    return document.querySelector('.task-list__counters--in-progress').textContent = document.getElementsByClassName('task--in-progress').length;
+    const taskListCountersInProgress = document.querySelector('.task-list__counters--in-progress');
+    const taskInProgressAll = document.getElementsByClassName('task--in-progress');
+    return taskListCountersInProgress.textContent = taskInProgressAll.length;
   })();
   // счетчик Done
   (function getDoneCounter() {
-    return document.querySelector('.task-list__counters--done').textContent = document.getElementsByClassName('task--done').length;
+    const taskListCountersDone = document.querySelector('.task-list__counters--done');
+    const taskDoneAll = document.getElementsByClassName('task--done');
+    return taskListCountersDone.textContent = taskDoneAll.length;
   })();
 };
 

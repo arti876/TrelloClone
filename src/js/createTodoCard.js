@@ -1,25 +1,7 @@
-// let [{id, todo: { id: idTodo, title, body}, user: { id: idUser, name, username }, completed }] = todosGetData
+import { taskListBodyTodo, taskListBodyInProgress, taskListBodyDone } from './refs.js'; // получение переменных
+import { createDiv, createButton, } from './htmlCreateElement.js' // создание элементов html
 
-import {
-  headerTime,
-  taskListBodyTodo,
-  taskListBtnAddTodo,
-  formAddTodo,
-  formInputTitle,
-  formInputDescription,
-  formВtnCancel,
-  formВtnConfirm,
-  formSelectUser,
-  controls,
-  board,
-  taskListBody,
-  taskListBodyInProgress,
-  taskListBodyDone,
-} from './refs.js'; // получение переменных
-import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
-
-
-function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) {
+function createTodoCard(todosGetData) {
   let { todo: { id, title, body, time, day, completed }, user: { name } } = todosGetData;
   // const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
 

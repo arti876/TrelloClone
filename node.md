@@ -53,28 +53,61 @@ npm install uuid
 import { v4 as uuidv4 } from 'uuid';
 uuidv4();
 
-// formAddTodo.addEventListener('click', function (event) {
-//   const controls = this.querySelectorAll('.form-control');
-//   let isValid = true;
+// Drag'n'drop
 
-//   controls.forEach(control => {
-//     if (control.classList.contains('required') && control.value) {
-//       control.classList.remove('invalid-control');
-//       isValid = true;
-//     }
-//   });
+// События, происходящие с объектом перетаскивания:
+// dragstart   (срабатывает в начале операции перетаскивания элемента)
+// drag  (срабатывает, когда элемент перетаскивается)
+// dragend   (срабатывает, когда пользователь закончил перетаскивание элемента)
 
-//   if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-//     controls.forEach(control => {
-//       // control.classList.remove('invalid-control');
-//       if (control.classList.contains('required') && !control.value) {
-//         control.classList.add('invalid-control');
-//         isValid = false;
-//       }
-//     });
+// События, происходящие с объектом на который перетаскивают:
+// dragenter   (когда элемент будет перенесен на заданную зону (цель для переноса)) event.preventDefault();
+// dragover  (срабатывает, когда элемент перемещают над допустимой зоной для переноса) event.preventDefault();
+// dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
+// drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
 
-//     if (isValid) {
-//       pressConfirm()
-//     }
-//   }
-// });
+import {
+  taskListBodyTodo,
+  taskListBtnAddTodo,
+  formAddTodo,
+  formInputTitle,
+  formInputDescription,
+  formВtnCancel,
+  formВtnConfirm,
+  formSelectUser,
+  controls,
+  board,
+  taskListBody,
+  taskListBodyInProgress,
+  taskListBodyDone,
+  warning,
+  warningBtnConfirm,
+  warningText,
+  goTopBtn,
+  trelloWrapper,
+} from './refs.js'; // получение переменных
+import {
+  statusTaskСhange,
+  relocateProgressInTodo,
+  relocateTodoInProgress,
+  relocateProgressInDone,
+  relocateDoneInTodo,
+  relocateDoneInProgress,
+  relocateTodoInDone,
+  boardClear,
+  editTodo,
+  elementMovement,
+} from './functionEvent.js' // functionEvent
+import { startTime, } from './clock.js'; // часы
+import { v4 as uuidv4 } from 'uuid'; // рандом id
+import { randomCompleted, randomDay, randomTime } from './getRandom.js' // рандом статуса Todo, даты, времени
+import { getDay, getTime } from './getData.js' // получить текущую дату и время
+import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
+import { createDiv,createButton, } from './htmlCreateElement.js' // создание элементов html
+import { addTodo, pressCancel, pressConfirmAddNewTask, pressConfirmEdit } from './modalFormTodo.js' //модальное окно FormTodo
+import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
+import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
+import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
+import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
+import { trackScroll, goTop } from './goTod.js' //кнопка вверх
+import { createTodoObj } from './createTodoObj.js' //создать объект Todo

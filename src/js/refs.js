@@ -1,4 +1,3 @@
-const headerTime = document.querySelector('.header__time');
 const taskListBodyTodo = document.querySelector('.task-list__body--todo');
 const taskListBodyInProgress = document.querySelector('.task-list__body--in-progress');
 const taskListBodyDone = document.querySelector('.task-list__body--done');
@@ -12,9 +11,13 @@ const formSelectUser = document.querySelector('.form-add-todo__user');
 const controls = document.querySelectorAll('.form-control');
 const board = document.querySelector('.board');
 const taskListBody = document.querySelector('.task-list__body');
+const warning = document.querySelector('.warning');
+const warningBtnConfirm = document.querySelector('.warning__btn-confirm');
+const warningText = document.querySelector('.warning__text');
+const trelloWrapper = document.querySelector('.trello__wrapper');
+const goTopBtn = document.querySelector(".go-top");
 
 export {
-  headerTime,
   taskListBodyTodo,
   taskListBtnAddTodo,
   formAddTodo,
@@ -28,4 +31,9 @@ export {
   taskListBody,
   taskListBodyInProgress,
   taskListBodyDone,
+  warning,
+  warningBtnConfirm,
+  warningText,
+  goTopBtn,
+  trelloWrapper,
 }

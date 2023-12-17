@@ -1,8 +1,7 @@
+import { formSelectUser } from './refs.js'; // получение переменных
+
 function addNameInForm(todosGetData) {
-  const formAddTodoUser = document.querySelector('.form-add-todo__user');
-
   const userArr = todosGetData.map(el => el.user.name)
-
   const countUser = {};
 
   for (const user of userArr) {
@@ -14,10 +13,10 @@ function addNameInForm(todosGetData) {
       const elOption = document.createElement('option');
       elOption.value = name;
       elOption.textContent = name;
-      formAddTodoUser.append(elOption);
+      formSelectUser.append(elOption);
     })
 
-    return result
+  return result
 }
 
 export { addNameInForm } //добавить имена из загружаемых данных в форму

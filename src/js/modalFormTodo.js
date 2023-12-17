@@ -1,42 +1,12 @@
-import {
-  headerTime,
-  taskListBodyTodo,
-  taskListBtnAddTodo,
-  formAddTodo,
-  formInputTitle,
-  formInputDescription,
-  formВtnCancel,
-  formВtnConfirm,
-  formSelectUser,
-  controls,
-  board,
-  taskListBody,
-  taskListBodyInProgress,
-  taskListBodyDone,
-} from './refs.js'; // получение переменных
-import {
-  relocateProgressInTodo,
-  relocateTodoInProgress,
-  relocateProgressInDone,
-  relocateDoneInTodo,
-  relocateDoneInProgress,
-  relocateTodoInDone,
-  editTodo,
-} from './DragAndDrop.js' // Drag'n'drop
-import { startTime, } from './clock.js'; // часы
-import { v4 as uuidv4 } from 'uuid'; // рандом id
-import { randomCompleted } from './getRandom.js' // рандом статуса Todo
+import { formAddTodo, formInputTitle, formInputDescription, formВtnConfirm, formSelectUser, controls } from './refs.js'; // получение переменных
 import { getDay, getTime } from './getData.js' // получить текущую дату и время
-import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
-import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
-import { createTodoObj } from './createTodoObj.js' //создать объект Todo
-import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
+import { createDiv, createButton, } from './htmlCreateElement.js' // создание элементов html
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
+import { createTodoObj } from './createTodoObj.js' //создать объект Todo
 
 //вызов формы создания карточки дел
 function addTodo() {
-  const formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
   formВtnConfirm.classList.add('form-add-todo__btn-confirm--add-new-task');
   formAddTodo.classList.toggle('form-add-todo--vis');
   formInputTitle.value = '';
@@ -56,7 +26,7 @@ function pressCancel() {
 };
 
 //создать карточку дел
-function pressConfirmAddNewTask() {
+function pressConfirmAddNewTask(todosGetData) {
   //если обязательные для заполнения поля не содержат данных - сигнализировать
   controls.forEach(control => {
     if (control.classList.contains('required') && !control.value) {
@@ -68,7 +38,7 @@ function pressConfirmAddNewTask() {
     formAddTodo.classList.toggle('form-add-todo--vis');
     formВtnConfirm.classList.remove('form-add-todo__btn-confirm--add-new-task');
 
-    let todosGetData = getData('todos');
+    todosGetData = getData('todos');
     const todoObj = createTodoObj();
     createTodoCard(todoObj, createDiv, createButton, getDay, getTime);
     todosGetData.push(todoObj);
@@ -79,7 +49,7 @@ function pressConfirmAddNewTask() {
 };
 
 //сохранить отредактированную карточку дел
-function pressConfirmEdit() {
+function pressConfirmEdit(todosGetData) {
   //если обязательные для заполнения поля не содержат данных - сигнализировать
   controls.forEach(control => {
     if (control.classList.contains('required') && !control.value) {
@@ -92,8 +62,8 @@ function pressConfirmEdit() {
     formВtnConfirm.classList.remove('form-add-todo__btn-confirm--edit');
 
     const taskListBodyTodo = document.querySelectorAll('.task--todo');
-
     let currentTask = null;
+
     for (let i = 0; i < taskListBodyTodo.length; i++) {
       if (taskListBodyTodo[i].id === formAddTodo.id) {
         currentTask = taskListBodyTodo[i]
@@ -111,9 +81,6 @@ function pressConfirmEdit() {
     taskUserText.textContent = formSelectUser.value;
     taskTime.textContent = getTime();
     taskDay.textContent = getDay();
-
-    let todosGetData = getData('todos');
-    // const currentTaskLocalStorage = todosGetData.filter(({ todo: { id } }) => id === formAddTodo.id);
 
     for (let i = 0; i < todosGetData.length; i++) {
       if (todosGetData[i].todo.id === formAddTodo.id) {

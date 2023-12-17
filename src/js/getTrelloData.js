@@ -1,4 +1,8 @@
-function getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData) {
+import { v4 as uuidv4 } from 'uuid'; // рандом id
+import { randomCompleted, randomDay, randomTime } from './getRandom.js' // рандом статуса Todo, даты, времени
+import { setData } from './localStorage.js'// запись-чтение данных localStorage
+
+function getTrelloData() {
   const fetchData = (type) => fetch(`https://jsonplaceholder.typicode.com/${type}`).then(r => r.json());
 
   Promise.all(['users', 'posts'].map(fetchData))
