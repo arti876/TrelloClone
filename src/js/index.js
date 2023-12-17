@@ -44,6 +44,7 @@ import { addNameInForm } from './addNameInForm.js' //добавить имена
 import { trackScroll, goTop } from './goTod.js' //кнопка вверх
 import { createTodoObj } from './createTodoObj.js' //создать объект Todo
 
+const runTrelloApplication = async () => {
 // часы
 startTime();
 
@@ -66,7 +67,6 @@ todosGetData.forEach(todo => {
 // обновление счетчиков
 updateCounter();
 
-const runTrelloApplication = async () => {
   // скролл возврата к началу страницы
   // обработчик скролл вверх
   window.addEventListener('scroll', function (event) {
