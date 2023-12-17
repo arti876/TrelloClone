@@ -38,6 +38,7 @@ import { createTodoCard } from './createTodoCard.js' // создание нов�
 import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
 import { trackScroll, goTop } from './goTod.js' //кнопка вверх
 
+
 // ------------------------------------------------------------------------------
 const warning = document.querySelector('.warning');
 const warningBtnConfirm = document.querySelector('.warning__btn-confirm');
