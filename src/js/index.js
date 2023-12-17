@@ -15,6 +15,7 @@ import {
   taskListBodyDone,
 } from './refs.js'; // получение переменных
 import {
+  statusTaskСhange,
   relocateProgressInTodo,
   relocateTodoInProgress,
   relocateProgressInDone,
@@ -29,7 +30,7 @@ import { randomCompleted, randomDay, randomTime } from './getRandom.js' // ра�
 import { getDay, getTime } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
 import { createDiv, createLabel, createButton, createInput } from './htmlCreateElement.js' // создание элементов html
-import { addTodo, pressCancel, pressConfirm } from './modalFormTodo.js' //модальное окно FormTodo
+import { addTodo, pressCancel, pressConfirmAddNewTask, pressConfirmEdit } from './modalFormTodo.js' //модальное окно FormTodo
 import { createTodoObj } from './createTodoObj.js' //создать объект Todo
 import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
@@ -38,22 +39,13 @@ import { addNameInForm } from './addNameInForm.js' //добавить имена
 import { trackScroll, goTop } from './goTod.js' //кнопка вверх
 
 // ------------------------------------------------------------------------------
+const warning = document.querySelector('.warning');
+const warningBtnConfirm = document.querySelector('.warning__btn-confirm');
+const warningText = document.querySelector('.warning__text');
+
 startTime();
 
-// const run = async () => {
-
-// if (!localStorage.length) {
-// getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
-// }
-
-// let todosGetData = getData('todos');
-
-// return {
-// todosGetData
-//   }
-// }
-
-if (!localStorage.length) {
+if (!localStorage.length || !getData('todos')[0]) {
   getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
 }
 
@@ -96,36 +88,41 @@ const runTrelloApplication = async () => {
 
   // модальное окно формы Todo ---------------------------------------------------------------------------
 
+  // очистить все даные
   function boardClear() {
     const allTask = document.querySelectorAll('.task');
     allTask.forEach(task => task.remove())
     updateCounter();
     localStorage.clear()
-    // location. reload()
   }
 
   const boardClearBtn = document.querySelector('.board-clear');
   boardClearBtn.addEventListener('click', boardClear);
 
   formAddTodo.addEventListener('click', function (event) {
+    // убрать стиль для проверки заполненного поля
     if (event.target.classList.contains('form-add-todo__input-title')) {
       event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
     }
-
+    // убрать стиль для проверки заполненного поля
     if (event.target.classList.contains('form-add-todo__input-description')) {
       event.target.closest('.form-add-todo__input-description').classList.remove('invalid-control');
     }
-
+    // убрать стиль для проверки заполненного поля
     if (event.target.classList.contains('form-add-todo__user')) {
       event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
     }
-
+    // закрыть модальное окно создания/редактирования карточки
     if (event.target.classList.contains('form-add-todo__btn-cancel')) {
       pressCancel()
     }
-
-    if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-      pressConfirm(todosGetData, createDiv, createButton)
+    // подтвердить и созать новую карточку
+    if (event.target.classList.contains('form-add-todo__btn-confirm--add-new-task')) {
+      pressConfirmAddNewTask(todosGetData, createDiv, createButton)
+    }
+    // подтвердить и сохранить редакрированные данные в карточку
+    if (event.target.classList.contains('form-add-todo__btn-confirm--edit')) {
+      pressConfirmEdit()
     }
   })
 
@@ -133,11 +130,13 @@ const runTrelloApplication = async () => {
 
   // элемент который перетаскиваем
   let activeElement = null;
+  let activeElementId = null;
 
   // срабатывает в начале операции перетаскивания элемента
   board.addEventListener('dragstart', (event) => {
     event.target.classList.add('active-element');
     activeElement = event.target;
+    activeElementId = event.target.id
   })
 
   // срабатывает, когда элемент перемещают над допустимой зоной для переноса
@@ -162,26 +161,38 @@ const runTrelloApplication = async () => {
   // срабатывает, когда пользователь закончил перетаскивание элемента
   board.addEventListener('dragend', (event) => {
     event.target.classList.remove('active-element');
-    // перемещение в TodoList
     if (event.target.closest('.task-list__body--todo')) {
+      // перемещение в Todo
       if (event.target.classList.contains('task--in-progress')) {
         relocateProgressInTodo(event.target);
+        statusTaskСhange(activeElementId, todosGetData, 'todo');
+        updateCounter();
       } else if (event.target.classList.contains('task--done')) {
         relocateDoneInTodo(event.target);
+        statusTaskСhange(activeElementId, todosGetData, 'todo');
+        updateCounter();
       }
       // перемещение в InProgress
     } else if (event.target.closest('.task-list__body--in-progress')) {
       if (event.target.classList.contains('task--todo')) {
         relocateTodoInProgress(event.target);
+        statusTaskСhange(activeElementId, todosGetData, 'inProgress');
+        updateCounter();
       } else if (event.target.classList.contains('task--done')) {
         relocateDoneInProgress(event.target);
+        statusTaskСhange(activeElementId, todosGetData, 'inProgress');
+        updateCounter();
       }
       // перемещение в Done
     } else if (event.target.closest('.task-list__body--done')) {
       if (event.target.classList.contains('task--todo')) {
         relocateTodoInDone(event.target);
+        statusTaskСhange(activeElementId, todosGetData, 'done');
+        updateCounter();
       } else if (event.target.classList.contains('task--in-progress')) {
         relocateProgressInDone(event.target);
+        statusTaskСhange(activeElementId, todosGetData, 'done');
+        updateCounter();
       }
     }
   });
@@ -192,38 +203,67 @@ const runTrelloApplication = async () => {
     // удаление карточки кнопкой DELETE
     if (event.target.classList.contains('task__btn--del')) {
       const task = event.target.closest('.task');
+      // удаление дела из разметки
       task.remove();
+      // удаление дела из массива дел и обновление localStorage
+      const taskDel = todosGetData.filter(({ todo: { id } }) => id !== task.id);
+      setData('todos', taskDel);
+      // обновление счетчиков
       updateCounter();
     }
     // перемещение из Todo в InProgress
     if (event.target.classList.contains('task__btn--relocate')) {
-      const task = event.target.closest('.task');
-      const cloneTask = task.cloneNode(true);
-      task.remove();
-      relocateTodoInProgress(cloneTask)
-      document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
+      const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
+      if (lengthTaskInProgress >= 6) {
+        warning.classList.toggle('warning--vis');
+        warningBtnConfirm.classList.add('warning__btn-confirm--none');
+        warningText.textContent = 'Before you can add a new task, you must complete at least one current task!';
+      } else {
+        const task = event.target.closest('.task');
+        const taskId = task.id;
+        // клонирование карточки
+        const cloneTask = task.cloneNode(true);
+        // удаление оригинальной карточки
+        task.remove();
+        // перемещение склонированной карточки в новое место
+        relocateTodoInProgress(cloneTask)
+        document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
+        // изменение статуса карточки
+        statusTaskСhange(taskId, todosGetData, 'inProgress')
+        // обновление счетчиков
+        updateCounter();
+      }
     }
     // перемещение из InProgress в Todo
     if (event.target.classList.contains('task__btn--back')) {
       const task = event.target.closest('.task');
+      const taskId = task.id;
       const cloneTask = task.cloneNode(true);
       task.remove();
       relocateProgressInTodo(cloneTask);
       document.querySelector('.task-list__body--todo').prepend(cloneTask);
+      // изменение статуса карточки
+      statusTaskСhange(taskId, todosGetData, 'todo')
+      // обновление счетчиков
+      updateCounter();
     }
     // перемещение из InProgress в Done
     if (event.target.classList.contains('task__btn--complete')) {
       const task = event.target.closest('.task');
+      const taskId = task.id;
       const cloneTask = task.cloneNode(true);
       task.remove();
       relocateProgressInDone(cloneTask)
       document.querySelector('.task-list__body--done').prepend(cloneTask);
-    }
-    // удаление всех карточек
-    if (event.target.classList.contains('task-list__btn--del-all')) {
-      taskListBodyDone.querySelectorAll('.task--done').
-        forEach(elem => elem.remove());
+      // изменение статуса карточки
+      statusTaskСhange(taskId, todosGetData, 'done')
+      // обновление счетчиков
       updateCounter();
+    }
+    // вызов окна подтверждения удаления всех карточек
+    if (event.target.classList.contains('task-list__btn--del-all')) {
+      warning.classList.toggle('warning--vis');
+      warningText.textContent = 'Delete all done cards?';
     }
     // редакрирование Todo
     if (event.target.classList.contains('task__btn--edit')) {
@@ -237,27 +277,41 @@ const runTrelloApplication = async () => {
 
   //редакрирование todo
   function editTodo() {
-    formAddTodo.classList.toggle('form-add-todo--vis');
-
+    // const formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
     const idTask = event.target.closest('.task')
     const taskTitleText = idTask.querySelector('.task__title').textContent
     const taskDescriptionText = idTask.querySelector('.task__description').textContent
     const taskUserText = idTask.querySelector('.task__user').textContent
 
+    formAddTodo.id = idTask.id;
+    formВtnConfirm.classList.add('form-add-todo__btn-confirm--edit')
+    formAddTodo.classList.toggle('form-add-todo--vis');
+
     formInputTitle.value = taskTitleText;
     formInputDescription.value = taskDescriptionText;
     formSelectUser.value = taskUserText;
-
-    const currentTaskLocalStorage = todosGetData.filter(({ todo: { id } }) => id === idTask.id)
-
-    currentTaskLocalStorage
-
-    todos.splice(cardDel, 1);
-    setName(todos);
-
-    updateCounterCards(paramsUpdateCounterCards);
   };
 
+  // модальное окно Warning ---------------------------------------------------------------------------
+
+  // подтвердить и удалить все карточки done
+  warning.addEventListener('click', function (event) {
+    if (event.target.classList.contains('warning__btn-confirm')) {
+      warning.classList.toggle('warning--vis');
+      const taskDoneAll = taskListBodyDone.querySelectorAll('.task--done');
+      taskDoneAll.forEach(elem => elem.remove());
+      // удаление дела из массива дел и обновление localStorage
+      const taskDoneDelAll = todosGetData.filter(({ todo: { completed } }) => completed !== 'done');
+      setData('todos', taskDoneDelAll);
+      // обновление счетчиков
+      updateCounter();
+    }
+    // отменить удаление всех карточек done
+    if (event.target.classList.contains('warning__btn-cancel')) {
+      warning.classList.toggle('warning--vis');
+      warningBtnConfirm.classList.remove('warning__btn-confirm--none');
+    }
+  })
 }
 
 runTrelloApplication()

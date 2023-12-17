@@ -16,6 +16,7 @@ import {
   taskListBodyInProgress,
   taskListBodyDone,
 } from './refs.js'; // получение переменных
+import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 
 // Drag'n'drop
 
@@ -30,6 +31,17 @@ import {
 // dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
 // drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
 
+// изменение статуса карточки при переносе
+function statusTaskСhange(activeElementId, todosGetData, status) {
+  for (let i = 0; i < todosGetData.length; i++) {
+    if (todosGetData[i].todo.id === activeElementId) {
+      todosGetData[i].todo.completed = status;
+      setData('todos', todosGetData);
+    };
+  };
+}
+
+// перенос карточки из ProgressInTodo
 function relocateProgressInTodo(elem) {
   elem.classList = 'task task--todo';
   elem.querySelector('.task__btn--back').textContent = 'EDIT';
@@ -38,9 +50,9 @@ function relocateProgressInTodo(elem) {
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate);
-  updateCounter();
 }
 
+// перенос карточки из TodoInProgress
 function relocateTodoInProgress(elem) {
   elem.classList = 'task task--in-progress';
   elem.querySelector('.task__btn--relocate').remove()
@@ -48,44 +60,43 @@ function relocateTodoInProgress(elem) {
   elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-  updateCounter();
 }
 
+// перенос карточки из ProgressInDone
 function relocateProgressInDone(elem) {
   elem.classList = 'task task--done';
-  // elem.classList.remove('task--in-progress');
   elem.querySelector('.task__btn--back').remove();
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-  updateCounter();
 }
 
+// перенос карточки из DoneInTodo
 function relocateDoneInTodo(elem) {
   elem.classList = 'task task--todo';
   const elTaskBtnRelocate = createButton('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate)
   const elTaskBtnEdit = createButton('task__btn task__btn--edit', 'EDIT');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
-  updateCounter();
 }
 
+// перенос карточки из DoneInProgress
 function relocateDoneInProgress(elem) {
   elem.classList = 'task task--in-progress';
   const elTaskBtnBack = createButton('task__btn task__btn--back', 'BACK');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnBack)
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-  updateCounter();
 }
 
+// перенос карточки из TodoInDone
 function relocateTodoInDone(elem) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').remove();
-  updateCounter();
 }
 
 export {
+  statusTaskСhange,
   relocateProgressInTodo,
   relocateTodoInProgress,
   relocateProgressInDone,

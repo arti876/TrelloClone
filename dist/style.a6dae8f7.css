@@ -303,7 +303,7 @@ input::-ms-clear {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 99999;
+  z-index: 100;
 }
 
 .form-add-todo--vis {
@@ -367,6 +367,58 @@ input::-ms-clear {
 
 .invalid-control {
   outline: 3px solid #ff4949;
+}
+
+.warning {
+  display: none;
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 101;
+}
+.warning__container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 300px;
+  background-color: #009b68;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 16px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+}
+.warning__text {
+  font-size: 24px;
+}
+.warning__btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+}
+.warning button {
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 10px 15px;
+  transition: 0.3s;
+}
+.warning button:hover {
+  background-color: #f3c1ff;
+  transform: scale(1.1);
+}
+
+.warning--vis {
+  display: block;
+}
+
+.warning__btn-confirm--none {
+  display: none;
 }
 
 /*# sourceMappingURL=/style.a6dae8f7.css.map */

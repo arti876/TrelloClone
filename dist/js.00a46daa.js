@@ -206,6 +206,28 @@ function createInput(classList, name, placeholder) {
 }
 
 // создание элементов html
+},{}],"js/localStorage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getData = getData;
+exports.setData = setData;
+// получить
+function getData(key) {
+  var _JSON$parse;
+  return (_JSON$parse = JSON.parse(localStorage.getItem(key))) !== null && _JSON$parse !== void 0 ? _JSON$parse : [];
+}
+;
+
+// записать
+function setData(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+;
+
+// запись-чтение данных localStorage
 },{}],"js/DragAndDrop.js":[function(require,module,exports) {
 "use strict";
 
@@ -218,13 +240,16 @@ exports.relocateProgressInDone = relocateProgressInDone;
 exports.relocateProgressInTodo = relocateProgressInTodo;
 exports.relocateTodoInDone = relocateTodoInDone;
 exports.relocateTodoInProgress = relocateTodoInProgress;
+exports.statusTaskСhange = statusTaskСhange;
 var _updateCounter = require("./updateCounter.js");
 var _htmlCreateElement = require("./htmlCreateElement.js");
 var _refs = require("./refs.js");
+var _localStorage = require("./localStorage.js");
 // обновление счетчиков Todos
 // создание элементов html
 
 // получение переменных
+// запись-чтение данных localStorage
 
 // Drag'n'drop
 
@@ -239,6 +264,19 @@ var _refs = require("./refs.js");
 // dragleave   (срабатывает, когда элемент выходит из допустимой зоны для переноса)
 // drop  (срабатывает после того, как перетаскиваемый элемент опустился на объект перетаскивания)
 
+// изменение статуса карточки при переносе
+function statusTaskСhange(activeElementId, todosGetData, status) {
+  for (var i = 0; i < todosGetData.length; i++) {
+    if (todosGetData[i].todo.id === activeElementId) {
+      todosGetData[i].todo.completed = status;
+      (0, _localStorage.setData)('todos', todosGetData);
+    }
+    ;
+  }
+  ;
+}
+
+// перенос карточки из ProgressInTodo
 function relocateProgressInTodo(elem) {
   elem.classList = 'task task--todo';
   elem.querySelector('.task__btn--back').textContent = 'EDIT';
@@ -247,8 +285,9 @@ function relocateProgressInTodo(elem) {
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
   var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate);
-  (0, _updateCounter.updateCounter)();
 }
+
+// перенос карточки из TodoInProgress
 function relocateTodoInProgress(elem) {
   elem.classList = 'task task--in-progress';
   elem.querySelector('.task__btn--relocate').remove();
@@ -256,41 +295,43 @@ function relocateTodoInProgress(elem) {
   elem.querySelector('.task__btn--edit').classList = 'task__btn task__btn--back';
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-  (0, _updateCounter.updateCounter)();
 }
+
+// перенос карточки из ProgressInDone
 function relocateProgressInDone(elem) {
   elem.classList = 'task task--done';
-  // elem.classList.remove('task--in-progress');
   elem.querySelector('.task__btn--back').remove();
   elem.querySelector('.task__btn--complete').textContent = 'DELETE';
   elem.querySelector('.task__btn--complete').classList = 'task__btn task__btn--del';
-  (0, _updateCounter.updateCounter)();
 }
+
+// перенос карточки из DoneInTodo
 function relocateDoneInTodo(elem) {
   elem.classList = 'task task--todo';
   var elTaskBtnRelocate = (0, _htmlCreateElement.createButton)('task__btn task__btn--relocate', '>');
   elem.querySelector('.task__body').append(elTaskBtnRelocate);
   var elTaskBtnEdit = (0, _htmlCreateElement.createButton)('task__btn task__btn--edit', 'EDIT');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnEdit);
-  (0, _updateCounter.updateCounter)();
 }
+
+// перенос карточки из DoneInProgress
 function relocateDoneInProgress(elem) {
   elem.classList = 'task task--in-progress';
   var elTaskBtnBack = (0, _htmlCreateElement.createButton)('task__btn task__btn--back', 'BACK');
   elem.querySelector('.task__btn-container').prepend(elTaskBtnBack);
   elem.querySelector('.task__btn--del').textContent = 'COMPLETE';
   elem.querySelector('.task__btn--del').classList = 'task__btn task__btn--complete';
-  (0, _updateCounter.updateCounter)();
 }
+
+// перенос карточки из TodoInDone
 function relocateTodoInDone(elem) {
   elem.classList = 'task task--done';
   elem.querySelector('.task__btn--relocate').remove();
   elem.querySelector('.task__btn--edit').remove();
-  (0, _updateCounter.updateCounter)();
 }
 
 // Drag'n'drop
-},{"./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./refs.js":"js/refs.js"}],"js/clock.js":[function(require,module,exports) {
+},{"./updateCounter.js":"js/updateCounter.js","./htmlCreateElement.js":"js/htmlCreateElement.js","./refs.js":"js/refs.js","./localStorage.js":"js/localStorage.js"}],"js/clock.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1133,28 +1174,6 @@ function getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData) 
 }
 
 // получение данных с jsonplaceholder
-},{}],"js/localStorage.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getData = getData;
-exports.setData = setData;
-// получить
-function getData(key) {
-  var _JSON$parse;
-  return (_JSON$parse = JSON.parse(localStorage.getItem(key))) !== null && _JSON$parse !== void 0 ? _JSON$parse : [];
-}
-;
-
-// записать
-function setData(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-;
-
-// запись-чтение данных localStorage
 },{}],"js/createTodoCard.js":[function(require,module,exports) {
 "use strict";
 
@@ -1178,8 +1197,10 @@ function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) 
     day = _todosGetData$todo.day,
     completed = _todosGetData$todo.completed,
     name = todosGetData.user.name;
-  var lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
-  if (completed === 'inProgress' && lengthTaskInProgress < 6) {
+  // const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
+
+  // if (completed === 'inProgress' && lengthTaskInProgress < 6) {
+  if (completed === 'inProgress') {
     var elTask = createDiv('task task--in-progress');
     elTask.draggable = true; // Drag'n'drop ON
     elTask.id = id;
@@ -1372,7 +1393,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.addTodo = addTodo;
 exports.pressCancel = pressCancel;
-exports.pressConfirm = pressConfirm;
+exports.pressConfirmAddNewTask = pressConfirmAddNewTask;
+exports.pressConfirmEdit = pressConfirmEdit;
 var _refs = require("./refs.js");
 var _DragAndDrop = require("./DragAndDrop.js");
 var _clock = require("./clock.js");
@@ -1401,6 +1423,8 @@ var _createTodoCard = require("./createTodoCard.js");
 
 //вызов формы создания карточки дел
 function addTodo() {
+  var formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
+  formВtnConfirm.classList.add('form-add-todo__btn-confirm--add-new-task');
   _refs.formAddTodo.classList.toggle('form-add-todo--vis');
   _refs.formInputTitle.value = '';
   _refs.formInputDescription.value = '';
@@ -1414,11 +1438,14 @@ function pressCancel() {
   _refs.formInputDescription.classList.remove('invalid-control');
   _refs.formInputTitle.classList.remove('invalid-control');
   _refs.formSelectUser.classList.remove('invalid-control');
+  _refs.formВtnConfirm.classList.remove('form-add-todo__btn-confirm--edit');
+  _refs.formВtnConfirm.classList.remove('form-add-todo__btn-confirm--add-new-task');
+  _refs.formAddTodo.removeAttribute('id');
 }
 ;
 
 //создать карточку дел
-function pressConfirm() {
+function pressConfirmAddNewTask() {
   //если обязательные для заполнения поля не содержат данных - сигнализировать
   _refs.controls.forEach(function (control) {
     if (control.classList.contains('required') && !control.value) {
@@ -1428,12 +1455,64 @@ function pressConfirm() {
   //проверка обязательных для заполнения полей и вызов функции создания карточки
   if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
     _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+    _refs.formВtnConfirm.classList.remove('form-add-todo__btn-confirm--add-new-task');
     var todosGetData = (0, _localStorage.getData)('todos');
     var todoObj = (0, _createTodoObj.createTodoObj)();
     (0, _createTodoCard.createTodoCard)(todoObj, _htmlCreateElement.createDiv, _htmlCreateElement.createButton, _getData.getDay, _getData.getTime);
     todosGetData.push(todoObj);
     (0, _localStorage.setData)('todos', todosGetData);
     // updateCounterCards(paramsUpdateCounterCards);
+    _refs.formAddTodo.removeAttribute('id');
+  }
+}
+;
+
+//сохранить отредактированную карточку дел
+function pressConfirmEdit() {
+  //если обязательные для заполнения поля не содержат данных - сигнализировать
+  _refs.controls.forEach(function (control) {
+    if (control.classList.contains('required') && !control.value) {
+      control.classList.add('invalid-control');
+    }
+  });
+  //проверка обязательных для заполнения полей и вызов функции создания карточки
+  if (_refs.formInputTitle.value && _refs.formInputDescription.value && _refs.formSelectUser.value) {
+    _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+    _refs.formВtnConfirm.classList.remove('form-add-todo__btn-confirm--edit');
+    var _taskListBodyTodo = document.querySelectorAll('.task--todo');
+    var currentTask = null;
+    for (var i = 0; i < _taskListBodyTodo.length; i++) {
+      if (_taskListBodyTodo[i].id === _refs.formAddTodo.id) {
+        currentTask = _taskListBodyTodo[i];
+      }
+    }
+    ;
+    var taskTitleText = currentTask.querySelector('.task__title');
+    var taskDescriptionText = currentTask.querySelector('.task__description');
+    var taskUserText = currentTask.querySelector('.task__user');
+    var taskTime = currentTask.querySelector('.task__time');
+    var taskDay = currentTask.querySelector('.task__date');
+    taskTitleText.textContent = _refs.formInputTitle.value;
+    taskDescriptionText.textContent = _refs.formInputDescription.value;
+    taskUserText.textContent = _refs.formSelectUser.value;
+    taskTime.textContent = (0, _getData.getTime)();
+    taskDay.textContent = (0, _getData.getDay)();
+    var todosGetData = (0, _localStorage.getData)('todos');
+    // const currentTaskLocalStorage = todosGetData.filter(({ todo: { id } }) => id === formAddTodo.id);
+
+    for (var _i = 0; _i < todosGetData.length; _i++) {
+      if (todosGetData[_i].todo.id === _refs.formAddTodo.id) {
+        todosGetData[_i].todo.title = taskTitleText.textContent;
+        todosGetData[_i].todo.body = taskDescriptionText.textContent;
+        todosGetData[_i].todo.name = taskUserText.textContent;
+        todosGetData[_i].todo.time = taskTime.textContent;
+        todosGetData[_i].todo.day = taskDay.textContent;
+        (0, _localStorage.setData)('todos', todosGetData);
+      }
+      ;
+    }
+    ;
+    _refs.formAddTodo.removeAttribute('id');
   }
 }
 ;
@@ -1509,22 +1588,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //кнопка вверх
 
 // ------------------------------------------------------------------------------
+var warning = document.querySelector('.warning');
+var warningBtnConfirm = document.querySelector('.warning__btn-confirm');
+var warningText = document.querySelector('.warning__text');
 (0, _clock.startTime)();
-
-// const run = async () => {
-
-// if (!localStorage.length) {
-// getTrelloData(uuidv4, randomCompleted, randomDay, randomTime, setData)
-// }
-
-// let todosGetData = getData('todos');
-
-// return {
-// todosGetData
-//   }
-// }
-
-if (!localStorage.length) {
+if (!localStorage.length || !(0, _localStorage.getData)('todos')[0]) {
   (0, _getTrelloData.getTrelloData)(_uuid.v4, _getRandom.randomCompleted, _getRandom.randomDay, _getRandom.randomTime, _localStorage.setData);
 }
 var todosGetData = (0, _localStorage.getData)('todos');
@@ -1537,27 +1605,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 var runTrelloApplication = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var goTopBtn, boardClear, boardClearBtn, activeElement, editTodo;
+    var goTopBtn, boardClear, boardClearBtn, activeElement, activeElementId, editTodo;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           editTodo = function _editTodo() {
-            _refs.formAddTodo.classList.toggle('form-add-todo--vis');
+            // const formВtnConfirm = document.querySelector('.form-add-todo__btn-confirm');
             var idTask = event.target.closest('.task');
             var taskTitleText = idTask.querySelector('.task__title').textContent;
             var taskDescriptionText = idTask.querySelector('.task__description').textContent;
             var taskUserText = idTask.querySelector('.task__user').textContent;
+            _refs.formAddTodo.id = idTask.id;
+            _refs.formВtnConfirm.classList.add('form-add-todo__btn-confirm--edit');
+            _refs.formAddTodo.classList.toggle('form-add-todo--vis');
             _refs.formInputTitle.value = taskTitleText;
             _refs.formInputDescription.value = taskDescriptionText;
             _refs.formSelectUser.value = taskUserText;
-            var currentTask = todosGetData.filter(function (_ref2) {
-              var id = _ref2.todo.id;
-              return id === idTask.id;
-            });
-            closestCardItem.remove();
-            todos.splice(cardDel, 1);
-            setName(todos);
-            updateCounterCards(paramsUpdateCounterCards);
           };
           boardClear = function _boardClear() {
             var allTask = document.querySelectorAll('.task');
@@ -1566,7 +1629,6 @@ var runTrelloApplication = /*#__PURE__*/function () {
             });
             (0, _updateCounter.updateCounter)();
             localStorage.clear();
-            // location. reload()
           };
           // const { todosGetData } = await run();
           // addNameInForm(todosGetData);
@@ -1584,33 +1646,46 @@ var runTrelloApplication = /*#__PURE__*/function () {
           goTopBtn.addEventListener("click", _goTod.goTop);
 
           // модальное окно формы Todo ---------------------------------------------------------------------------
+
+          // очистить все даные
           boardClearBtn = document.querySelector('.board-clear');
           boardClearBtn.addEventListener('click', boardClear);
           _refs.formAddTodo.addEventListener('click', function (event) {
+            // убрать стиль для проверки заполненного поля
             if (event.target.classList.contains('form-add-todo__input-title')) {
               event.target.closest('.form-add-todo__input-title').classList.remove('invalid-control');
             }
+            // убрать стиль для проверки заполненного поля
             if (event.target.classList.contains('form-add-todo__input-description')) {
               event.target.closest('.form-add-todo__input-description').classList.remove('invalid-control');
             }
+            // убрать стиль для проверки заполненного поля
             if (event.target.classList.contains('form-add-todo__user')) {
               event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
             }
+            // закрыть модальное окно создания/редактирования карточки
             if (event.target.classList.contains('form-add-todo__btn-cancel')) {
               (0, _modalFormTodo.pressCancel)();
             }
-            if (event.target.classList.contains('form-add-todo__btn-confirm')) {
-              (0, _modalFormTodo.pressConfirm)(todosGetData, _htmlCreateElement.createDiv, _htmlCreateElement.createButton);
+            // подтвердить и созать новую карточку
+            if (event.target.classList.contains('form-add-todo__btn-confirm--add-new-task')) {
+              (0, _modalFormTodo.pressConfirmAddNewTask)(todosGetData, _htmlCreateElement.createDiv, _htmlCreateElement.createButton);
+            }
+            // подтвердить и сохранить редакрированные данные в карточку
+            if (event.target.classList.contains('form-add-todo__btn-confirm--edit')) {
+              (0, _modalFormTodo.pressConfirmEdit)();
             }
           });
 
           // события Drag'n'drop -------------------------------------------------------------------------
 
           // элемент который перетаскиваем
-          activeElement = null; // срабатывает в начале операции перетаскивания элемента
+          activeElement = null;
+          activeElementId = null; // срабатывает в начале операции перетаскивания элемента
           _refs.board.addEventListener('dragstart', function (event) {
             event.target.classList.add('active-element');
             activeElement = event.target;
+            activeElementId = event.target.id;
           });
 
           // срабатывает, когда элемент перемещают над допустимой зоной для переноса
@@ -1633,26 +1708,38 @@ var runTrelloApplication = /*#__PURE__*/function () {
           // срабатывает, когда пользователь закончил перетаскивание элемента
           _refs.board.addEventListener('dragend', function (event) {
             event.target.classList.remove('active-element');
-            // перемещение в TodoList
             if (event.target.closest('.task-list__body--todo')) {
+              // перемещение в Todo
               if (event.target.classList.contains('task--in-progress')) {
                 (0, _DragAndDrop.relocateProgressInTodo)(event.target);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'todo');
+                (0, _updateCounter.updateCounter)();
               } else if (event.target.classList.contains('task--done')) {
                 (0, _DragAndDrop.relocateDoneInTodo)(event.target);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'todo');
+                (0, _updateCounter.updateCounter)();
               }
               // перемещение в InProgress
             } else if (event.target.closest('.task-list__body--in-progress')) {
               if (event.target.classList.contains('task--todo')) {
                 (0, _DragAndDrop.relocateTodoInProgress)(event.target);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'inProgress');
+                (0, _updateCounter.updateCounter)();
               } else if (event.target.classList.contains('task--done')) {
                 (0, _DragAndDrop.relocateDoneInProgress)(event.target);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'inProgress');
+                (0, _updateCounter.updateCounter)();
               }
               // перемещение в Done
             } else if (event.target.closest('.task-list__body--done')) {
               if (event.target.classList.contains('task--todo')) {
                 (0, _DragAndDrop.relocateTodoInDone)(event.target);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'done');
+                (0, _updateCounter.updateCounter)();
               } else if (event.target.classList.contains('task--in-progress')) {
                 (0, _DragAndDrop.relocateProgressInDone)(event.target);
+                (0, _DragAndDrop.statusTaskСhange)(activeElementId, todosGetData, 'done');
+                (0, _updateCounter.updateCounter)();
               }
             }
           });
@@ -1663,39 +1750,70 @@ var runTrelloApplication = /*#__PURE__*/function () {
             // удаление карточки кнопкой DELETE
             if (event.target.classList.contains('task__btn--del')) {
               var task = event.target.closest('.task');
+              // удаление дела из разметки
               task.remove();
+              // удаление дела из массива дел и обновление localStorage
+              var taskDel = todosGetData.filter(function (_ref2) {
+                var id = _ref2.todo.id;
+                return id !== task.id;
+              });
+              (0, _localStorage.setData)('todos', taskDel);
+              // обновление счетчиков
               (0, _updateCounter.updateCounter)();
             }
             // перемещение из Todo в InProgress
             if (event.target.classList.contains('task__btn--relocate')) {
-              var _task = event.target.closest('.task');
-              var cloneTask = _task.cloneNode(true);
-              _task.remove();
-              (0, _DragAndDrop.relocateTodoInProgress)(cloneTask);
-              document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
+              var lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length;
+              if (lengthTaskInProgress >= 6) {
+                warning.classList.toggle('warning--vis');
+                warningBtnConfirm.classList.add('warning__btn-confirm--none');
+                warningText.textContent = 'Before you can add a new task, you must complete at least one current task!';
+              } else {
+                var _task = event.target.closest('.task');
+                var taskId = _task.id;
+                // клонирование карточки
+                var cloneTask = _task.cloneNode(true);
+                // удаление оригинальной карточки
+                _task.remove();
+                // перемещение склонированной карточки в новое место
+                (0, _DragAndDrop.relocateTodoInProgress)(cloneTask);
+                document.querySelector('.task-list__body--in-progress').prepend(cloneTask);
+                // изменение статуса карточки
+                (0, _DragAndDrop.statusTaskСhange)(taskId, todosGetData, 'inProgress');
+                // обновление счетчиков
+                (0, _updateCounter.updateCounter)();
+              }
             }
             // перемещение из InProgress в Todo
             if (event.target.classList.contains('task__btn--back')) {
               var _task2 = event.target.closest('.task');
+              var _taskId = _task2.id;
               var _cloneTask = _task2.cloneNode(true);
               _task2.remove();
               (0, _DragAndDrop.relocateProgressInTodo)(_cloneTask);
               document.querySelector('.task-list__body--todo').prepend(_cloneTask);
+              // изменение статуса карточки
+              (0, _DragAndDrop.statusTaskСhange)(_taskId, todosGetData, 'todo');
+              // обновление счетчиков
+              (0, _updateCounter.updateCounter)();
             }
             // перемещение из InProgress в Done
             if (event.target.classList.contains('task__btn--complete')) {
               var _task3 = event.target.closest('.task');
+              var _taskId2 = _task3.id;
               var _cloneTask2 = _task3.cloneNode(true);
               _task3.remove();
               (0, _DragAndDrop.relocateProgressInDone)(_cloneTask2);
               document.querySelector('.task-list__body--done').prepend(_cloneTask2);
-            }
-            // удаление всех карточек
-            if (event.target.classList.contains('task-list__btn--del-all')) {
-              _refs.taskListBodyDone.querySelectorAll('.task--done').forEach(function (elem) {
-                return elem.remove();
-              });
+              // изменение статуса карточки
+              (0, _DragAndDrop.statusTaskСhange)(_taskId2, todosGetData, 'done');
+              // обновление счетчиков
               (0, _updateCounter.updateCounter)();
+            }
+            // вызов окна подтверждения удаления всех карточек
+            if (event.target.classList.contains('task-list__btn--del-all')) {
+              warning.classList.toggle('warning--vis');
+              warningText.textContent = 'Delete all done cards?';
             }
             // редакрирование Todo
             if (event.target.classList.contains('task__btn--edit')) {
@@ -1710,7 +1828,33 @@ var runTrelloApplication = /*#__PURE__*/function () {
           //редакрирование todo
 
           ;
-        case 14:
+
+          // модальное окно Warning ---------------------------------------------------------------------------
+
+          // подтвердить и удалить все карточки done
+          warning.addEventListener('click', function (event) {
+            if (event.target.classList.contains('warning__btn-confirm')) {
+              warning.classList.toggle('warning--vis');
+              var taskDoneAll = _refs.taskListBodyDone.querySelectorAll('.task--done');
+              taskDoneAll.forEach(function (elem) {
+                return elem.remove();
+              });
+              // удаление дела из массива дел и обновление localStorage
+              var taskDoneDelAll = todosGetData.filter(function (_ref3) {
+                var completed = _ref3.todo.completed;
+                return completed !== 'done';
+              });
+              (0, _localStorage.setData)('todos', taskDoneDelAll);
+              // обновление счетчиков
+              (0, _updateCounter.updateCounter)();
+            }
+            // отменить удаление всех карточек done
+            if (event.target.classList.contains('warning__btn-cancel')) {
+              warning.classList.toggle('warning--vis');
+              warningBtnConfirm.classList.remove('warning__btn-confirm--none');
+            }
+          });
+        case 16:
         case "end":
           return _context.stop();
       }
@@ -1746,7 +1890,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49965" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51087" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

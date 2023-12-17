@@ -21,9 +21,10 @@ import { getData, setData } from './localStorage.js'// запись-чтение
 
 function createTodoCard(todosGetData, createDiv, createButton, getDay, getTime) {
   let { todo: { id, title, body, time, day, completed }, user: { name } } = todosGetData;
-  const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
+  // const lengthTaskInProgress = document.getElementsByClassName('task--in-progress').length
 
-  if (completed === 'inProgress' && lengthTaskInProgress < 6) {
+  // if (completed === 'inProgress' && lengthTaskInProgress < 6) {
+  if (completed === 'inProgress') {
     const elTask = createDiv('task task--in-progress');
     elTask.draggable = true; // Drag'n'drop ON
     elTask.id = id;
