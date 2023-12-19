@@ -145,6 +145,7 @@ function relocateTodoInDone(elem) {
   elem.querySelector('.task__date').textContent = getDay();
 }
 
+// проверка наличие скролла
 function scrollСheck() {
   if (taskListBodyInProgress.scrollHeight > taskListBodyInProgress.clientHeight) {
     taskListBtnShowAllInProgress.style.display = 'block';
@@ -164,6 +165,19 @@ function scrollСheck() {
   }
 }
 
+// показать/скрыть карточки
+function showAllCards(taskList) {
+  if (event.target.getAttribute('data-show') === "true") {
+    taskList.style.height = 'auto';
+    event.target.textContent = 'Show all ▲';
+    event.target.setAttribute('data-show', "false");
+  } else {
+    taskList.style.height = '600px';
+    event.target.textContent = 'Show all ▼';
+    event.target.setAttribute('data-show', "true");
+  }
+}
+
 export {
   statusTaskСhange,
   relocateProgressInTodo,
@@ -175,5 +189,6 @@ export {
   boardClear,
   editTodo,
   elementMovement,
-  scrollСheck
+  scrollСheck,
+  showAllCards,
 } // functionEvent

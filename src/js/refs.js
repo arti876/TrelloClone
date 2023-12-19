@@ -45,16 +45,3 @@ export {
   taskListBtnShowAllInProgress,
   taskListBtnShowAllDone,
 }
-
-function callback(mutations, observer) {
-  console.log(mutations)
-}
-
-const observer = new MutationObserver(callback)
-
-observer.observe(taskListBody, {
-  // childList: true,
-  attributes: true,
-  // characterData: true,
-})
-

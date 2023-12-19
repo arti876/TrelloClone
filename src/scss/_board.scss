@@ -45,9 +45,9 @@
     padding: 15px;
     overflow-y: auto;
   }
-  // &__body::-webkit-scrollbar {
-  //   width: 0;
-  // }
+  &__body::-webkit-scrollbar {
+    width: 0;
+  }
   &__footer {
     display: flex;
     flex-direction: column;

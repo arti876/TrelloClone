@@ -34,43 +34,45 @@ import {
   editTodo,
   elementMovement,
   scrollСheck,
+  showAllCards,
 } from './functionEvent.js' // functionEvent
 import { startTime, } from './clock.js'; // часы
 // import { v4 as uuidv4 } from 'uuid'; // рандом id
 import { getDay, getTime } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
-import { createDiv,createButton, } from './htmlCreateElement.js' // создание элементов html
+import { createDiv, createButton, } from './htmlCreateElement.js' // создание элементов html
 import { addTodo, pressCancel, pressConfirmAddNewTask, pressConfirmEdit } from './modalFormTodo.js' //модальное окно FormTodo
 import { getTrelloData } from './getTrelloData.js' // получение данных с jsonplaceholder
 import { getData, setData } from './localStorage.js'// запись-чтение данных localStorage
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
 import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
-import { trackScroll, goTop } from './goTod.js' //кнопка вверх
+import { trackScroll, goTop } from './trackScroll.js' //кнопка вверх
 import { createTodoObj } from './createTodoObj.js' //создать объект Todo
 import { randomCompleted, randomDay, randomTime, generateUUID } from './getRandom.js' // рандом статуса Todo, даты, времени
 
 const runTrelloApplication = async () => {
-// часы
-startTime();
+  // часы
+  startTime();
 
-// загрузаем данные в localStorage с сервера, если их нету
-if (!localStorage.length || !getData('todos')[0]) {
-  await getTrelloData();
-};
+  // загрузаем данные в localStorage с сервера, если их нету
+  if (!localStorage.length || !getData('todos')[0]) {
+    await getTrelloData();
+  };
 
-// получаем массив данных из localStorage
-let todosGetData = await getData('todos');
+  // получаем массив данных из localStorage
+  let todosGetData = await getData('todos');
 
-// загрузка имен юзеров в модальную форму добавления дел
-addNameInForm(todosGetData);
+  // загрузка имен юзеров в модальную форму добавления дел
+  addNameInForm(todosGetData);
 
-// отрисовка карточек дел из localStorage
-await todosGetData.forEach(todo => {
-  createTodoCard(todo);
-});
+  // отрисовка карточек дел из localStorage
+  await todosGetData.forEach(todo => {
+    createTodoCard(todo);
+  });
 
-// обновление счетчиков
-updateCounter();
+  // обновление счетчиков
+  updateCounter();
+  scrollСheck();
 
   // скролл возврата к началу страницы
   // обработчик скролл вверх
@@ -141,35 +143,31 @@ updateCounter();
       if (event.target.classList.contains('task--in-progress')) {
         relocateProgressInTodo(event.target);
         statusTaskСhange(activeElementId, todosGetData, 'todo');
-        updateCounter();
       } else if (event.target.classList.contains('task--done')) {
         relocateDoneInTodo(event.target);
         statusTaskСhange(activeElementId, todosGetData, 'todo');
-        updateCounter();
       }
       // перемещение в InProgress
     } else if (event.target.closest('.task-list__body--in-progress')) {
       if (event.target.classList.contains('task--todo')) {
         relocateTodoInProgress(event.target);
         statusTaskСhange(activeElementId, todosGetData, 'inProgress');
-        updateCounter();
       } else if (event.target.classList.contains('task--done')) {
         relocateDoneInProgress(event.target);
         statusTaskСhange(activeElementId, todosGetData, 'inProgress');
-        updateCounter();
       }
       // перемещение в Done
     } else if (event.target.closest('.task-list__body--done')) {
       if (event.target.classList.contains('task--todo')) {
         relocateTodoInDone(event.target);
         statusTaskСhange(activeElementId, todosGetData, 'done');
-        updateCounter();
       } else if (event.target.classList.contains('task--in-progress')) {
         relocateProgressInDone(event.target);
         statusTaskСhange(activeElementId, todosGetData, 'done');
-        updateCounter();
       }
     }
+    updateCounter();
+    scrollСheck();
   });
 
   // запрет переноса в InProgress если дел 6 или больше
@@ -219,8 +217,8 @@ updateCounter();
         // изменение статуса карточки
         statusTaskСhange(taskId, todosGetData, 'inProgress');
         updateCounter();
+        scrollСheck();
       }
-      scrollСheck();
     }
     // перемещение из InProgress в Todo
     if (event.target.classList.contains('task__btn--back')) {
@@ -259,7 +257,19 @@ updateCounter();
     if (event.target.classList.contains('task-list__btn-add-todo')) {
       addTodo();
     }
+    // показать/скрыть карточки
+    if (event.target.classList.contains('task-list__btn-show-all--todo')) {
+      showAllCards(taskListBodyTodo);
+    }
+    if (event.target.classList.contains('task-list__btn-show-all--in-progress')) {
+      showAllCards(taskListBodyInProgress);
+    }
+    if (event.target.classList.contains('task-list__btn-show-all--done')) {
+      showAllCards(taskListBodyDone);
+    }
   });
+
+
 
   // модальное окно Warning
   // подтвердить и удалить все карточки done
@@ -278,8 +288,7 @@ updateCounter();
       warning.classList.toggle('warning--vis');
       warningBtnConfirm.classList.remove('warning__btn-confirm--none');
     }
-  })
+  });
 }
 
 runTrelloApplication();
-

@@ -5,6 +5,7 @@ import { getData, setData } from './localStorage.js'// запись-чтение
 import { createTodoCard } from './createTodoCard.js' // создание новой карточки дел
 import { createTodoObj } from './createTodoObj.js' //создать объект Todo
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
+import { scrollСheck } from './functionEvent.js' // functionEvent
 
 //вызов формы создания карточки дел
 function addTodo() {
@@ -47,7 +48,7 @@ function pressConfirmAddNewTask(todosGetData) {
     // updateCounterCards(paramsUpdateCounterCards);
     formAddTodo.removeAttribute('id');
     updateCounter();
-    scrollСheck()
+    scrollСheck();
   }
 };
 
@@ -97,6 +98,7 @@ function pressConfirmEdit(todosGetData) {
     };
 
     formAddTodo.removeAttribute('id');
+    scrollСheck();
   }
 };
 
