@@ -18,4 +18,19 @@ function randomTime(start, end) {
   return `${('0' + rDate.getHours()).slice(-2)}:${('0' + rDate.getMinutes()).slice(-2)}:${('0' + rDate.getSeconds()).slice(-2)}`
 }
 
-export { randomCompleted, randomDay, randomTime } // рандом статуса Todo, даты, времени
+function generateUUID() {
+  // Получаем текущее время в миллисекундах
+  let d = new Date().getTime();
+  // Если доступна производительность, то добавляем ее значение к времени
+  if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+      d += performance.now();
+  }
+  // Генерируем UUID в формате 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = (d + Math.random()*16)%16 | 0;
+      d = Math.floor(d/16);
+      return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+  });
+}
+
+export { randomCompleted, randomDay, randomTime, generateUUID } // рандом статуса Todo, даты, времени

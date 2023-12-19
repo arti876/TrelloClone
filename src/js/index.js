@@ -17,6 +17,10 @@ import {
   warningText,
   goTopBtn,
   trelloWrapper,
+  taskListBtnShowAll,
+  taskListBtnShowAllTodo,
+  taskListBtnShowAllInProgress,
+  taskListBtnShowAllDone,
 } from './refs.js'; // получение переменных
 import {
   statusTaskСhange,
@@ -29,10 +33,10 @@ import {
   boardClear,
   editTodo,
   elementMovement,
+  scrollСheck,
 } from './functionEvent.js' // functionEvent
 import { startTime, } from './clock.js'; // часы
-import { v4 as uuidv4 } from 'uuid'; // рандом id
-import { randomCompleted, randomDay, randomTime } from './getRandom.js' // рандом статуса Todo, даты, времени
+// import { v4 as uuidv4 } from 'uuid'; // рандом id
 import { getDay, getTime } from './getData.js' // получить текущую дату и время
 import { updateCounter } from './updateCounter.js' // обновление счетчиков Todos
 import { createDiv,createButton, } from './htmlCreateElement.js' // создание элементов html
@@ -43,6 +47,7 @@ import { createTodoCard } from './createTodoCard.js' // создание нов�
 import { addNameInForm } from './addNameInForm.js' //добавить имена из загружаемых данных в форму
 import { trackScroll, goTop } from './goTod.js' //кнопка вверх
 import { createTodoObj } from './createTodoObj.js' //создать объект Todo
+import { randomCompleted, randomDay, randomTime, generateUUID } from './getRandom.js' // рандом статуса Todo, даты, времени
 
 const runTrelloApplication = async () => {
 // часы
@@ -50,17 +55,17 @@ startTime();
 
 // загрузаем данные в localStorage с сервера, если их нету
 if (!localStorage.length || !getData('todos')[0]) {
-  getTrelloData();
+  await getTrelloData();
 };
 
 // получаем массив данных из localStorage
-let todosGetData = getData('todos');
+let todosGetData = await getData('todos');
 
 // загрузка имен юзеров в модальную форму добавления дел
 addNameInForm(todosGetData);
 
 // отрисовка карточек дел из localStorage
-todosGetData.forEach(todo => {
+await todosGetData.forEach(todo => {
   createTodoCard(todo);
 });
 
@@ -96,7 +101,7 @@ updateCounter();
       event.target.closest('.form-add-todo__user').classList.remove('invalid-control');
     }
     // закрыть модальное окно создания/редактирования карточки
-    if (event.target.classList.contains('form-add-todo__btn-cancel')) {
+    if (event.target.classList.contains('form-add-todo__btn-cancel') || event.target.classList.contains('form-add-todo')) {
       pressCancel();
     }
     // подтвердить и созать новую карточку
@@ -192,6 +197,7 @@ updateCounter();
       const taskDel = todosGetData.filter(({ todo: { id } }) => id !== task.id);
       setData('todos', taskDel);
       updateCounter();
+      scrollСheck();
     }
     // перемещение из Todo в InProgress
     if (event.target.classList.contains('task__btn--relocate')) {
@@ -214,6 +220,7 @@ updateCounter();
         statusTaskСhange(taskId, todosGetData, 'inProgress');
         updateCounter();
       }
+      scrollСheck();
     }
     // перемещение из InProgress в Todo
     if (event.target.classList.contains('task__btn--back')) {
@@ -225,6 +232,7 @@ updateCounter();
       taskListBodyTodo.prepend(cloneTask);
       statusTaskСhange(taskId, todosGetData, 'todo');
       updateCounter();
+      scrollСheck();
     }
     // перемещение из InProgress в Done
     if (event.target.classList.contains('task__btn--complete')) {
@@ -236,9 +244,10 @@ updateCounter();
       taskListBodyDone.prepend(cloneTask);
       statusTaskСhange(taskId, todosGetData, 'done');
       updateCounter();
+      scrollСheck();
     }
     // вызов окна подтверждения удаления всех карточек
-    if (event.target.classList.contains('task-list__btn--del-all')) {
+    if (event.target.classList.contains('task-list__btn-del-all')) {
       warning.classList.toggle('warning--vis');
       warningText.textContent = 'Delete all done cards?';
     }
@@ -247,7 +256,7 @@ updateCounter();
       editTodo(formAddTodo, formInputTitle, formInputDescription, formВtnConfirm, formSelectUser);
     }
     // добавить новый Todo
-    if (event.target.classList.contains('task-list__btn--add-todo')) {
+    if (event.target.classList.contains('task-list__btn-add-todo')) {
       addTodo();
     }
   });
@@ -265,11 +274,12 @@ updateCounter();
       updateCounter();
     }
     // отменить удаление всех карточек done
-    if (event.target.classList.contains('warning__btn-cancel')) {
+    if (event.target.classList.contains('warning') || event.target.classList.contains('warning__btn-cancel')) {
       warning.classList.toggle('warning--vis');
       warningBtnConfirm.classList.remove('warning__btn-confirm--none');
     }
   })
 }
 
-runTrelloApplication()
+runTrelloApplication();
+

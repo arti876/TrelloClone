@@ -18,104 +18,39 @@
         <div class="header__time"></div>
       </div>
       <section class="board">
-
         <div class="task-list task-list--todo">
           <div class="task-list__header task-list__header--todo">
             <div class="task-list__title task-list__title--todo">TODO</div>
             <div class="task-list__counters task-list__counters--todo">0</div>
           </div>
           <div class="task-list__body task-list__body--todo">
-            <!-- <div class="task task--todo">
-                  <div class="task__header">
-                    <div class="task__btn-container">
-                      <button class="task__btn task__btn--edit" type="button">EDIT</button>
-                      <button class="task__btn task__btn--del" type="button">DELETE</button>
-                    </div>
-                    <div class="task__title">Title</div>
-                  </div>
-                  <div class="task__body">
-                    <div class="task__description">Despription</div>
-                    <button class="task__btn task__btn--relocate" type="button">></button>
-                  </div>
-                  <div class="task__footer">
-                    <div class="task__user">User</div>
-                    <div class="task__time">Time</di>
-                    </div>
-                  </div>
-                </div> -->
           </div>
           <div class="task-list__footer">
-            <button class="task-list__btn task-list__btn--add-todo" type="button">Add todo</button>
+            <button class="task-list__btn-show-all task-list__btn-show-all--todo" type="button">Show all ⌵</button>
+            <button class="task-list__btn-add-todo" type="button">Add todo</button>
           </div>
         </div>
-
         <div class="task-list task-list--in-progress">
           <div class="task-list__header task-list__header--in-progress">
             <div class="task-list__title task-list__title--in-progress">IN PROGRESS</div>
             <div class="task-list__counters task-list__counters--in-progress">0</div>
           </div>
           <div class="task-list__body task-list__body--in-progress">
-            <!-- <div class="task task--in-progress" id="id-1" draggable="true">
-              <div class="task__header">
-                <div class="task__btn-container">
-                  <button class="task__btn task__btn--back" type="button">BACK</button>
-                  <button class="task__btn task__btn--complete" type="button">COMPLETE</button>
-                </div>
-                <div class="task__title">Title</div>
-              </div>
-              <div class="task__body">
-                <div class="task__description">Despription</div>
-              </div>
-              <div class="task__footer">
-                <div class="task__user">User</div>
-                <div class="task__time">Time</di>
-                </div>
-              </div>
-            </div> -->
+          </div>
+          <div class="task-list__footer">
+            <button class="task-list__btn-show-all task-list__btn-show-all--in-progress" type="button">Show all ⌵</button>
           </div>
         </div>
-
         <div class="task-list task-list--done">
           <div class="task-list__header task-list__header--done">
             <div class="task-list__title task-list__title--done">DONE</div>
             <div class="task-list__counters task-list__counters--done">0</div>
           </div>
           <div class="task-list__body task-list__body--done">
-            <!-- <div class="task task--done" id="id-2" draggable="true">
-              <div class="task__header">
-                <div class="task__btn-container">
-                  <button class="task__btn task__btn--del" type="button">DELETE</button>
-                </div>
-                <div class="task__title">Title</div>
-              </div>
-              <div class="task__body">
-                <div class="task__description">Despription</div>
-              </div>
-              <div class="task__footer">
-                <div class="task__user">User</div>
-                <div class="task__time">Time</di>
-                </div>
-              </div>
-            </div>
-            <div class="task task--done" id="id-3" draggable="true">
-              <div class="task__header">
-                <div class="task__btn-container">
-                  <button class="task__btn task__btn--del" type="button">DELETE</button>
-                </div>
-                <div class="task__title">Title12312</div>
-              </div>
-              <div class="task__body">
-                <div class="task__description">Despription123123</div>
-              </div>
-              <div class="task__footer">
-                <div class="task__user">User123</div>
-                <div class="task__time">Time123123</di>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="task-list__footer">
-            <button class="task-list__btn task-list__btn--del-all" type="button">Delete all</button>
+            <button class="task-list__btn-show-all task-list__btn-show-all--done" type="button">Show all ⌵</button>
+            <button class="task-list__btn-del-all" type="button">Delete all</button>
           </div>
         </div>
       </section>
@@ -126,18 +61,18 @@
         <div class="form-add-todo__header">
           <label>
             <input class="form-add-todo__input-title form-control required" type="text" name="title"
-              placeholder="Title"> <!-- required="required" -->
+              placeholder="Title">
           </label>
         </div>
         <div class="form-add-todo__boby">
           <label>
             <textarea class="form-add-todo__input-description form-control required" name="description"
-              placeholder="Description"></textarea> <!-- required="required" -->
+              placeholder="Description"></textarea>
           </label>
         </div>
         <div class="form-add-todo__footer">
           <label>
-            <select class="form-add-todo__user form-control required" name="user"> <!-- required="required" -->
+            <select class="form-add-todo__user form-control required" name="user">
               <option value="">Select user</option>
             </select>
           </label>
